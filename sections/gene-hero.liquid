@@ -1,0 +1,59 @@
+<section class="g-wrap" style="padding:56px 24px 44px;">
+  <div class="ghero-grid">
+    <div>
+      {%- if section.settings.badge != blank -%}
+      <div style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;">
+        <span style="width:7px;height:7px;background:var(--ink);border-radius:50%;display:inline-block;"></span> {{ section.settings.badge }}
+      </div>
+      {%- endif -%}
+      <h1 style="font-weight:800;font-size:clamp(44px,6vw,72px);line-height:0.98;letter-spacing:-0.03em;margin:0 0 18px;text-wrap:balance;">{{ section.settings.heading | newline_to_br }}</h1>
+      <p style="font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:440px;margin:0 0 26px;text-wrap:pretty;">{{ section.settings.subheading }}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:26px;">
+        {%- if section.settings.btn1_label != blank -%}
+        <a class="g-btn" href="{{ section.settings.btn1_url }}"><span style="font-size:0.7em;">●</span> {{ section.settings.btn1_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.btn2_label != blank -%}
+        <a class="g-btn g-btn--outline" href="{{ section.settings.btn2_url }}">{{ section.settings.btn2_label }}</a>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.rating != blank -%}
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);">
+        <span style="letter-spacing:1px;color:var(--ink);">★★★★★</span><span>{{ section.settings.rating }}</span>
+      </div>
+      {%- endif -%}
+    </div>
+    <div style="position:relative;aspect-ratio:4/4.4;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden;background:var(--tag);">
+      {%- if section.settings.image -%}
+        <img src="{{ section.settings.image | image_url: width: 1000 }}" alt="{{ section.settings.image.alt | escape }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag }}
+      {%- endif -%}
+      {%- if section.settings.image_badge != blank -%}
+      <div style="position:absolute;bottom:14px;left:14px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:7px 12px;border-radius:4px;">{{ section.settings.image_badge }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+.ghero-grid { display:grid; grid-template-columns:1.05fr 0.95fr; gap:44px; align-items:center; }
+@media (max-width:900px){ .ghero-grid{ grid-template-columns:1fr; gap:26px; } }
+</style>
+{% schema %}
+{
+  "name": "GENE — Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "badge", "label": "Badge nad titulkem", "default": "Limited drop · No restock" },
+    { "type": "textarea", "id": "heading", "label": "Titulek", "default": "BUILT DIFFERENT.\nWORN LOUD." },
+    { "type": "textarea", "id": "subheading", "label": "Podtitulek", "default": "Limited streetwear drops built to stand out. Once a piece sells out, it's gone for good." },
+    { "type": "text", "id": "btn1_label", "label": "Tlačítko 1 — text", "default": "Shop Summer Archive" },
+    { "type": "url", "id": "btn1_url", "label": "Tlačítko 1 — odkaz" },
+    { "type": "text", "id": "btn2_label", "label": "Tlačítko 2 — text", "default": "Shop Bundles" },
+    { "type": "url", "id": "btn2_url", "label": "Tlačítko 2 — odkaz" },
+    { "type": "text", "id": "rating", "label": "Řádek s hodnocením", "default": "4.8 from 8,900+ verified customers" },
+    { "type": "image_picker", "id": "image", "label": "Obrázek" },
+    { "type": "text", "id": "image_badge", "label": "Štítek na obrázku", "default": "SS ARCHIVE ’26 · UP TO 35% OFF" }
+  ],
+  "presets": [ { "name": "GENE — Hero" } ]
+}
+{% endschema %}

@@ -1,8 +1,1 @@
-<section class="gene-sec gene-wrap">
-  <h2 style="margin-bottom:24px">All collections</h2>
-  <div class="gene-cols" style="grid-template-columns:repeat(3,1fr);grid-template-rows:none">
-    {%- for c in collections -%}
-      <a href="{{ c.url }}" class="gene-col">{% if c.featured_image %}<img src="{{ c.featured_image | image_url: width: 800 }}" alt="{{ c.title }}">{% else %}{{ 'collection-1' | placeholder_svg_tag }}{% endif %}<div class="gene-col__cap"><span>{{ c.title }}</span></div></a>
-    {%- endfor -%}
-  </div>
-</section>
+<div class="g-wrap" style="padding:48px 24px;"><h1>Kolekce</h1><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">{% for collection in collections %}<a href="{{ collection.url }}" style="border:1px solid var(--line);border-radius:6px;overflow:hidden;text-decoration:none;background:#fff;">{% if collection.featured_image %}<img src="{{ collection.featured_image | image_url: width: 500 }}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" loading="lazy">{% endif %}<div style="padding:12px;font-weight:700;">{{ collection.title }}</div></a>{% endfor %}</div></div>

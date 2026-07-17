@@ -1,0 +1,42 @@
+<section class="g-wrap" style="padding:64px 24px 8px;">
+  <div style="text-align:center;margin-bottom:28px;">
+    <div style="letter-spacing:2px;font-size:18px;">★★★★★</div>
+    <h2 class="g-h2" style="margin:8px 0 4px;">{{ section.settings.title }}</h2>
+    <p style="font-size:14px;color:var(--ink-soft);margin:0;">{{ section.settings.subtitle }}</p>
+  </div>
+  <div class="grev-grid">
+    {%- for block in section.blocks -%}
+    <div {{ block.shopify_attributes }} style="border:1px solid var(--line);border-radius:6px;padding:20px;background:#fff;">
+      <div style="letter-spacing:1px;font-size:13px;margin-bottom:10px;">★★★★★</div>
+      <p style="font-size:14.5px;line-height:1.55;margin:0 0 16px;">"{{ block.settings.quote }}"</p>
+      <div style="display:flex;align-items:center;gap:10px;">
+        {%- if block.settings.avatar -%}<img src="{{ block.settings.avatar | image_url: width: 80 }}" alt="" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">{%- endif -%}
+        <div><b style="font-size:13px;">{{ block.settings.name }}</b><div style="font-size:11px;color:var(--ink-muted);font-family:var(--mono);">{{ block.settings.meta }}</div></div>
+      </div>
+    </div>
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+.grev-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media (max-width:900px){ .grev-grid{ grid-template-columns:1fr; } }
+</style>
+{% schema %}
+{
+  "name": "GENE — Recenze",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titulek", "default": "Loved by the fam" },
+    { "type": "text", "id": "subtitle", "label": "Podtitulek", "default": "4.8 average · 8,900+ verified customers" }
+  ],
+  "blocks": [
+    { "type": "review", "name": "Recenze", "settings": [
+      { "type": "textarea", "id": "quote", "label": "Text", "default": "Perfect fit and premium materials. Exactly what I was looking for!" },
+      { "type": "text", "id": "name", "label": "Jméno", "default": "Avraam C." },
+      { "type": "text", "id": "meta", "label": "Popisek", "default": "Verified buyer" },
+      { "type": "image_picker", "id": "avatar", "label": "Fotka" }
+    ] }
+  ],
+  "presets": [ { "name": "GENE — Recenze", "blocks": [ { "type": "review" }, { "type": "review", "settings": { "quote": "Great experience, good clothing pieces. Their shipping is actually fast. Recommend!", "name": "Jessica L." } }, { "type": "review", "settings": { "quote": "Sooo cute!! I love it. Material feels really nice and it arrived pretty fast.", "name": "Anastasia N." } } ] } ]
+}
+{% endschema %}

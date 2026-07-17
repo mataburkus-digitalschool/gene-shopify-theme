@@ -1,0 +1,87 @@
+<section class="g-wrap" style="padding:56px 24px 8px;">
+  <div style="margin-bottom:24px;">
+    {%- if section.settings.eyebrow != blank -%}<div class="g-eyebrow" style="margin-bottom:8px;">{{ section.settings.eyebrow }}</div>{%- endif -%}
+    <h2 class="g-h2">{{ section.settings.title }}</h2>
+  </div>
+  <div class="gbun-grid">
+    {%- for block in section.blocks -%}
+    {%- liquid
+      assign p1 = block.settings.product1
+      assign p2 = block.settings.product2
+      assign regular = p1.price | plus: p2.price
+      assign keep = 100 | minus: block.settings.discount
+      assign bprice = regular | times: keep | divided_by: 100
+      assign save = regular | minus: bprice
+      assign img = block.settings.image | default: p1.featured_media
+    -%}
+    <div {{ block.shopify_attributes }} style="border:1.5px solid var(--ink);border-radius:6px;overflow:hidden;background:#fff;display:flex;flex-direction:column;">
+      <div style="position:relative;aspect-ratio:16/10;background:var(--tag);overflow:hidden;">
+        {%- if img -%}<img src="{{ img | image_url: width: 800 }}" alt="{{ block.settings.title | escape }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">{%- else -%}{{ 'product-apparel-2' | placeholder_svg_tag }}{%- endif -%}
+        {%- if p1 and p2 -%}<span style="position:absolute;top:10px;left:10px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.1em;padding:4px 8px;border-radius:4px;">SAVE {{ save | money }}</span>{%- endif -%}
+      </div>
+      <div style="padding:16px 16px 18px;display:flex;flex-direction:column;gap:10px;flex:1;">
+        <div style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);">{{ block.settings.tag }}</div>
+        <div style="font-weight:700;font-size:18px;line-height:1.2;">{{ block.settings.title }}</div>
+        <div style="font-size:13px;color:var(--ink-soft);line-height:1.45;">{% if p1 and p2 %}{{ p1.title }} + {{ p2.title }}{% endif %}</div>
+        {%- if p1 and p2 -%}
+        <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums;margin-top:auto;">
+          <span style="font-weight:800;font-size:20px;">{{ bprice | money }}</span>
+          <s style="font-size:14px;color:var(--ink-muted);">{{ regular | money }}</s>
+        </div>
+        <button type="button" class="g-btn gbun-add" style="width:100%;padding:12px;font-size:14px;"
+          data-v1="{{ p1.selected_or_first_available_variant.id }}" data-v2="{{ p2.selected_or_first_available_variant.id }}"
+          {% unless p1.available and p2.available %}disabled{% endunless %}>
+          Add set — {{ bprice | money }}
+        </button>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+.gbun-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media (max-width:900px){ .gbun-grid{ grid-template-columns:1fr; } }
+</style>
+<script>
+(function(){
+  document.querySelectorAll('.gbun-add').forEach(function(btn){
+    if (btn.dataset.init) return; btn.dataset.init = '1';
+    btn.addEventListener('click', function(){
+      var orig = btn.textContent; btn.disabled = true; btn.textContent = '…';
+      fetch('{{ routes.cart_add_url }}.js', {
+        method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+        body: JSON.stringify({ items:[ { id:Number(btn.dataset.v1), quantity:1 }, { id:Number(btn.dataset.v2), quantity:1 } ] })
+      }).then(function(r){ if(!r.ok) throw 0;
+        btn.textContent = '✓ Přidáno';
+        fetch('{{ routes.cart_url }}.js').then(function(r){return r.json();}).then(function(c){
+          document.querySelectorAll('[data-cart-count]').forEach(function(el){ el.textContent = c.item_count; });
+        });
+        setTimeout(function(){ btn.textContent = orig; btn.disabled = false; }, 1600);
+      }).catch(function(){ btn.textContent = orig; btn.disabled = false; });
+    });
+  });
+})();
+</script>
+{% schema %}
+{
+  "name": "GENE — Bundles",
+  "tag": "section",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Buy the set · save more" },
+    { "type": "text", "id": "title", "label": "Titulek", "default": "Bundles & Sets" }
+  ],
+  "blocks": [
+    { "type": "bundle", "name": "Bundle", "settings": [
+      { "type": "text", "id": "tag", "label": "Označení", "default": "2-Piece Set" },
+      { "type": "text", "id": "title", "label": "Název", "default": "Head-to-Toe Set" },
+      { "type": "product", "id": "product1", "label": "Produkt 1" },
+      { "type": "product", "id": "product2", "label": "Produkt 2" },
+      { "type": "range", "id": "discount", "label": "Sleva setu (%)", "min": 0, "max": 50, "step": 5, "default": 15 },
+      { "type": "image_picker", "id": "image", "label": "Vlastní obrázek" }
+    ] }
+  ],
+  "presets": [ { "name": "GENE — Bundles", "blocks": [ { "type": "bundle" }, { "type": "bundle" }, { "type": "bundle" } ] } ]
+}
+{% endschema %}

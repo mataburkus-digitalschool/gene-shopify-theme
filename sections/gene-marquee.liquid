@@ -1,0 +1,20 @@
+<section style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;overflow:hidden;padding:16px 0;">
+  <div style="display:flex;width:max-content;animation:gene-marquee {{ section.settings.speed }}s linear infinite;font-weight:800;font-size:18px;letter-spacing:0.02em;">
+    {%- assign items = section.settings.text | split: '|' -%}
+    {%- for i in (1..2) -%}
+    <span style="display:flex;">{%- for t in items -%}{{ t | strip }}&nbsp;<span>★</span>&nbsp;{%- endfor -%}</span>
+    {%- endfor -%}
+  </div>
+</section>
+<style>@keyframes gene-marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }</style>
+{% schema %}
+{
+  "name": "GENE — Marquee",
+  "tag": "section",
+  "settings": [
+    { "type": "textarea", "id": "text", "label": "Texty (oddělené |)", "default": "OVER 8,900+ CUSTOMERS | BUILT DIFFERENT | WORN LOUD | LIMITED DROPS · NO RESTOCK" },
+    { "type": "range", "id": "speed", "label": "Rychlost (s)", "min": 10, "max": 60, "step": 2, "default": 26 }
+  ],
+  "presets": [ { "name": "GENE — Marquee" } ]
+}
+{% endschema %}

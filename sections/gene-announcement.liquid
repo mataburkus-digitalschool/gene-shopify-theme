@@ -1,0 +1,10 @@
+<div style="background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;text-align:center;padding:9px 16px;">{{ section.settings.text }}</div>
+{% schema %}
+{
+  "name": "Oznamovací lišta",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "text", "id": "text", "label": "Text", "default": "Free shipping over $75 · 14-day returns · Code FAM10 — 10% off first drop" }
+  ]
+}
+{% endschema %}

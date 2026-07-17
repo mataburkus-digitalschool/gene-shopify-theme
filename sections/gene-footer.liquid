@@ -1,0 +1,50 @@
+<footer style="background:var(--ink);color:#fff;margin-top:40px;padding:56px 24px 28px;">
+  <div class="g-wrap gfoot-grid">
+    <div>
+      <div style="font-weight:800;font-size:24px;letter-spacing:-0.03em;margin-bottom:12px;">{{ section.settings.brand | default: shop.name }}</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);max-width:260px;line-height:1.55;margin:0 0 16px;">{{ section.settings.text }}</p>
+      <div style="display:flex;gap:12px;">
+        {%- if section.settings.instagram != blank -%}<a href="{{ section.settings.instagram }}" style="font-size:13px;color:rgba(255,255,255,0.85);">Instagram</a>{%- endif -%}
+        {%- if section.settings.tiktok != blank -%}<a href="{{ section.settings.tiktok }}" style="font-size:13px;color:rgba(255,255,255,0.85);">TikTok</a>{%- endif -%}
+      </div>
+    </div>
+    {%- for block in section.blocks -%}
+    <div {{ block.shopify_attributes }}>
+      <h4 style="font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin:0 0 14px;">{{ block.settings.heading }}</h4>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13.5px;">
+        {%- for link in block.settings.menu.links -%}
+        <a href="{{ link.url }}" style="color:rgba(255,255,255,0.85);text-decoration:none;">{{ link.title }}</a>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- endfor -%}
+  </div>
+  <div class="g-wrap" style="margin-top:36px;border-top:1px solid rgba(255,255,255,0.15);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(255,255,255,0.5);">
+    <span>© {{ 'now' | date: '%Y' }} {{ shop.name | upcase }}</span>
+    <span style="font-family:var(--mono);">{{ section.settings.payments }}</span>
+  </div>
+</footer>
+<style>
+.gfoot-grid { display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:32px; }
+@media (max-width:900px){ .gfoot-grid{ grid-template-columns:1fr 1fr; } }
+</style>
+{% schema %}
+{
+  "name": "Patička",
+  "enabled_on": { "groups": ["footer"] },
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "brand", "label": "Značka", "default": "GENE®" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide." },
+    { "type": "url", "id": "instagram", "label": "Instagram URL" },
+    { "type": "url", "id": "tiktok", "label": "TikTok URL" },
+    { "type": "text", "id": "payments", "label": "Platební metody", "default": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna" }
+  ],
+  "blocks": [
+    { "type": "menu", "name": "Sloupec menu", "settings": [
+      { "type": "text", "id": "heading", "label": "Nadpis", "default": "Shop" },
+      { "type": "link_list", "id": "menu", "label": "Menu" }
+    ] }
+  ]
+}
+{% endschema %}

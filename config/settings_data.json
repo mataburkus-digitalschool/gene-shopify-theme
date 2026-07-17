@@ -1,24 +1,3 @@
 {
-  "current": {
-    "color_ink": "#1A1A1A",
-    "color_accent": "#1A1A1A",
-    "color_paper": "#FAFAFA",
-    "color_surface": "#FFFFFF",
-    "color_line": "#DDDDDD",
-    "color_tag": "#EFEFEF",
-    "color_text_2": "#555555",
-    "color_text_3": "#999999",
-    "font_heading": "inter_n8",
-    "font_body": "inter_n4",
-    "base_font_size": 16,
-    "heading_scale": -2,
-    "button_radius": 999,
-    "card_radius": 6,
-    "page_width": 1200,
-    "grayscale_editorial": true,
-    "free_shipping_threshold": 75
-  },
-  "presets": {
-    "GENE": {}
-  }
+  "current": {}
 }

@@ -1,11 +1,1 @@
-<section class="gene-sec gene-wrap" style="max-width:520px">
-  <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-.02em;margin-bottom:20px">Log in</h1>
-  
-{% form 'customer_login' %}
-  {{ form.errors | default_errors }}
-  <input type="email" name="customer[email]" placeholder="Email" style="width:100%;padding:12px 14px;border:1.5px solid var(--aipa-ink);border-radius:6px;font:inherit;margin-bottom:12px">
-  <input type="password" name="customer[password]" placeholder="Password" style="width:100%;padding:12px 14px;border:1.5px solid var(--aipa-ink);border-radius:6px;font:inherit;margin-bottom:12px">
-  <button type="submit" class="gene-add" style="width:auto;padding:13px 32px">Sign in</button>
-{% endform %}
-<p style="margin-top:16px;font-size:14px;color:var(--fg-2)">New here? <a href="{{ routes.account_register_url }}" style="border-bottom:1.5px solid var(--aipa-ink)">Create account</a></p>
-</section>
+<div class="g-wrap" style="padding:48px 24px;max-width:420px;"><h1>Přihlášení</h1>{% form 'customer_login' %}<div style="display:flex;flex-direction:column;gap:10px;"><input type="email" name="customer[email]" placeholder="E-mail" style="padding:12px;border:1.5px solid var(--ink);border-radius:6px;font:inherit;"><input type="password" name="customer[password]" placeholder="Heslo" style="padding:12px;border:1.5px solid var(--ink);border-radius:6px;font:inherit;"><button type="submit" class="g-btn">Přihlásit se</button></div>{% endform %}</div>

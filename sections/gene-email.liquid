@@ -1,0 +1,47 @@
+<section class="g-wrap" style="padding:64px 24px 24px;">
+  <div class="gmail-grid" style="background:var(--ink);color:#fff;border-radius:8px;padding:clamp(28px,5vw,56px);">
+    <div>
+      <div style="font-family:var(--mono);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.7;margin-bottom:12px;">{{ section.settings.eyebrow }}</div>
+      <h2 style="font-weight:800;font-size:clamp(28px,3.6vw,40px);letter-spacing:-0.02em;margin:0 0 12px;line-height:1.05;">{{ section.settings.title }}</h2>
+      <p style="font-size:15px;color:rgba(255,255,255,0.7);margin:0;max-width:380px;line-height:1.55;">{{ section.settings.text }}</p>
+    </div>
+    <div>
+      {% form 'customer' %}
+        {%- if form.posted_successfully? -%}
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:6px;padding:22px;text-align:center;">
+          <div style="font-weight:700;font-size:18px;margin-bottom:6px;">{{ section.settings.success_title }}</div>
+          <p style="font-size:13.5px;color:rgba(255,255,255,0.7);margin:0;">{{ section.settings.success_text }}</p>
+        </div>
+        {%- else -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input type="email" name="contact[email]" required placeholder="{{ section.settings.placeholder }}" style="flex:1;min-width:180px;padding:14px 16px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;border-radius:999px;font:inherit;font-size:14px;">
+          <button type="submit" style="background:#fff;color:var(--ink);border:none;border-radius:999px;padding:14px 26px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;font-family:inherit;">{{ section.settings.btn_label }}</button>
+        </div>
+        <p style="font-size:11.5px;color:rgba(255,255,255,0.5);margin:12px 0 0;">{{ section.settings.legal }}</p>
+        {%- endif -%}
+      {% endform %}
+    </div>
+  </div>
+</section>
+<style>
+.gmail-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center; }
+@media (max-width:900px){ .gmail-grid{ grid-template-columns:1fr; } }
+</style>
+{% schema %}
+{
+  "name": "GENE — Newsletter",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Join the fam" },
+    { "type": "text", "id": "title", "label": "Titulek", "default": "Get 10% off your first drop" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Early access to restocks and new drops before they sell out. No spam — just fire fits." },
+    { "type": "text", "id": "placeholder", "label": "Placeholder e-mailu", "default": "you@email.com" },
+    { "type": "text", "id": "btn_label", "label": "Tlačítko", "default": "Get 10% off" },
+    { "type": "text", "id": "legal", "label": "Právní text", "default": "By signing up you agree to receive email marketing. Unsubscribe anytime." },
+    { "type": "text", "id": "success_title", "label": "Úspěch — titulek", "default": "You're in." },
+    { "type": "text", "id": "success_text", "label": "Úspěch — text", "default": "Use code FAM10 at checkout for 10% off." }
+  ],
+  "presets": [ { "name": "GENE — Newsletter" } ]
+}
+{% endschema %}

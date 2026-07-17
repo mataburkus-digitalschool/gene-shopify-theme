@@ -1,0 +1,35 @@
+<section class="g-wrap" style="padding:64px 24px 8px;">
+  <h2 class="g-h2" style="margin-bottom:28px;text-align:center;">{{ section.settings.title }}</h2>
+  <div class="gwhy-grid">
+    {%- for block in section.blocks -%}
+    <div {{ block.shopify_attributes }} style="position:relative;border:1.5px solid var(--ink);border-radius:6px;padding:26px 22px 22px;">
+      <span style="position:absolute;top:-10px;left:16px;background:var(--paper);padding:0 8px;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-muted);">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+      <div style="font-weight:700;font-size:18px;margin-bottom:6px;">{{ block.settings.title }}</div>
+      <p style="font-size:14px;color:var(--ink-soft);margin:0;line-height:1.55;">{{ block.settings.text }}</p>
+    </div>
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+.gwhy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media (max-width:900px){ .gwhy-grid{ grid-template-columns:1fr; } }
+</style>
+{% schema %}
+{
+  "name": "GENE — Proč my",
+  "tag": "section",
+  "max_blocks": 3,
+  "settings": [ { "type": "text", "id": "title", "label": "Titulek", "default": "Why GENE hits different" } ],
+  "blocks": [
+    { "type": "item", "name": "Karta", "settings": [
+      { "type": "text", "id": "title", "label": "Titulek", "default": "Limited or nothing" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Every drop is capped. We don't restock — when it's gone, it's gone." }
+    ] }
+  ],
+  "presets": [ { "name": "GENE — Proč my", "blocks": [
+    { "type": "item", "settings": { "title": "Limited or nothing", "text": "Every drop is capped. We don't restock — when it's gone, it's gone. What you wear stays rare." } },
+    { "type": "item", "settings": { "title": "Only what we'd wear", "text": "Sourced for quality, not speed. Heavyweight fabrics and prints that actually last the season." } },
+    { "type": "item", "settings": { "title": "Risk-free fit", "text": "Fast 5–10 day shipping to 50+ countries and 14-day returns. Wrong size? Sort it in one email." } }
+  ] } ]
+}
+{% endschema %}

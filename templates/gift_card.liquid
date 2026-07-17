@@ -1,5 +1,1 @@
-<section class="gene-sec gene-wrap" style="max-width:480px;text-align:center">
-  <h1 style="font-family:var(--font-display);font-weight:800">Gift card</h1>
-  <div style="font-size:40px;font-weight:800;margin:16px 0">{{ gift_card.balance | money }}</div>
-  <div style="font-family:var(--font-mono);margin-top:16px">{{ gift_card.code | format_code }}</div>
-</section>
+{% layout none %}<!doctype html><html><head><meta charset="utf-8"><title>{{ shop.name }} — dárková karta</title></head><body style="font-family:system-ui;text-align:center;padding:60px 24px;"><h1>{{ shop.name }}</h1><p>Dárková karta: <b>{{ gift_card.code | format_code }}</b></p><p>Hodnota: {{ gift_card.balance | money }}</p></body></html>

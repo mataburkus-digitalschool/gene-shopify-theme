@@ -1,12 +1,14 @@
 {
   "type": "header",
-  "name": "Header group",
+  "name": "Header",
   "sections": {
     "announcement": {
-      "type": "announcement-bar"
+      "type": "gene-announcement",
+      "settings": {}
     },
     "header": {
-      "type": "header"
+      "type": "gene-header",
+      "settings": {}
     }
   },
   "order": [

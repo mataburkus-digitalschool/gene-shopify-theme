@@ -1,0 +1,307 @@
+{% comment %}
+  GENE — Produktová mřížka
+  Sekce pro Online Store 2.0 (přidejte soubor do sections/ ve vašem motivu).
+  V editoru motivu: Přidat sekci → "GENE — Produktová mřížka".
+{% endcomment %}
+
+{%- liquid
+  assign col = section.settings.collection
+  assign btn_radius = section.settings.button_radius
+  if btn_radius >= 40
+    assign btn_radius_css = '999px'
+  else
+    assign btn_radius_css = btn_radius | append: 'px'
+  endif
+-%}
+
+{% style %}
+  #gene-grid-{{ section.id }} {
+    max-width: 1200px; margin: 0 auto;
+    padding: {{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;
+    color: {{ section.settings.ink }};
+  }
+  #gene-grid-{{ section.id }} .gg-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+  #gene-grid-{{ section.id }} .gg-eyebrow { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(0,0,0,0.55); margin-bottom: 8px; }
+  #gene-grid-{{ section.id }} .gg-title { font-weight: 800; font-size: clamp(28px, 3.4vw, 38px); letter-spacing: -0.02em; margin: 0; }
+  #gene-grid-{{ section.id }} .gg-viewall { font-size: 13px; font-weight: 600; color: inherit; text-decoration: none; border-bottom: 1.5px solid {{ section.settings.ink }}; padding-bottom: 2px; white-space: nowrap; }
+  #gene-grid-{{ section.id }} .gg-grid { display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr); gap: 16px; }
+  @media (max-width: 640px) {
+    #gene-grid-{{ section.id }} .gg-grid { grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr); gap: 10px; }
+  }
+  #gene-grid-{{ section.id }} .gg-card {
+    border: 1px solid #DDDDDD; border-radius: {{ section.settings.card_radius }}px;
+    overflow: hidden; background: #fff; display: flex; flex-direction: column;
+    transition: border-color .2s cubic-bezier(.2,.8,.2,1);
+  }
+  #gene-grid-{{ section.id }} .gg-card:hover { border-color: {{ section.settings.ink }}; }
+  #gene-grid-{{ section.id }} .gg-media { position: relative; display: block; aspect-ratio: 4/5; background: #EFEFEF; overflow: hidden; }
+  #gene-grid-{{ section.id }} .gg-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #gene-grid-{{ section.id }} .gg-img2 { opacity: 0; transition: opacity .3s cubic-bezier(.2,.8,.2,1); }
+  #gene-grid-{{ section.id }} .gg-card:hover .gg-img2 { opacity: 1; }
+  #gene-grid-{{ section.id }} .gg-soldout-img { opacity: 0.5; }
+  #gene-grid-{{ section.id }} .gg-badge {
+    position: absolute; top: 10px; left: 10px; z-index: 2;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 4px 8px; border-radius: 4px; text-transform: uppercase;
+    background: {{ section.settings.ink }}; color: #fff;
+  }
+  #gene-grid-{{ section.id }} .gg-badge--out { background: #fff; color: {{ section.settings.ink }}; border: 1px solid {{ section.settings.ink }}; font-weight: 700; letter-spacing: 0.1em; }
+  #gene-grid-{{ section.id }} .gg-badge--low { top: auto; bottom: 10px; background: rgba(26,26,26,0.9); letter-spacing: 0.06em; }
+  #gene-grid-{{ section.id }} .gg-info { padding: 13px 13px 15px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+  #gene-grid-{{ section.id }} .gg-name { font-weight: 600; font-size: 14px; line-height: 1.25; color: inherit; text-decoration: none; }
+  #gene-grid-{{ section.id }} .gg-prices { display: flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums; }
+  #gene-grid-{{ section.id }} .gg-price { font-weight: 700; font-size: 15px; }
+  #gene-grid-{{ section.id }} .gg-compare { font-size: 13px; color: rgba(0,0,0,0.45); }
+  #gene-grid-{{ section.id }} .gg-sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 2px; }
+  #gene-grid-{{ section.id }} .gg-size {
+    padding: 6px 0; text-align: center; font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 10.5px; border-radius: 4px; cursor: pointer; border: 1px solid #DDDDDD;
+    background: #fff; color: inherit; transition: all .15s cubic-bezier(.2,.8,.2,1);
+  }
+  #gene-grid-{{ section.id }} .gg-size[disabled] { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+  #gene-grid-{{ section.id }} .gg-size.is-active { background: {{ section.settings.ink }}; border-color: {{ section.settings.ink }}; color: #fff; }
+  #gene-grid-{{ section.id }} .gg-add {
+    margin-top: 4px; width: 100%;
+    background: {{ section.settings.button_bg }}; color: {{ section.settings.button_text }};
+    border: none; border-radius: {{ btn_radius_css }}; padding: 10px;
+    font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit;
+    transition: background .2s cubic-bezier(.2,.8,.2,1), transform .08s;
+    text-align: center; text-decoration: none; display: block;
+  }
+  #gene-grid-{{ section.id }} .gg-add:hover { background: {{ section.settings.button_bg_hover }}; }
+  #gene-grid-{{ section.id }} .gg-add:active { transform: scale(0.98); }
+  #gene-grid-{{ section.id }} .gg-add--out {
+    background: #fff; color: {{ section.settings.ink }}; border: 1.5px solid {{ section.settings.ink }};
+    cursor: default; font-size: 12.5px;
+  }
+  #gene-grid-{{ section.id }} .gg-add--out:hover { background: #fff; }
+{% endstyle %}
+
+<div id="gene-grid-{{ section.id }}" data-cart-add-url="{{ routes.cart_add_url }}">
+  <div class="gg-head">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="gg-eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      <h2 class="gg-title">{{ section.settings.title }}</h2>
+    </div>
+    {%- if section.settings.show_view_all and col != blank -%}
+      <a class="gg-viewall" href="{{ col.url }}">{{ section.settings.view_all_label }} →</a>
+    {%- endif -%}
+  </div>
+
+  <div class="gg-grid">
+    {%- if col != blank -%}
+      {%- for product in col.products limit: section.settings.products_to_show -%}
+        {%- liquid
+          assign on_sale = false
+          if product.compare_at_price > product.price
+            assign on_sale = true
+          endif
+          assign sold_out = false
+          unless product.available
+            assign sold_out = true
+          endunless
+          assign discount = 0
+          if on_sale
+            assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+          endif
+          assign is_new = false
+          if section.settings.show_new_badge and product.tags contains 'new'
+            assign is_new = true
+          endif
+          assign size_option = blank
+          if product.options.size == 1
+            assign opt_name = product.options[0] | downcase
+            if opt_name == 'size' or opt_name == 'velikost'
+              assign size_option = product.options_with_values[0]
+            endif
+          endif
+          assign fav = product.selected_or_first_available_variant
+          assign low_qty = 0
+          if section.settings.low_stock_threshold > 0 and sold_out == false and fav.inventory_management != blank and fav.inventory_quantity > 0 and fav.inventory_quantity <= section.settings.low_stock_threshold
+            assign low_qty = fav.inventory_quantity
+          endif
+        -%}
+        <div class="gg-card" data-product data-default-variant="{{ fav.id }}">
+          <a class="gg-media" href="{{ product.url }}">
+            {%- if product.featured_media -%}
+              <img src="{{ product.featured_media | image_url: width: 700 }}" alt="{{ product.title | escape }}" loading="lazy" width="700" height="875"{% if sold_out %} class="gg-soldout-img"{% endif %}>
+            {%- endif -%}
+            {%- if section.settings.show_secondary_image and product.media[1] -%}
+              <img class="gg-img2" src="{{ product.media[1] | image_url: width: 700 }}" alt="" loading="lazy" width="700" height="875">
+            {%- endif -%}
+            {%- if sold_out and section.settings.show_soldout_badge -%}
+              <span class="gg-badge gg-badge--out">{{ section.settings.soldout_label }}</span>
+            {%- elsif on_sale and section.settings.show_sale_badge -%}
+              <span class="gg-badge">−{{ discount }}%</span>
+            {%- elsif is_new -%}
+              <span class="gg-badge">NEW</span>
+            {%- endif -%}
+            {%- if low_qty > 0 -%}
+              <span class="gg-badge gg-badge--low">{{ section.settings.low_stock_label | replace: '[n]', low_qty }}</span>
+            {%- endif -%}
+          </a>
+          <div class="gg-info">
+            <a class="gg-name" href="{{ product.url }}">{{ product.title }}</a>
+            <div class="gg-prices">
+              <span class="gg-price">{{ product.price | money }}</span>
+              {%- if on_sale -%}<s class="gg-compare">{{ product.compare_at_price | money }}</s>{%- endif -%}
+            </div>
+            {%- if sold_out -%}
+              <button class="gg-add gg-add--out" type="button" disabled>{{ section.settings.soldout_button_label }}</button>
+            {%- else -%}
+              {%- if section.settings.show_sizes and size_option != blank -%}
+                <div class="gg-sizes" role="group" aria-label="{{ size_option.name }}">
+                  {%- for value in size_option.values -%}
+                    {%- liquid
+                      assign v = product.variants | where: 'option1', value | first
+                    -%}
+                    <button type="button" class="gg-size{% if v.id == fav.id %} is-active{% endif %}"
+                      data-size data-variant-id="{{ v.id }}"
+                      {% unless v.available %}disabled{% endunless %}>{{ value }}</button>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+              {%- if section.settings.show_quick_add -%}
+                {%- if product.variants.size == 1 or size_option != blank -%}
+                  <button class="gg-add" type="button" data-add data-label="{{ section.settings.quick_add_label | escape }}">
+                    {{ section.settings.quick_add_label }} — {{ product.price | money }}
+                  </button>
+                {%- else -%}
+                  <a class="gg-add" href="{{ product.url }}">{{ section.settings.options_label }}</a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..section.settings.products_to_show) -%}
+        <div class="gg-card">
+          <div class="gg-media">{{ 'product-apparel-1' | placeholder_svg_tag: 'gg-placeholder' }}</div>
+          <div class="gg-info">
+            <span class="gg-name">Příklad produktu</span>
+            <div class="gg-prices"><span class="gg-price">890 Kč</span></div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('gene-grid-{{ section.id }}');
+  if (!root || root.dataset.ggInit) return;
+  root.dataset.ggInit = '1';
+  var addUrl = root.dataset.cartAddUrl || '/cart/add';
+
+  root.addEventListener('click', function (e) {
+    var sizeBtn = e.target.closest('[data-size]');
+    if (sizeBtn && !sizeBtn.disabled) {
+      var card = sizeBtn.closest('[data-product]');
+      card.querySelectorAll('[data-size]').forEach(function (b) { b.classList.remove('is-active'); });
+      sizeBtn.classList.add('is-active');
+      return;
+    }
+    var addBtn = e.target.closest('[data-add]');
+    if (addBtn) {
+      var c = addBtn.closest('[data-product]');
+      var active = c.querySelector('[data-size].is-active');
+      var variantId = active ? active.dataset.variantId : c.dataset.defaultVariant;
+      if (!variantId) return;
+      var original = addBtn.textContent;
+      addBtn.disabled = true;
+      addBtn.textContent = '…';
+      fetch(addUrl + '.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('add failed');
+        addBtn.textContent = {{ section.settings.added_label | json }};
+        refreshCart();
+        setTimeout(function () { addBtn.textContent = original; addBtn.disabled = false; }, 1600);
+      }).catch(function () {
+        addBtn.textContent = original;
+        addBtn.disabled = false;
+      });
+    }
+  });
+
+  function refreshCart() {
+    // Aktualizace počítadla košíku + otevření drawer (Dawn-kompatibilní, s fallbackem)
+    fetch('{{ routes.cart_url }}.js').then(function (r) { return r.json(); }).then(function (cart) {
+      document.querySelectorAll('[data-cart-count], .cart-count-bubble span[aria-hidden]').forEach(function (el) {
+        el.textContent = cart.item_count;
+      });
+    });
+    var drawer = document.querySelector('cart-drawer');
+    if (drawer) {
+      fetch(window.location.pathname + '?sections=cart-drawer').then(function (r) { return r.json(); }).then(function (sections) {
+        if (sections['cart-drawer']) {
+          var tmp = document.createElement('div');
+          tmp.innerHTML = sections['cart-drawer'];
+          var fresh = tmp.querySelector('cart-drawer');
+          if (fresh) drawer.innerHTML = fresh.innerHTML;
+        }
+        if (typeof drawer.open === 'function') drawer.open();
+        else drawer.classList.add('active', 'animate');
+      }).catch(function () {});
+    }
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "GENE — Produktová mřížka",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Obsah" },
+    { "type": "text", "id": "eyebrow", "label": "Nadpis nad titulkem (eyebrow)", "default": "On sale now · while stock lasts" },
+    { "type": "text", "id": "title", "label": "Titulek sekce", "default": "Summer Archive" },
+    { "type": "collection", "id": "collection", "label": "Kolekce" },
+    { "type": "range", "id": "products_to_show", "label": "Počet produktů", "min": 2, "max": 24, "step": 1, "default": 8 },
+    { "type": "checkbox", "id": "show_view_all", "label": "Zobrazit odkaz „Zobrazit vše“", "default": true },
+    { "type": "text", "id": "view_all_label", "label": "Text odkazu", "default": "View all" },
+
+    { "type": "header", "content": "Mřížka" },
+    { "type": "range", "id": "columns_desktop", "label": "Sloupce (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "select", "id": "columns_mobile", "label": "Sloupce (mobil)", "options": [ { "value": "1", "label": "1" }, { "value": "2", "label": "2" } ], "default": "2" },
+    { "type": "checkbox", "id": "show_secondary_image", "label": "Druhá fotka při najetí myší", "default": true },
+
+    { "type": "header", "content": "Štítky (badges)" },
+    { "type": "checkbox", "id": "show_sale_badge", "label": "Štítek slevy (−%)", "default": true },
+    { "type": "checkbox", "id": "show_new_badge", "label": "Štítek NEW (produkty s tagem „new“)", "default": true },
+    { "type": "checkbox", "id": "show_soldout_badge", "label": "Štítek vyprodáno", "default": true },
+    { "type": "text", "id": "soldout_label", "label": "Text štítku vyprodáno", "default": "SOLD OUT" },
+    { "type": "range", "id": "low_stock_threshold", "label": "Práh „posledních kusů“ (0 = vypnuto)", "min": 0, "max": 10, "step": 1, "default": 3 },
+    { "type": "text", "id": "low_stock_label", "label": "Text nízké zásoby ([n] = počet)", "default": "Only [n] left" },
+
+    { "type": "header", "content": "Rychlé přidání do košíku" },
+    { "type": "checkbox", "id": "show_sizes", "label": "Výběr velikosti (varianta „Size“ / „Velikost“)", "default": true },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Tlačítko rychlého přidání", "default": true },
+    { "type": "text", "id": "quick_add_label", "label": "Text tlačítka", "default": "Quick add" },
+    { "type": "text", "id": "added_label", "label": "Text po přidání", "default": "✓ Přidáno" },
+    { "type": "text", "id": "options_label", "label": "Text u produktů s více variantami", "default": "Vybrat možnosti" },
+    { "type": "text", "id": "soldout_button_label", "label": "Text tlačítka u vyprodaného", "default": "Vyprodáno" },
+
+    { "type": "header", "content": "Styl tlačítek a karet" },
+    { "type": "color", "id": "ink", "label": "Základní barva (text, rámečky, štítky)", "default": "#1A1A1A" },
+    { "type": "color", "id": "button_bg", "label": "Tlačítko — pozadí", "default": "#1A1A1A" },
+    { "type": "color", "id": "button_bg_hover", "label": "Tlačítko — pozadí (hover)", "default": "#000000" },
+    { "type": "color", "id": "button_text", "label": "Tlačítko — text", "default": "#FFFFFF" },
+    { "type": "range", "id": "button_radius", "label": "Zaoblení tlačítka (40 = pilulka)", "min": 0, "max": 40, "step": 2, "default": 40 },
+    { "type": "range", "id": "card_radius", "label": "Zaoblení karty", "min": 0, "max": 20, "step": 1, "default": 6 },
+
+    { "type": "header", "content": "Odsazení sekce" },
+    { "type": "range", "id": "padding_top", "label": "Horní odsazení", "min": 0, "max": 120, "step": 4, "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Dolní odsazení", "min": 0, "max": 120, "step": 4, "default": 48 }
+  ],
+  "presets": [
+    { "name": "GENE — Produktová mřížka" }
+  ]
+}
+{% endschema %}

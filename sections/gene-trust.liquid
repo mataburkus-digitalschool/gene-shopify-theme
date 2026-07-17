@@ -1,0 +1,32 @@
+<section style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;">
+  <div class="g-wrap gtrust">
+    {%- for block in section.blocks -%}
+    <div {{ block.shopify_attributes }} style="padding:18px 16px;text-align:center;{% unless forloop.last %}border-right:1px solid var(--line);{% endunless %}font-size:12.5px;color:var(--ink-soft);">
+      <b style="color:var(--ink);display:block;font-size:14px;margin-bottom:2px;">{{ block.settings.title }}</b>{{ block.settings.text }}
+    </div>
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+.gtrust { display:grid; grid-template-columns:repeat({{ section.blocks.size | at_least: 1 }},1fr); }
+@media (max-width:640px){ .gtrust{ grid-template-columns:repeat(2,1fr); } }
+</style>
+{% schema %}
+{
+  "name": "GENE — Trust lišta",
+  "tag": "section",
+  "max_blocks": 4,
+  "blocks": [
+    { "type": "item", "name": "Položka", "settings": [
+      { "type": "text", "id": "title", "label": "Titulek", "default": "Limited Drops" },
+      { "type": "text", "id": "text", "label": "Text", "default": "No restock, ever" }
+    ] }
+  ],
+  "presets": [ { "name": "GENE — Trust lišta", "blocks": [
+    { "type": "item", "settings": { "title": "Limited Drops", "text": "No restock, ever" } },
+    { "type": "item", "settings": { "title": "Fast Shipping", "text": "5–10 day worldwide" } },
+    { "type": "item", "settings": { "title": "14-Day Returns", "text": "Easy, no drama" } },
+    { "type": "item", "settings": { "title": "Secure Checkout", "text": "Apple · Google · Shop Pay" } }
+  ] } ]
+}
+{% endschema %}

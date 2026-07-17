@@ -1,13 +1,9 @@
-<section class="gene-sec gene-wrap">
-  <h2 style="margin-bottom:16px">Search</h2>
-  <form action="{{ routes.search_url }}" method="get" style="margin-bottom:24px">
-    <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products…" style="width:100%;max-width:420px;padding:12px 16px;border:1.5px solid var(--aipa-ink);border-radius:999px;font:inherit">
-  </form>
-  {%- if search.performed -%}
-    <div class="gene-grid">
-      {%- for item in search.results -%}
-        {%- if item.object_type == 'product' -%}{% render 'product-card', card_product: item %}{%- endif -%}
-      {%- else -%}<p>No results for &ldquo;{{ search.terms }}&rdquo;.</p>{%- endfor -%}
-    </div>
-  {%- endif -%}
-</section>
+<div class="g-wrap" style="padding:48px 24px;">
+  <h1>Hledání</h1>
+  <form action="{{ routes.search_url }}" method="get"><input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Hledat…" style="padding:12px;border:1.5px solid var(--ink);border-radius:999px;width:100%;max-width:420px;font:inherit;"></form>
+  {% if search.performed %}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:24px;">
+    {% for item in search.results %}<a href="{{ item.url }}" style="border:1px solid var(--line);border-radius:6px;padding:14px;text-decoration:none;background:#fff;display:block;font-weight:600;">{{ item.title }}</a>{% endfor %}
+  </div>
+  {% endif %}
+</div>

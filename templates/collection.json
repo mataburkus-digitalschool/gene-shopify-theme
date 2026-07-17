@@ -1,10 +1,11 @@
 {
   "sections": {
-    "main": {
-      "type": "main-collection"
+    "grid": {
+      "type": "gene-collection-grid",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "grid"
   ]
 }

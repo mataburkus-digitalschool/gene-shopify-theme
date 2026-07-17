@@ -1,7 +1,8 @@
 {
   "sections": {
     "main": {
-      "type": "main-product"
+      "type": "gene-product-main",
+      "settings": {}
     }
   },
   "order": [

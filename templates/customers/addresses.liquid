@@ -1,8 +1,1 @@
-<section class="gene-sec gene-wrap" style="max-width:520px">
-  <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-.02em;margin-bottom:20px">Addresses</h1>
-  
-<p style="color:var(--fg-2)"><a href="{{ routes.account_url }}" style="border-bottom:1.5px solid var(--aipa-ink)">&larr; Back to account</a></p>
-{% for address in customer.addresses %}
-  <div style="border:1px solid var(--aipa-line);border-radius:6px;padding:16px;margin-top:12px">{{ address | format_address }}</div>
-{% endfor %}
-</section>
+<div class="g-wrap" style="padding:48px 24px;"><h1>Adresy</h1>{% for address in customer.addresses %}<p>{{ address | format_address }}</p>{% endfor %}</div>
