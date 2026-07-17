@@ -8,7 +8,7 @@
       {%- endif -%}
       <h1 style="font-weight:800;font-size:clamp(44px,6vw,72px);line-height:0.98;letter-spacing:-0.03em;margin:0 0 18px;text-wrap:balance;">{{ section.settings.heading | newline_to_br }}</h1>
       <p style="font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:440px;margin:0 0 26px;text-wrap:pretty;">{{ section.settings.subheading }}</p>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:26px;">
+      <div class="ghero-btns" style="display:flex;gap:12px;margin-bottom:26px;">
         {%- if section.settings.btn1_label != blank -%}
         <a class="g-btn" href="{{ section.settings.btn1_url }}"><span style="font-size:0.7em;">●</span> {{ section.settings.btn1_label }}</a>
         {%- endif -%}
@@ -36,7 +36,11 @@
 </section>
 <style>
 .ghero-grid { display:grid; grid-template-columns:1.05fr 0.95fr; gap:44px; align-items:center; }
-@media (max-width:900px){ .ghero-grid{ grid-template-columns:1fr; gap:26px; } }
+.ghero-btns .g-btn { white-space:nowrap; }
+@media (max-width:900px){
+  .ghero-grid{ grid-template-columns:1fr; gap:26px; }
+  .ghero-btns .g-btn { flex:1; justify-content:center; padding-left:16px; padding-right:16px; }
+}
 </style>
 {% schema %}
 {
@@ -46,9 +50,9 @@
     { "type": "text", "id": "badge", "label": "Badge nad titulkem", "default": "Limited drop · No restock" },
     { "type": "textarea", "id": "heading", "label": "Titulek", "default": "BUILT DIFFERENT.\nWORN LOUD." },
     { "type": "textarea", "id": "subheading", "label": "Podtitulek", "default": "Limited streetwear drops built to stand out. Once a piece sells out, it's gone for good." },
-    { "type": "text", "id": "btn1_label", "label": "Tlačítko 1 — text", "default": "Shop Summer Archive" },
+    { "type": "text", "id": "btn1_label", "label": "Tlačítko 1 — text", "default": "Archive" },
     { "type": "url", "id": "btn1_url", "label": "Tlačítko 1 — odkaz" },
-    { "type": "text", "id": "btn2_label", "label": "Tlačítko 2 — text", "default": "Shop Bundles" },
+    { "type": "text", "id": "btn2_label", "label": "Tlačítko 2 — text", "default": "Bundles" },
     { "type": "url", "id": "btn2_url", "label": "Tlačítko 2 — odkaz" },
     { "type": "text", "id": "rating", "label": "Řádek s hodnocením", "default": "4.8 from 8,900+ verified customers" },
     { "type": "image_picker", "id": "image", "label": "Obrázek" },

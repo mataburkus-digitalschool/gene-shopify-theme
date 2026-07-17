@@ -27,6 +27,9 @@
   #gene-grid-{{ section.id }} .gg-grid { display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr); gap: 16px; }
   @media (max-width: 640px) {
     #gene-grid-{{ section.id }} .gg-grid { grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr); gap: 10px; }
+    #gene-grid-{{ section.id }} .gg-sizes { display: none; }
+    #gene-grid-{{ section.id }} .gg-add-price { display: none; }
+    #gene-grid-{{ section.id }} .gg-add { margin-top: 8px; }
   }
   #gene-grid-{{ section.id }} .gg-card {
     border: 1px solid #DDDDDD; border-radius: {{ section.settings.card_radius }}px;
@@ -50,8 +53,8 @@
   #gene-grid-{{ section.id }} .gg-info { padding: 13px 13px 15px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
   #gene-grid-{{ section.id }} .gg-name { font-weight: 600; font-size: 14px; line-height: 1.25; color: inherit; text-decoration: none; }
   #gene-grid-{{ section.id }} .gg-prices { display: flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums; }
-  #gene-grid-{{ section.id }} .gg-price { font-weight: 700; font-size: 15px; }
-  #gene-grid-{{ section.id }} .gg-compare { font-size: 13px; color: rgba(0,0,0,0.45); }
+  #gene-grid-{{ section.id }} .gg-price { font-weight: 700; font-size: 15px; white-space: nowrap; }
+  #gene-grid-{{ section.id }} .gg-compare { font-size: 13px; color: rgba(0,0,0,0.45); white-space: nowrap; }
   #gene-grid-{{ section.id }} .gg-sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: auto; }
   #gene-grid-{{ section.id }} .gg-size {
     padding: 6px 0; text-align: center; font-family: ui-monospace, 'SF Mono', Menlo, monospace;
@@ -167,7 +170,7 @@
               {%- if section.settings.show_quick_add -%}
                 {%- if product.variants.size == 1 or size_option != blank -%}
                   <button class="gg-add" type="button" data-add data-label="{{ section.settings.quick_add_label | escape }}">
-                    {{ section.settings.quick_add_label }} — {{ product.price | money }}
+                    {{ section.settings.quick_add_label }}<span class="gg-add-price"> — {{ product.price | money }}</span>
                   </button>
                 {%- else -%}
                   <a class="gg-add" href="{{ product.url }}">{{ section.settings.options_label }}</a>
