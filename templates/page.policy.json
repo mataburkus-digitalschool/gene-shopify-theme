@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "gene-policy",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
