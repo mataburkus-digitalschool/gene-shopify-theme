@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_ink }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{%- endif -%}
+  <title>{{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {%- assign hf = settings.font_heading -%}
+  {%- assign bf = settings.font_body -%}
+  {% style %}
+  :root{
+    --aipa-ink:{{ settings.color_ink }};
+    --aipa-accent:{{ settings.color_accent }};
+    --aipa-paper:{{ settings.color_paper }};
+    --aipa-panel:{{ settings.color_surface }};
+    --aipa-line:{{ settings.color_line }};
+    --aipa-tag-bg:{{ settings.color_tag }};
+    --aipa-ink-soft:{{ settings.color_text_2 }};
+    --aipa-ink-muted:{{ settings.color_text_3 }};
+    --fg-1:{{ settings.color_ink }};
+    --fg-2:{{ settings.color_text_2 }};
+    --fg-3:{{ settings.color_text_3 }};
+    --font-display:{{ hf.family | default: 'Inter' }},{{ hf.fallback_families | default: 'sans-serif' }};
+    --font-body:{{ bf.family | default: 'Inter' }},{{ bf.fallback_families | default: 'sans-serif' }};
+    --base-fs:{{ settings.base_font_size }}px;
+    --heading-ls:{{ settings.heading_scale | divided_by: 100.0 }}em;
+    --btn-radius:{{ settings.button_radius }}px;
+    --card-radius:{{ settings.card_radius }}px;
+    --page-max:{{ settings.page_width }}px;
+  }
+  body{font-size:var(--base-fs)}
+  .gene-wrap{max-width:var(--page-max)}
+  .gene-hero h1,.gene-sec h2,.gene-banner__c h2,.gene-news h2{letter-spacing:var(--heading-ls)}
+  .gene-btn,.gene-cartbtn,.gene-add,.gene-notify,.gene-checkout,.gene-size{border-radius:var(--btn-radius)}
+  .gene-size{border-radius:calc(var(--btn-radius) / 6 + 2px)}
+  .gene-prod,.gene-bundle,.gene-col,.gene-why__c,.gene-review,.gene-hero__media{border-radius:var(--card-radius)}
+  .gene-btn--ink,.gene-add,.gene-badge:not(.gene-badge--out),.gene-ship__fill,.gene-checkout{background:var(--aipa-accent)}
+  {% unless settings.grayscale_editorial %}.gene-bw img{filter:none}{% endunless %}
+  {% endstyle %}
+  {{ content_for_header }}
+</head>
+<body class="template-{{ request.page_type | handle }}">
+  <a class="skip" href="#MainContent">Skip to content</a>
+  {% sections 'header-group' %}
+  <main id="MainContent" role="main">{{ content_for_layout }}</main>
+  {% sections 'footer-group' %}
+  {% render 'cart-drawer' %}
+  <script>window.routes={cart_add:'{{ routes.cart_add_url }}',cart_change:'{{ routes.cart_change_url }}',cart:'{{ routes.cart_url }}'};window.moneyFormat={{ shop.money_format | json }};</script>
+  {{ 'global.js' | asset_url | script_tag }}
+</body>
+</html>

@@ -1,0 +1,3 @@
+<section class="gene-sec gene-wrap"><h2 style="margin-bottom:24px">{{ blog.title }}</h2>
+  <div class="gene-3">{%- for a in blog.articles -%}<a href="{{ a.url }}" class="gene-review" style="display:block">{% if a.image %}<img src="{{ a.image | image_url: width: 600 }}" alt="" style="border-radius:4px;margin-bottom:12px">{% endif %}<b style="font-family:var(--font-display);font-size:16px">{{ a.title }}</b><p style="margin-top:8px">{{ a.excerpt_or_content | strip_html | truncatewords: 20 }}</p></a>{%- endfor -%}</div>
+</section>

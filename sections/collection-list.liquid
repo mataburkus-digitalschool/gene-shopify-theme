@@ -1,0 +1,175 @@
+{% render 'section-css', id: section.id, s: section.settings %}
+{%- assign demo_imgs = 'https://genestreetwear.com/cdn/shop/collections/Navrh_bez_nazvu-25.png?width=1000|https://genestreetwear.com/cdn/shop/collections/HOODIES_1_1ea3aa3c-19c5-4f99-830f-00254f3e5119.png?width=800|https://genestreetwear.com/cdn/shop/collections/hale_mohl_by_si_jenom_v_tom_obrazku_zmeniz_zipups_na_hoodies_at_to_ale_je_stejnm_fontem_jak_ted_pro_lgci0jlq0hfc6npbbq0p_1.png?width=800|https://genestreetwear.com/cdn/shop/collections/hale_mam_tady_ten_obrazek_chci_ho_pln_totonj_jenom_tam_na_toho_modely_dej_moje_teplky_kter_ti_posil_5ehsywlljee2glthlpyl_1.png?width=800|https://genestreetwear.com/cdn/shop/collections/hale_mam_tady_ten_obrazek_chci_ho_pln_totonj_jenom_tam_na_toho_modela_msto_ernch_shorths_prodej_moj_09chu4gvn7zhz4gkthek_0.png?width=800' | split: '|' -%}
+<section id="gs-{{ section.id }}" class="gene-sec gene-wrap">
+  {% if section.settings.anchor != blank %}<span id="{{ section.settings.anchor }}"></span>{% endif %}
+  <h2 style="margin-bottom:24px">{{ section.settings.heading }}</h2>
+  <div class="gene-cols">
+    {%- for block in section.blocks -%}
+      {%- assign c = block.settings.collection -%}
+      {%- assign di = forloop.index0 | modulo: 5 -%}
+      <a href="{% if c != blank %}{{ collections[c].url }}{% else %}#{% endif %}" class="gene-col{% if block.settings.feature %} gene-col--big{% endif %}" {{ block.shopify_attributes }}>
+        {%- if block.settings.image -%}<img src="{{ block.settings.image | image_url: width: 1000 }}" alt="{{ block.settings.label }}">
+        {%- elsif c != blank and collections[c].featured_image -%}<img src="{{ collections[c].featured_image | image_url: width: 1000 }}" alt="{{ block.settings.label }}">
+        {%- else -%}<img src="{{ demo_imgs[di] }}" alt="{{ block.settings.label }}">{%- endif -%}
+        <div class="gene-col__cap"><span>{{ block.settings.label }}</span></div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Demo GENE photos show until you pick a collection or image per tile."
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor id",
+      "default": "collections"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by category"
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "col",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "New Arrivals"
+        },
+        {
+          "type": "checkbox",
+          "id": "feature",
+          "label": "Large tile",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (optional override)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Collection list",
+      "blocks": [
+        {
+          "type": "col",
+          "settings": {
+            "label": "New Arrivals",
+            "feature": true
+          }
+        },
+        {
+          "type": "col",
+          "settings": {
+            "label": "Tees"
+          }
+        },
+        {
+          "type": "col",
+          "settings": {
+            "label": "Hoodies"
+          }
+        },
+        {
+          "type": "col",
+          "settings": {
+            "label": "Bottoms"
+          }
+        },
+        {
+          "type": "col",
+          "settings": {
+            "label": "Shorts"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

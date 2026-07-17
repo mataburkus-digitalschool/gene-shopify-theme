@@ -1,0 +1,6 @@
+<section class="gene-sec gene-wrap" style="max-width:760px">
+  <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(28px,3.4vw,40px);letter-spacing:-.02em;margin-bottom:8px">{{ article.title }}</h1>
+  <div class="gene-kicker" style="margin-bottom:24px">{{ article.published_at | date: '%B %d, %Y' }}</div>
+  {% if article.image %}<img src="{{ article.image | image_url: width: 1200 }}" alt="" style="border-radius:6px;margin-bottom:24px">{% endif %}
+  <div class="rte" style="font-size:16px;line-height:1.7">{{ article.content }}</div>
+</section>

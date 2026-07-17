@@ -1,0 +1,10 @@
+<section class="gene-sec gene-wrap" style="max-width:520px">
+  <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-.02em;margin-bottom:20px">Activate account</h1>
+  
+{% form 'activate_customer_password' %}
+  {{ form.errors | default_errors }}
+  <input type="password" name="customer[password]" placeholder="Password" style="width:100%;padding:12px 14px;border:1.5px solid var(--aipa-ink);border-radius:6px;font:inherit;margin-bottom:12px">
+  <input type="password" name="customer[password_confirmation]" placeholder="Confirm password" style="width:100%;padding:12px 14px;border:1.5px solid var(--aipa-ink);border-radius:6px;font:inherit;margin-bottom:12px">
+  <button type="submit" class="gene-add" style="width:auto;padding:13px 32px">Activate</button>
+{% endform %}
+</section>

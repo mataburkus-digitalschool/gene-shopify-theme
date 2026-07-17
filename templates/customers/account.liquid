@@ -1,0 +1,11 @@
+<section class="gene-sec gene-wrap" style="max-width:520px">
+  <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-.02em;margin-bottom:20px">My account</h1>
+  
+<p style="color:var(--fg-2);margin-bottom:20px">Welcome back, {{ customer.first_name | default: 'driver' }}. <a href="{{ routes.account_logout_url }}" style="border-bottom:1.5px solid var(--aipa-ink)">Log out</a></p>
+<h3 style="font-family:var(--font-display);font-weight:700;margin-bottom:12px">Recent orders</h3>
+{% if customer.orders.size > 0 %}
+  {% for order in customer.orders %}
+    <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--aipa-line);padding:12px 0"><a href="{{ order.customer_url }}" style="font-family:var(--font-mono)">{{ order.name }}</a><span>{{ order.total_price | money }}</span><span style="color:var(--fg-3)">{{ order.fulfillment_status_label }}</span></div>
+  {% endfor %}
+{% else %}<p style="color:var(--fg-2)">No orders yet.</p>{% endif %}
+</section>

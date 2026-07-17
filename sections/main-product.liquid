@@ -1,0 +1,81 @@
+{%- assign p = product -%}
+<section class="gene-sec gene-wrap">
+  <div style="font-size:13px;color:var(--fg-3);margin-bottom:16px"><a href="{{ routes.root_url }}">Home</a> &rsaquo; {{ p.title }}</div>
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:start" class="gene-pdp">
+    <div style="display:grid;grid-template-columns:1fr;gap:12px">
+      {%- for media in p.media limit: 4 -%}
+        <div style="border:1px solid var(--aipa-line);border-radius:6px;overflow:hidden;background:var(--aipa-tag-bg);aspect-ratio:4/5">
+          <img src="{{ media | image_url: width: 1000 }}" alt="{{ p.title | escape }}" style="width:100%;height:100%;object-fit:cover">
+        </div>
+      {%- endfor -%}
+    </div>
+    <div style="position:sticky;top:80px">
+      <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(28px,3.4vw,40px);letter-spacing:-.02em;margin:0 0 10px">{{ p.title }}</h1>
+      <div class="gene-price" style="margin-bottom:8px"><b style="font-size:22px">{{ p.price | money }}</b>{% if p.compare_at_price > p.price %}<s style="font-size:16px">{{ p.compare_at_price | money }}</s>{% endif %}</div>
+      <div class="gene-stars" style="font-size:14px;margin-bottom:20px">&#9733;&#9733;&#9733;&#9733;&#9733; <span style="color:var(--fg-3);font-size:13px;font-family:var(--font-mono)">4.8 · 8,900+ customers</span></div>
+      {%- form 'product', p, id: 'pdp-form' -%}
+        {%- unless p.has_only_default_variant -%}
+          {%- for opt in p.options_with_values -%}
+            <div style="margin-bottom:16px">
+              <div class="gene-kicker" style="margin-bottom:8px">{{ opt.name }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px" data-opt="{{ opt.position }}">
+                {%- for v in opt.values -%}
+                  <button type="button" class="gene-size{% if opt.selected_value == v %} is-active{% endif %}" style="min-width:44px;padding:9px 12px" data-opt-value="{{ opt.position }}::{{ v | escape }}">{{ v }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+        <select name="id" id="pdp-variant" style="display:none">
+          {%- for v in p.variants -%}
+            <option value="{{ v.id }}" {% unless v.available %}disabled{% endunless %} {% if v == p.selected_or_first_available_variant %}selected{% endif %} data-o1="{{ v.option1 | escape }}" data-o2="{{ v.option2 | escape }}" data-o3="{{ v.option3 | escape }}">{{ v.title }}</option>
+          {%- endfor -%}
+        </select>
+        {%- if p.available -%}
+          <button type="submit" class="gene-add" style="padding:15px;font-size:15px;margin-top:8px">Add to cart &mdash; {{ p.price | money }}</button>
+        {%- else -%}
+          <button type="button" class="gene-notify" data-notify="{{ p.id }}" style="padding:15px;font-size:14px;margin-top:8px">Notify me when in stock</button>
+        {%- endif -%}
+      {%- endform -%}
+      <div style="margin-top:24px;font-size:14px;line-height:1.6;color:var(--fg-2)">{{ p.description }}</div>
+      <div style="margin-top:20px;border-top:1px solid var(--aipa-line);padding-top:16px;font-size:13px;color:var(--fg-2);display:flex;flex-direction:column;gap:6px">
+        <span>🚚 Fast 5–10 day worldwide shipping</span>
+        <span>↩️ 14-day easy returns</span>
+        <span>🔒 Secure checkout · Apple / Google / Shop Pay</span>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var form=document.getElementById('pdp-form');if(!form)return;
+  var sel=document.getElementById('pdp-variant');
+  var chosen={};
+  form.querySelectorAll('[data-opt-value]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var parts=b.getAttribute('data-opt-value').split('::');var pos=parts[0];var val=parts[1];
+      chosen[pos]=val;
+      b.closest('[data-opt]').querySelectorAll('.gene-size').forEach(function(x){x.classList.remove('is-active')});
+      b.classList.add('is-active');
+      // find matching variant
+      Array.prototype.forEach.call(sel.options,function(o){
+        var ok=true;
+        if(chosen['1']&&o.getAttribute('data-o1')!==chosen['1'])ok=false;
+        if(chosen['2']&&o.getAttribute('data-o2')!==chosen['2'])ok=false;
+        if(chosen['3']&&o.getAttribute('data-o3')!==chosen['3'])ok=false;
+        if(ok){sel.value=o.value;}
+      });
+    });
+  });
+  form.addEventListener('submit',function(e){
+    if(!window.routes)return;
+    e.preventDefault();
+    var id=sel.value;
+    var btn=form.querySelector('button[type=submit]');if(btn){btn.disabled=true;btn.textContent='Adding…';}
+    fetch(window.routes.cart_add+'.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:[{id:id,quantity:1}]})}).then(function(){if(window.geneOpenCart)window.geneOpenCart();location.reload();});
+  });
+})();
+</script>
+{% schema %}
+{"name":"Product","settings":[],"blocks":[]}
+{% endschema %}

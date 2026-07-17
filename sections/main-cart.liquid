@@ -1,0 +1,21 @@
+<section class="gene-sec gene-wrap">
+  <h2 style="margin-bottom:24px">Your cart</h2>
+  {%- if cart.item_count == 0 -%}
+    <p style="color:var(--fg-2)">Your cart is empty. <a href="{{ routes.all_products_collection_url }}" style="border-bottom:1.5px solid var(--aipa-ink)">Shop the drop &rarr;</a></p>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post">
+      {%- for item in cart.items -%}
+        <div style="display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--aipa-line)">
+          <img src="{{ item.image | image_url: width: 160 }}" alt="" style="width:80px;height:100px;object-fit:cover;border-radius:4px">
+          <div style="flex:1"><a href="{{ item.url }}" style="font-family:var(--font-display);font-weight:600">{{ item.product.title }}</a><div style="font-family:var(--font-mono);font-size:12px;color:var(--fg-3);margin-top:4px">{{ item.variant.title }}</div></div>
+          <div style="font-variant-numeric:tabular-nums;font-weight:700">{{ item.final_line_price | money }}</div>
+        </div>
+      {%- endfor -%}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px">
+        <div style="font-family:var(--font-display);font-weight:800;font-size:20px">Subtotal {{ cart.total_price | money }}</div>
+        <button type="submit" name="checkout" class="gene-add" style="width:auto;padding:15px 40px;font-size:15px">Checkout &rarr;</button>
+      </div>
+    </form>
+  {%- endif -%}
+</section>
+{% schema %}{"name":"Cart"}{% endschema %}

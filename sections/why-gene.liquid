@@ -1,0 +1,155 @@
+{% render 'section-css', id: section.id, s: section.settings %}
+<section id="gs-{{ section.id }}" class="gene-sec gene-wrap">
+  <h2 style="text-align:center;margin-bottom:28px">{{ section.settings.heading }}</h2>
+  <div class="gene-3" style="{% if section.settings.columns != blank %}grid-template-columns:repeat({{ section.settings.columns }},1fr);{% endif %}">
+    {%- for block in section.blocks -%}
+      <div class="gene-why__c" {{ block.shopify_attributes }}>
+        {% if block.settings.show_number %}<span class="gene-why__n">{{ forloop.index | prepend: '0' }}</span>{% endif %}
+        <h3>{{ block.settings.title }}</h3>
+        <p>{{ block.settings.text }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Why us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why GENE hits different"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_number",
+          "label": "Show number",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Limited or nothing"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Every drop is capped. We don't restock — when it's gone, it's gone."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Why us",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "Limited or nothing",
+            "text": "Every drop is capped. We don't restock — when it's gone, it's gone. What you wear stays rare."
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Only what we'd wear",
+            "text": "Sourced for quality, not speed. Heavyweight fabrics and prints that actually last the season."
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Risk-free fit",
+            "text": "Fast 5–10 day shipping to 50+ countries and 14-day returns. Wrong size? Sort it in one email."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,91 @@
+{% render 'section-css', id: section.id, s: section.settings %}
+<section id="gs-{{ section.id }}" class="gene-marquee"><div class="gene-marquee__t" style="{% if section.settings.text_size != blank %}font-size:{{ section.settings.text_size }}px;{% endif %}animation-duration:{{ section.settings.speed | default: 26 }}s">
+  <span style="display:flex">{{ section.settings.text }}</span><span style="display:flex">{{ section.settings.text }}</span>
+</div></section>
+{% schema %}
+{
+  "name": "Marquee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "OVER 8,900+ CUSTOMERS ★ BUILT DIFFERENT ★ WORN LOUD ★ LIMITED DROPS · NO RESTOCK ★ "
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll speed (s)",
+      "min": 8,
+      "max": 60,
+      "step": 2,
+      "default": 26
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

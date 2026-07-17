@@ -1,0 +1,16 @@
+{%- comment -%} Renders a scoped style block from section settings. Pass: id, s (section.settings) {%- endcomment -%}
+<style>
+#gs-{{ id }}{
+  {% if s.bg != blank %}background:{{ s.bg }};{% endif %}
+  {% if s.text != blank %}color:{{ s.text }};{% endif %}
+  {% if s.pad_top != blank %}padding-top:{{ s.pad_top }}px;{% endif %}
+  {% if s.pad_bottom != blank %}padding-bottom:{{ s.pad_bottom }}px;{% endif %}
+  {% if s.align == 'center' %}text-align:center;{% endif %}
+}
+{% if s.heading_color != blank %}#gs-{{ id }} h1,#gs-{{ id }} h2,#gs-{{ id }} h3{color:{{ s.heading_color }};}{% endif %}
+{% if s.text != blank %}#gs-{{ id }} p{color:{{ s.text }};}{% endif %}
+{% if s.heading_size != blank %}#gs-{{ id }} h2{font-size:{{ s.heading_size }}px;}{% endif %}
+{% if s.h1_size != blank %}#gs-{{ id }} h1{font-size:{{ s.h1_size }}px;}{% endif %}
+{% if s.body_size != blank %}#gs-{{ id }} .gene-hero p,#gs-{{ id }} .gene-sec > p{font-size:{{ s.body_size }}px;}{% endif %}
+{% if s.align == 'center' %}#gs-{{ id }} .gene-sechead{justify-content:center;text-align:center;}#gs-{{ id }} .gene-hero__ctas,#gs-{{ id }} .gene-eyebrow{justify-content:center;}{% endif %}
+</style>

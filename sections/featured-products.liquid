@@ -1,0 +1,204 @@
+{% render 'section-css', id: section.id, s: section.settings %}
+<section id="gs-{{ section.id }}" class="gene-sec gene-wrap">
+  {% if section.settings.anchor != blank %}<span id="{{ section.settings.anchor }}"></span>{% endif %}
+  <div class="gene-sechead">
+    <div>
+      {% if section.settings.kicker != blank %}<div class="gene-kicker">{{ section.settings.kicker }}</div>{% endif %}
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    {% if section.settings.show_viewall and section.settings.collection != blank %}<a class="gene-viewall" href="{{ collections[section.settings.collection].url }}">{{ section.settings.viewall_text }}</a>{% endif %}
+  </div>
+  <div class="gene-grid" style="{% if section.settings.columns != blank %}grid-template-columns:repeat({{ section.settings.columns }},1fr);{% endif %}">
+    {%- assign coll = collections[section.settings.collection] -%}
+    {%- assign grid_offset = 0 -%}
+    {%- comment -%} Fallback: if the named collection is empty, use all products so the store works right after import (no manual collection setup needed). {%- endcomment -%}
+    {%- if coll.products.size == 0 and collections.all.products.size > 0 -%}
+      {%- assign coll = collections.all -%}
+      {%- if section.settings.badge_new -%}{%- assign grid_offset = section.settings.count -%}{%- endif -%}
+    {%- endif -%}
+    {%- if coll.products.size > 0 -%}
+      {%- for product in coll.products limit: section.settings.count offset: grid_offset -%}
+        {% render 'product-card', card_product: product, card_new: section.settings.badge_new %}
+      {%- endfor -%}
+    {%- else -%}
+      {%- comment -%} DEMO content — shows until the chosen collection has products {%- endcomment -%}
+      {%- if section.settings.badge_new -%}
+        {%- assign demo = 'Gene CD Sweatpants~39~0~https://genestreetwear.com/cdn/shop/files/the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__me1bq989k8q4xnjb6g4l_1.png?width=700~|Gene MML2 Tee~30~0~https://genestreetwear.com/cdn/shop/files/the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__o5uwvsqzlrs1uuy7ya5l_0.png?width=700~|Gene Tripley Tee~33~0~https://genestreetwear.com/cdn/shop/files/the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__lx2yyojt7mlim5oe3heu_1.png?width=700~|Gene 33 Jersey~35~0~https://genestreetwear.com/cdn/shop/files/the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__30hmwhirew1emaz45mxc_1.png?width=700~SOLDOUT|Gene RR Shorts~49~0~https://genestreetwear.com/cdn/shop/files/the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__enc3nfzp8de1pai3cb5u_0.png?width=700~|Gene Security Hoodie~45~0~https://genestreetwear.com/cdn/shop/files/the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__enm7yj19q04ht472syac_0.png?width=700~|Gene Deception Long Sleeve~39~0~https://genestreetwear.com/cdn/shop/files/the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__d68wbocqwa3jpt2iwkp2_1.png?width=700~|Gene SU Puffer Jacket~79~0~https://genestreetwear.com/cdn/shop/files/S4dfc1a75087e47b3986956d31754e673C.webp?width=700~SOLDOUT' | split: '|' -%}
+      {%- else -%}
+        {%- assign demo = 'Gene DD Shorts~37~45~https://genestreetwear.com/cdn/shop/files/S606821e97396401da57e20942777cc28P.webp?width=700~|Gene CD Shorts~38~45~https://genestreetwear.com/cdn/shop/files/Navrh_bez_nazvu-8.png?width=700~|Gene Reversible Hoodie~49~59~https://genestreetwear.com/cdn/shop/files/Sf445a99388c04b34a6138699312da8abg.webp?width=700~Almost gone|Gene Harakuja Hoodie~45~60~https://genestreetwear.com/cdn/shop/files/Jewellery-12.png?width=700~Only 3 left|Gene R Tee~33~39~https://genestreetwear.com/cdn/shop/files/use_the_first_image_as_the_reference_for_the_scene_composition_camera_angle_lighting_shadows_floor__urbmn19h8pv3j2yq4nhl_0.png?width=700~|Gene NN Tee~29~37~https://genestreetwear.com/cdn/shop/files/use_the_first_image_as_the_reference_for_the_scene_composition_camera_angle_lighting_shadows_floor__7xzwjjgcpjmchkseovau_1.png?width=700~|Gene Reversible Leopard Hoodie~47~55~https://genestreetwear.com/cdn/shop/files/use_the_first_image_as_the_reference_for_the_scene_composition_camera_angle_lighting_shadows_floor__q5xwbkvt6vplim28aidz_0.png?width=700~SOLDOUT|Gene Pattern Sweatpants~39~60~https://genestreetwear.com/cdn/shop/files/use_the_first_image_as_the_reference_for_the_scene_composition_camera_angle_lighting_shadows_floor__eum1divsvwafd1y2y5nn_0.png?width=700~Selling fast' | split: '|' -%}
+      {%- endif -%}
+      {%- for d in demo limit: section.settings.count -%}
+        {%- assign f = d | split: '~' -%}
+        {%- assign dtitle = f[0] -%}{%- assign dprice = f[1] | plus: 0 -%}{%- assign dcomp = f[2] | plus: 0 -%}{%- assign dimg = f[3] -%}{%- assign dflag = f[4] -%}
+        <div class="gene-prod{% if dflag == 'SOLDOUT' %} is-out{% endif %}" data-product-card>
+          <a href="#" class="gene-prod__media">
+            <img src="{{ dimg }}" alt="{{ dtitle }}" loading="lazy">
+            {%- if dflag == 'SOLDOUT' -%}
+              <span class="gene-badge gene-badge--out">SOLD OUT</span>
+            {%- elsif dcomp > 0 -%}
+              {%- assign pct = dcomp | minus: dprice | times: 100 | divided_by: dcomp -%}
+              <span class="gene-badge">&minus;{{ pct }}%</span>
+            {%- elsif section.settings.badge_new -%}
+              <span class="gene-badge">NEW</span>
+            {%- endif -%}
+            {%- if dflag != '' and dflag != 'SOLDOUT' -%}<span class="gene-low">{{ dflag }}</span>{%- endif -%}
+          </a>
+          <div class="gene-prod__body">
+            <a href="#" class="gene-prod__title">{{ dtitle }}</a>
+            <div class="gene-price">
+              <b>${{ dprice }}.00</b>
+              {%- if dcomp > 0 -%}<s>${{ dcomp }}.00</s>{%- endif -%}
+            </div>
+            {%- if dflag == 'SOLDOUT' -%}
+              <button class="gene-notify" data-notify="demo-{{ forloop.index }}">Notify me when in stock</button>
+            {%- else -%}
+              <div class="gene-sizes">
+                <button class="gene-size">S</button><button class="gene-size is-active">M</button><button class="gene-size">L</button><button class="gene-size">XL</button><button class="gene-size">XXL</button>
+              </div>
+              <button class="gene-add" data-add>Quick add &mdash; ${{ dprice }}.00</button>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Featured products",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows demo GENE products until the selected collection has products."
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor id"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "On sale now · while stock lasts"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Summer Archive"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "count",
+      "label": "Products",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "badge_new",
+      "label": "Show NEW badge",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_viewall",
+      "label": "Show 'View all' link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "viewall_text",
+      "label": "View all text",
+      "default": "View all →"
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products"
+    }
+  ]
+}
+{% endschema %}

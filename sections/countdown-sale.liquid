@@ -1,0 +1,131 @@
+{% render 'section-css', id: section.id, s: section.settings %}
+<section id="gs-{{ section.id }}" class="gene-count" {% if section.settings.anchor != blank %}data-anchor="{{ section.settings.anchor }}"{% endif %}>
+  <span id="{{ section.settings.anchor }}"></span>
+  <div class="gene-wrap gene-count__in" data-countdown="{{ section.settings.end_date | default: 'midnight' }}">
+    <h2 style="{% if section.settings.title_size != blank %}font-size:{{ section.settings.title_size }}px;{% endif %}">{{ section.settings.title }} &mdash; <u>{{ section.settings.highlight }}</u></h2>
+    <div class="gene-count__boxes">
+      <div class="gene-count__b"><div data-h>00</div><div>{{ section.settings.label_h }}</div></div>
+      <div class="gene-count__b"><div data-m>00</div><div>{{ section.settings.label_m }}</div></div>
+      <div class="gene-count__b" style="border:2px solid currentColor"><div data-s>00</div><div>{{ section.settings.label_s }}</div></div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Countdown sale",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor id",
+      "default": "archive"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "SUMMER ARCHIVE"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Highlight",
+      "default": "SALE DIES AT MIDNIGHT"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End date (YYYY-MM-DDTHH:MM)",
+      "info": "Leave blank to count to local midnight"
+    },
+    {
+      "type": "text",
+      "id": "label_h",
+      "label": "Hours label",
+      "default": "Hrs"
+    },
+    {
+      "type": "text",
+      "id": "label_m",
+      "label": "Minutes label",
+      "default": "Min"
+    },
+    {
+      "type": "text",
+      "id": "label_s",
+      "label": "Seconds label",
+      "default": "Sec"
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown sale"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+<section class="gene-sec gene-wrap" style="max-width:520px">
+  <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-.02em;margin-bottom:20px">Order {{ order.name }}</h1>
+  
+<div style="color:var(--fg-2);margin-bottom:16px">{{ order.created_at | date: '%B %d, %Y' }}</div>
+{% for line in order.line_items %}
+  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--aipa-line);padding:10px 0"><span>{{ line.title }} &times; {{ line.quantity }}</span><span>{{ line.final_line_price | money }}</span></div>
+{% endfor %}
+<div style="display:flex;justify-content:space-between;font-weight:800;margin-top:16px"><span>Total</span><span>{{ order.total_price | money }}</span></div>
+</section>

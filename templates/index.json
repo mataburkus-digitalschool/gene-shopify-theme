@@ -1,0 +1,282 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner"
+    },
+    "trust": {
+      "type": "trust-bar",
+      "blocks": {
+        "b1": {
+          "type": "item",
+          "settings": {
+            "title": "Limited Drops",
+            "sub": "No restock, ever"
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "title": "Fast Shipping",
+            "sub": "5–10 day worldwide"
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "title": "14-Day Returns",
+            "sub": "Easy, no drama"
+          }
+        },
+        "b4": {
+          "type": "item",
+          "settings": {
+            "title": "Secure Checkout",
+            "sub": "Apple · Google · Shop Pay"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "countdown": {
+      "type": "countdown-sale",
+      "settings": {
+        "anchor": "archive"
+      }
+    },
+    "archive": {
+      "type": "featured-products",
+      "settings": {
+        "anchor": "",
+        "kicker": "On sale now · while stock lasts",
+        "heading": "Summer Archive",
+        "collection": "sale",
+        "count": 8
+      }
+    },
+    "bundles": {
+      "type": "bundles",
+      "blocks": {
+        "x1": {
+          "type": "bundle",
+          "settings": {
+            "tag": "2-Piece Set",
+            "title": "Head-to-Toe Set",
+            "discount_percent": 10
+          }
+        },
+        "x2": {
+          "type": "bundle",
+          "settings": {
+            "tag": "Tee 2-Pack",
+            "title": "Summer Tee Pack",
+            "discount_percent": 15
+          }
+        },
+        "x3": {
+          "type": "bundle",
+          "settings": {
+            "tag": "Full Fit",
+            "title": "Full Drip Bundle",
+            "discount_percent": 15
+          }
+        }
+      },
+      "block_order": [
+        "x1",
+        "x2",
+        "x3"
+      ]
+    },
+    "collections": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": {
+          "type": "col",
+          "settings": {
+            "label": "New Arrivals"
+          }
+        },
+        "c2": {
+          "type": "col",
+          "settings": {
+            "label": "Tees"
+          }
+        },
+        "c3": {
+          "type": "col",
+          "settings": {
+            "label": "Hoodies"
+          }
+        },
+        "c4": {
+          "type": "col",
+          "settings": {
+            "label": "Bottoms"
+          }
+        },
+        "c5": {
+          "type": "col",
+          "settings": {
+            "label": "Shorts"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5"
+      ]
+    },
+    "newprods": {
+      "type": "featured-products",
+      "settings": {
+        "anchor": "new",
+        "kicker": "Fresh off the drop",
+        "heading": "New Arrivals",
+        "collection": "new-arrivals",
+        "count": 8,
+        "badge_new": true
+      }
+    },
+    "marquee": {
+      "type": "marquee"
+    },
+    "why": {
+      "type": "why-gene",
+      "blocks": {
+        "w1": {
+          "type": "item",
+          "settings": {
+            "title": "Limited or nothing",
+            "text": "Every drop is capped. We don't restock — when it's gone, it's gone. What you wear stays rare."
+          }
+        },
+        "w2": {
+          "type": "item",
+          "settings": {
+            "title": "Only what we'd wear",
+            "text": "Sourced for quality, not speed. Heavyweight fabrics and prints that actually last the season."
+          }
+        },
+        "w3": {
+          "type": "item",
+          "settings": {
+            "title": "Risk-free fit",
+            "text": "Fast 5–10 day shipping to 50+ countries and 14-day returns. Wrong size? Sort it in one email."
+          }
+        }
+      },
+      "block_order": [
+        "w1",
+        "w2",
+        "w3"
+      ]
+    },
+    "reviews": {
+      "type": "reviews",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "quote": "Perfect fit and premium materials. This is exactly what I was looking for!",
+            "name": "Avraam C."
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "quote": "Great experience, good clothing pieces. Their shipping is actually fast. Recommend!",
+            "name": "Jessica L."
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "quote": "Sooo cute!! I love it. Material feels really nice and it arrived pretty fast.",
+            "name": "Anastasia N."
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ]
+    },
+    "banner": {
+      "type": "image-banner"
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "f1": {
+          "type": "q",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "Shipping is 5–10 working days to almost every country we service. A tracking number lands in your inbox the moment your order ships."
+          }
+        },
+        "f2": {
+          "type": "q",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "Returns are easy: request within 14 days of delivery. Once we receive and inspect the item, we process your refund."
+          }
+        },
+        "f3": {
+          "type": "q",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "Yes — we ship to over 50 countries worldwide. International times vary slightly by location."
+          }
+        },
+        "f4": {
+          "type": "q",
+          "settings": {
+            "question": "Are your products restocked?",
+            "answer": "No. Every drop is limited — once it's gone, it's gone for good."
+          }
+        },
+        "f5": {
+          "type": "q",
+          "settings": {
+            "question": "How do I pick the right size?",
+            "answer": "Every product page has a full size guide. Fits run true to a relaxed streetwear cut."
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5"
+      ]
+    },
+    "newsletter": {
+      "type": "newsletter"
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "countdown",
+    "archive",
+    "bundles",
+    "collections",
+    "newprods",
+    "marquee",
+    "why",
+    "reviews",
+    "banner",
+    "faq",
+    "newsletter"
+  ]
+}

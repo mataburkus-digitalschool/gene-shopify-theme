@@ -1,0 +1,173 @@
+{% render 'section-css', id: section.id, s: section.settings %}
+{%- assign demo_avatars = 'https://genestreetwear.com/cdn/shop/files/IMG_1499.jpg?width=120|https://genestreetwear.com/cdn/shop/files/use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_an_nwh7m5nz120f4x6y0d34_1.png?width=120|https://genestreetwear.com/cdn/shop/files/hale_ma_fotku_modela_a_potebuju_jenomaby_jsi_nahradil_jeho_triko_za_moje_kter_ti_poslm_v_druhem_obr_1qm2ezaok9ugds695jy2_0.png?width=120|https://genestreetwear.com/cdn/shop/files/IMG_1498.jpg?width=120|https://genestreetwear.com/cdn/shop/files/use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_an_pybcyyjbpf5ecejz08c1_1.png?width=120|https://genestreetwear.com/cdn/shop/files/hale_ma_fotku_modela_a_potebuju_jenomaby_jsi_nahradil_jeho_triko_za_moje_kter_ti_poslm_v_druhem_obr_5gfcs6ysvlkoz2z7qi1h_1.png?width=120' | split: '|' -%}
+<section id="gs-{{ section.id }}" class="gene-sec gene-wrap gene-bw">
+  <div style="text-align:center;margin-bottom:28px">
+    <div class="gene-stars" style="font-size:18px;letter-spacing:2px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    <h2 style="margin:8px 0 4px">{{ section.settings.heading }}</h2>
+    <p style="font-size:14px;color:var(--fg-2);margin:0">{{ section.settings.subheading }}</p>
+  </div>
+  <div class="gene-3" style="{% if section.settings.columns != blank %}grid-template-columns:repeat({{ section.settings.columns }},1fr);{% endif %}">
+    {%- for block in section.blocks -%}
+      {%- assign di = forloop.index0 | modulo: 6 -%}
+      <div class="gene-review" {{ block.shopify_attributes }}>
+        <div class="gene-stars" style="font-size:13px;letter-spacing:1px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>&ldquo;{{ block.settings.quote }}&rdquo;</p>
+        <div class="gene-review__who">
+          {% if block.settings.avatar %}<img src="{{ block.settings.avatar | image_url: width: 120 }}" alt="{{ block.settings.name }}">{% else %}<img src="{{ demo_avatars[di] }}" alt="{{ block.settings.name }}">{% endif %}
+          <div><b>{{ block.settings.name }}</b><div>{{ block.settings.role | default: 'Verified buyer' }}</div></div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by the fam"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "4.8 average · 8,900+ verified customers"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Role",
+          "default": "Verified buyer"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar (demo photo shows if empty)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 9,
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Perfect fit and premium materials. This is exactly what I was looking for!",
+            "name": "Avraam C."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Great experience, good clothing pieces. Their shipping is actually fast. Recommend!",
+            "name": "Jessica L."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Sooo cute!! I love it. Material feels really nice and it arrived pretty fast.",
+            "name": "Anastasia N."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
