@@ -1,22 +1,11 @@
 <footer style="background:var(--ink);color:#fff;margin-top:40px;padding:56px 24px 28px;">
   <div class="g-wrap gfoot-grid">
     <div>
-      <img src="{{ 'gene-logo.png' | asset_url }}" alt="{{ section.settings.brand | default: shop.name }}" style="height:34px;width:auto;display:block;filter:invert(1) brightness(2);margin-bottom:14px;">
+      <div style="font-weight:800;font-size:24px;letter-spacing:-0.03em;margin-bottom:12px;">{{ section.settings.brand | default: shop.name }}</div>
       <p style="font-size:13px;color:rgba(255,255,255,0.6);max-width:260px;line-height:1.55;margin:0 0 16px;">{{ section.settings.text }}</p>
       <div style="display:flex;gap:12px;">
         {%- if section.settings.instagram != blank -%}<a href="{{ section.settings.instagram }}" style="font-size:13px;color:rgba(255,255,255,0.85);">Instagram</a>{%- endif -%}
         {%- if section.settings.tiktok != blank -%}<a href="{{ section.settings.tiktok }}" style="font-size:13px;color:rgba(255,255,255,0.85);">TikTok</a>{%- endif -%}
-      </div>
-    </div>
-    <div>
-      <h4 style="font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin:0 0 14px;">{{ section.settings.policies_heading }}</h4>
-      <div style="display:flex;flex-direction:column;gap:8px;font-size:13.5px;">
-        {%- if shop.refund_policy != blank -%}<a href="{{ shop.refund_policy.url }}" style="color:rgba(255,255,255,0.85);text-decoration:none;">{{ shop.refund_policy.title | default: 'Podmínky vrácení' }}</a>{%- endif -%}
-        {%- if shop.shipping_policy != blank -%}<a href="{{ shop.shipping_policy.url }}" style="color:rgba(255,255,255,0.85);text-decoration:none;">{{ shop.shipping_policy.title | default: 'Doprava' }}</a>{%- endif -%}
-        {%- if shop.terms_of_service != blank -%}<a href="{{ shop.terms_of_service.url }}" style="color:rgba(255,255,255,0.85);text-decoration:none;">{{ shop.terms_of_service.title | default: 'Obchodní podmínky' }}</a>{%- endif -%}
-        {%- if shop.privacy_policy != blank -%}<a href="{{ shop.privacy_policy.url }}" style="color:rgba(255,255,255,0.85);text-decoration:none;">{{ shop.privacy_policy.title | default: 'Ochrana osobních údajů' }}</a>{%- endif -%}
-        {%- if shop.subscription_policy != blank -%}<a href="{{ shop.subscription_policy.url }}" style="color:rgba(255,255,255,0.85);text-decoration:none;">{{ shop.subscription_policy.title }}</a>{%- endif -%}
-        {%- if section.settings.contact_url != blank -%}<a href="{{ section.settings.contact_url }}" style="color:rgba(255,255,255,0.85);text-decoration:none;">{{ section.settings.contact_label }}</a>{%- endif -%}
       </div>
     </div>
     {%- for block in section.blocks -%}
@@ -32,15 +21,12 @@
   </div>
   <div class="g-wrap" style="margin-top:36px;border-top:1px solid rgba(255,255,255,0.15);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(255,255,255,0.5);">
     <span>© {{ 'now' | date: '%Y' }} {{ shop.name | upcase }}</span>
-    <span style="font-family:var(--mono);">Designed by Matija Burkuš</span>
     <span style="font-family:var(--mono);">{{ section.settings.payments }}</span>
   </div>
 </footer>
 <style>
-.gfoot-grid { display:flex; flex-wrap:wrap; gap:36px 56px; align-items:flex-start; }
-.gfoot-grid > div:first-child { flex:1 1 240px; min-width:220px; max-width:320px; }
-.gfoot-grid > div { flex:0 0 auto; }
-@media (max-width:900px){ .gfoot-grid{ gap:28px 40px; } .gfoot-grid > div:first-child{ flex-basis:100%; max-width:none; } }
+.gfoot-grid { display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:32px; }
+@media (max-width:900px){ .gfoot-grid{ grid-template-columns:1fr 1fr; } }
 </style>
 {% schema %}
 {
@@ -50,9 +36,6 @@
   "settings": [
     { "type": "text", "id": "brand", "label": "Značka", "default": "GENE®" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide." },
-    { "type": "text", "id": "policies_heading", "label": "Nadpis sloupce podmínek", "default": "Podmínky" },
-    { "type": "url", "id": "contact_url", "label": "Odkaz na kontakt", "default": "/pages/contact" },
-    { "type": "text", "id": "contact_label", "label": "Text kontaktu", "default": "Kontakt" },
     { "type": "url", "id": "instagram", "label": "Instagram URL" },
     { "type": "url", "id": "tiktok", "label": "TikTok URL" },
     { "type": "text", "id": "payments", "label": "Platební metody", "default": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna" }
