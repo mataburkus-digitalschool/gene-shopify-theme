@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -156,7 +165,7 @@
           "settings": {
             "collection": "",
             "image": "shopify://shop_images/Image_11.jpg",
-            "title": "Tees"
+            "title": ""
           }
         },
         "c3": {
@@ -164,7 +173,7 @@
           "settings": {
             "collection": "",
             "image": "shopify://shop_images/Image_12.jpg",
-            "title": "Hoodies"
+            "title": ""
           }
         },
         "c4": {
@@ -172,7 +181,7 @@
           "settings": {
             "collection": "",
             "image": "shopify://shop_images/Image_14.jpg",
-            "title": "Bottoms"
+            "title": ""
           }
         },
         "c5": {
@@ -180,7 +189,7 @@
           "settings": {
             "collection": "",
             "image": "shopify://shop_images/Image_13.jpg",
-            "title": "Shorts"
+            "title": ""
           }
         }
       },
