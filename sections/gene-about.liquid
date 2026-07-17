@@ -1,0 +1,77 @@
+<section class="gabout" style="background:var(--ink);color:#fff;">
+  <div class="g-wrap" style="padding:76px 24px;">
+    <div class="gabout-top">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+        <div class="g-eyebrow" style="color:rgba(255,255,255,0.55);margin-bottom:18px;">{{ section.settings.eyebrow }}</div>
+        {%- endif -%}
+        <h2 style="font-weight:800;font-size:clamp(30px,4.6vw,56px);line-height:1.0;letter-spacing:-0.025em;margin:0;text-wrap:balance;">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="gabout-body">{{ section.settings.body }}</div>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+    <div class="gabout-stats">
+      {%- for block in section.blocks -%}
+      <div {{ block.shopify_attributes }}>
+        <div style="font-weight:800;font-size:clamp(26px,3vw,40px);letter-spacing:-0.02em;line-height:1;">{{ block.settings.value }}</div>
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:8px;">{{ block.settings.label }}</div>
+      </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
+    {%- if section.settings.tagline != blank -%}
+    <div class="gabout-tag">
+      {%- assign parts = section.settings.tagline | split: '·' -%}
+      {%- for p in parts -%}<span>{{ p | strip }}</span>{%- unless forloop.last -%}<span class="gabout-sep">✦</span>{%- endunless -%}{%- endfor -%}
+    </div>
+    {%- endif -%}
+
+    {%- if section.settings.btn_label != blank -%}
+    <div style="margin-top:34px;">
+      <a href="{{ section.settings.btn_url | default: routes.all_products_collection_url }}" class="g-btn g-btn--outline" style="background:transparent;color:#fff;border-color:#fff;">{{ section.settings.btn_label }}</a>
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+.gabout-top { display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:end; }
+.gabout-body { font-size:16px; line-height:1.65; color:rgba(255,255,255,0.72); }
+.gabout-body p { margin:0 0 14px; }
+.gabout-body p:last-child { margin-bottom:0; }
+.gabout-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:52px; padding-top:36px; border-top:1px solid rgba(255,255,255,0.15); }
+.gabout-tag { margin-top:40px; display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; font-family:var(--mono); font-size:13px; letter-spacing:0.06em; text-transform:uppercase; }
+.gabout-sep { color:rgba(255,255,255,0.35); font-size:11px; }
+@media (max-width:800px){
+  .gabout-top { grid-template-columns:1fr; gap:22px; align-items:start; }
+  .gabout-stats { grid-template-columns:1fr 1fr; gap:26px 20px; }
+}
+</style>
+{% schema %}
+{
+  "name": "GENE — O nás",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Nadřádek", "default": "About Gene · Est. 2019" },
+    { "type": "text", "id": "heading", "label": "Titulek", "default": "Born from the streets. Built for the bold." },
+    { "type": "richtext", "id": "body", "label": "Text", "default": "<p>Gene Streetwear was founded in 2019 by a group of young creatives tired of paying $200+ for a hoodie just because of a logo. Fire fits shouldn't come with a fire price tag.</p><p>We started small. One hoodie. One vision — premium streetwear without the premium markup. Today we ship worldwide to thousands who refuse to blend in.</p><p>This isn't fast fashion. It's streetwear for people who know exactly what they want.</p>" },
+    { "type": "text", "id": "tagline", "label": "Manifest (odděluj ·)", "default": "Limited pieces · Real price · No compromises" },
+    { "type": "text", "id": "btn_label", "label": "Tlačítko — text", "default": "Shop the drop" },
+    { "type": "url", "id": "btn_url", "label": "Tlačítko — odkaz" }
+  ],
+  "blocks": [
+    { "type": "stat", "name": "Statistika", "settings": [
+      { "type": "text", "id": "value", "label": "Hodnota", "default": "2019" },
+      { "type": "text", "id": "label", "label": "Popisek", "default": "Založeno" }
+    ] }
+  ],
+  "max_blocks": 4,
+  "presets": [ { "name": "GENE — O nás", "blocks": [
+    { "type": "stat", "settings": { "value": "2019", "label": "Založeno" } },
+    { "type": "stat", "settings": { "value": "50+", "label": "Zemí" } },
+    { "type": "stat", "settings": { "value": "8 900+", "label": "Zákazníků" } },
+    { "type": "stat", "settings": { "value": "Limited", "label": "Každý drop" } }
+  ] } ]
+}
+{% endschema %}
