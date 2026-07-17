@@ -52,7 +52,7 @@
   #gene-grid-{{ section.id }} .gg-prices { display: flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums; }
   #gene-grid-{{ section.id }} .gg-price { font-weight: 700; font-size: 15px; }
   #gene-grid-{{ section.id }} .gg-compare { font-size: 13px; color: rgba(0,0,0,0.45); }
-  #gene-grid-{{ section.id }} .gg-sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 2px; }
+  #gene-grid-{{ section.id }} .gg-sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: auto; }
   #gene-grid-{{ section.id }} .gg-size {
     padding: 6px 0; text-align: center; font-family: ui-monospace, 'SF Mono', Menlo, monospace;
     font-size: 10.5px; border-radius: 4px; cursor: pointer; border: 1px solid #DDDDDD;
@@ -61,13 +61,14 @@
   #gene-grid-{{ section.id }} .gg-size[disabled] { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
   #gene-grid-{{ section.id }} .gg-size.is-active { background: {{ section.settings.ink }}; border-color: {{ section.settings.ink }}; color: #fff; }
   #gene-grid-{{ section.id }} .gg-add {
-    margin-top: 4px; width: 100%;
+    margin-top: auto; width: 100%;
     background: {{ section.settings.button_bg }}; color: {{ section.settings.button_text }};
     border: none; border-radius: {{ btn_radius_css }}; padding: 10px;
     font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit;
     transition: background .2s cubic-bezier(.2,.8,.2,1), transform .08s;
     text-align: center; text-decoration: none; display: block;
   }
+  #gene-grid-{{ section.id }} .gg-sizes + .gg-add { margin-top: 6px; }
   #gene-grid-{{ section.id }} .gg-add:hover { background: {{ section.settings.button_bg_hover }}; }
   #gene-grid-{{ section.id }} .gg-add:active { transform: scale(0.98); }
   #gene-grid-{{ section.id }} .gg-add--out {
