@@ -10,7 +10,7 @@
       <p style="font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:440px;margin:0 0 26px;text-wrap:pretty;">{{ section.settings.subheading }}</p>
       <div class="ghero-btns" style="display:flex;gap:12px;margin-bottom:26px;">
         {%- if section.settings.btn1_label != blank -%}
-        <a class="g-btn" href="{{ section.settings.btn1_url }}"><span style="font-size:0.7em;">●</span> {{ section.settings.btn1_label }}</a>
+        <a class="g-btn" href="{{ section.settings.btn1_url }}">{{ section.settings.btn1_label }}</a>
         {%- endif -%}
         {%- if section.settings.btn2_label != blank -%}
         <a class="g-btn g-btn--outline" href="{{ section.settings.btn2_url }}">{{ section.settings.btn2_label }}</a>
