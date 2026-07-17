@@ -1,7 +1,7 @@
 {% render 'section-css', id: section.id, s: section.settings %}
-<section id="gs-{{ section.id }}" class="gene-sec gene-wrap">
+<section id="gs-{{ section.id }}" class="gene-sec gene-wrap gene-faq-wide">
   <h2 style="text-align:center;margin-bottom:24px">{{ section.settings.heading }}</h2>
-  <div>
+  <div class="gene-faq-list">
     {%- for block in section.blocks -%}
       <div class="gene-faq__item{% if forloop.first and section.settings.open_first %} is-open{% endif %}" {{ block.shopify_attributes }}>
         <button class="gene-faq__q">{{ block.settings.question }}<span class="ic">+</span></button>

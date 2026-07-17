@@ -1,6 +1,6 @@
 <header class="gene-header" id="gh-{{ section.id }}"{% unless section.settings.sticky %} style="position:relative"{% endunless %}>
   <div class="gene-wrap gene-header__in">
-    <a href="{{ routes.root_url }}" class="gene-logo">{% if section.settings.logo %}<img src="{{ section.settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" style="height:{{ section.settings.logo_height | default: 32 }}px;width:auto">{% else %}{{ section.settings.brand_text }}{% endif %}</a>
+    <a href="{{ routes.root_url }}" class="gene-logo">{% if section.settings.logo %}<img src="{{ section.settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" style="height:{{ section.settings.logo_height | default: 32 }}px;width:auto">{% else %}<img src="{{ 'gene-logo.png' | asset_url }}" alt="{{ shop.name | default: section.settings.brand_text }}" style="height:{{ section.settings.logo_height | default: 32 }}px;width:auto">{% endif %}</a>
     <nav class="gene-nav">
       {%- for link in section.settings.menu.links -%}
         <a href="{{ link.url }}"{% if forloop.first %} style="color:var(--aipa-ink);font-weight:700"{% endif %}>{{ link.title }}</a>
