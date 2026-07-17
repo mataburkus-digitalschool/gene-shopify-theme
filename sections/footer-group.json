@@ -12,7 +12,7 @@
   "name": "Footer",
   "sections": {
     "footer": {
-      "type": "gene-footer",
+      "type": "gene-footer-v2",
       "settings": {}
     }
   },
