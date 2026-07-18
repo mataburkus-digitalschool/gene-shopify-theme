@@ -6,6 +6,7 @@
     </div>
     {%- endif -%}
     <h1 class="gh-h1" style="font-weight:800;font-size:clamp(44px,6vw,72px);line-height:0.98;letter-spacing:-0.03em;margin:0 0 18px;text-wrap:balance;">{{ section.settings.heading | newline_to_br }}</h1>
+    <h1 class="gh-h1-m" style="font-weight:800;line-height:0.95;letter-spacing:-0.03em;margin:0;">{{ section.settings.heading_mobile | default: 'WORN LOUD.' }}</h1>
     <p class="gh-sub" style="font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:440px;margin:0 0 26px;text-wrap:pretty;">{{ section.settings.subheading }}</p>
     <div class="ghero-btns gh-btns" style="display:flex;gap:12px;margin-bottom:26px;">
       {%- if section.settings.btn1_label != blank -%}
@@ -36,16 +37,17 @@
 .ghero { display:grid; grid-template-columns:1.05fr 0.95fr; gap:44px; align-items:center; }
 .ghero-text { display:flex; flex-direction:column; }
 .ghero-btns .g-btn { white-space:nowrap; }
+.gh-h1-m { display:none; }
 @media (max-width:900px){
-  /* mobil: titulek (1 řádek) → social proof → velká fotka s tlačítky na ní */
-  .ghero { display:flex; flex-direction:column; gap:12px; align-items:stretch; }
+  /* mobil: krátký nadpis (1 řádek) → social proof těsně pod → velká fotka s tlačítky na ní */
+  .ghero { display:flex; flex-direction:column; gap:0; align-items:stretch; }
   .ghero-text { display:contents; }
   .gh-badge { display:none; }
   .gh-sub { display:none; }
   .gh-imgbadge { display:none; }
-  .gh-h1 { order:1; margin:0; white-space:nowrap; font-size:clamp(14px,5.3vw,30px); letter-spacing:-0.04em; }
-  .gh-h1 br { display:none; }
-  .gh-rating { order:2; margin:0; justify-content:flex-start; }
+  .gh-h1 { display:none; }
+  .gh-h1-m { display:block; order:1; margin:0; white-space:nowrap; font-size:clamp(30px,10vw,54px); letter-spacing:-0.03em; }
+  .gh-rating { order:2; margin:7px 0 15px; justify-content:flex-start; }
   .gh-media { order:3; aspect-ratio:3/4.4; position:relative; }
   .gh-media::after { content:""; position:absolute; left:0; right:0; bottom:0; height:140px; background:linear-gradient(to top, rgba(0,0,0,0.32), rgba(0,0,0,0)); border-radius:0 0 6px 6px; pointer-events:none; }
   .gh-btns { order:4; margin-top:-72px; position:relative; z-index:2; padding:0 14px; gap:10px; }
@@ -58,7 +60,8 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "badge", "label": "Badge nad titulkem", "default": "No restock" },
-    { "type": "textarea", "id": "heading", "label": "Titulek", "default": "BUILT DIFFERENT.\nWORN LOUD." },
+    { "type": "textarea", "id": "heading", "label": "Titulek (desktop)", "default": "BUILT DIFFERENT.\nWORN LOUD." },
+    { "type": "text", "id": "heading_mobile", "label": "Titulek (mobil, 1 řádek)", "default": "WORN LOUD." },
     { "type": "textarea", "id": "subheading", "label": "Podtitulek", "default": "Limited streetwear drops built to stand out. Once a piece sells out, it's gone for good." },
     { "type": "text", "id": "btn1_label", "label": "Tlačítko 1 — text", "default": "Archive" },
     { "type": "url", "id": "btn1_url", "label": "Tlačítko 1 — odkaz" },
