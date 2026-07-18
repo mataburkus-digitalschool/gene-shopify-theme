@@ -12,15 +12,15 @@
     "hero": {
       "type": "gene-hero",
       "settings": {
-        "badge": "Limited drop · No restock",
-        "heading": "BUILT DIFFERENT.\nWORN LOUD.",
+        "badge": "No restock",
+        "heading": "BUILT DIFFERENT. WORN LOUD.",
         "subheading": "Limited streetwear drops built to stand out. Once a piece sells out, it's gone for good.",
         "btn1_label": "Archive",
         "btn1_url": "",
         "btn2_label": "Bundles",
         "btn2_url": "",
         "rating": "4.8 from 8,900+ verified customers",
-        "image": "shopify://shop_images/Image_10.jpg",
+        "image": "",
         "image_badge": "SS ARCHIVE ’26 · UP TO 35% OFF"
       }
     },
