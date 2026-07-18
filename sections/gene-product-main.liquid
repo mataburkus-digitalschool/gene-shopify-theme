@@ -41,7 +41,7 @@
       {%- endif -%}
       {%- if section.settings.limited_text != blank -%}<div class="gpm-limited">{{ section.settings.limited_text }}</div>{%- endif -%}
 
-      {% form 'product', product, id: 'gpm-form', class: 'gpm-form' %}
+      {% form 'product', product, id: 'gpm-form' %}
         <input type="hidden" name="id" value="{{ cur.id }}" data-variant-id>
 
         {%- unless product.has_only_default_variant -%}
@@ -84,7 +84,7 @@
         {%- if product.description != blank -%}
         <div class="gpm-desc">{{ product.description }}</div>
         {%- endif -%}
-        {%- assign accs = 'Shipping information|__ship,14 days easy returns|__ret,Size|__size' | split: ',' -%}
+        {%- assign accs = 'Shipping information|acc_shipping,14 days easy returns|acc_returns,Size|acc_size' | split: ',' -%}
         {%- for a in accs -%}
           {%- assign parts = a | split: '|' -%}
           {%- assign key = parts[1] | strip -%}
@@ -264,9 +264,9 @@
     { "type": "number", "id": "low_stock", "label": "Práh „posledních kusů“", "default": 10 },
     { "type": "text", "id": "limited_text", "label": "Text pod cenou (urgence)", "default": "LIMITED STOCK. NEVER RESTOCKING!" },
     { "type": "text", "id": "atc_label", "label": "Text tlačítka Add to cart", "default": "Add to cart" },
-    { "type": "richtext", "id": "__ship", "label": "Akordeon — Shipping information", "default": "<p>Free shipping over $75. Orders ship in 1–2 business days, delivery 5–10 days worldwide with tracking.</p>" },
-    { "type": "richtext", "id": "__ret", "label": "Akordeon — 14 days easy returns", "default": "<p>Not feeling it? Return within 14 days for a refund or exchange. No drama.</p>" },
-    { "type": "richtext", "id": "__size", "label": "Akordeon — Size", "default": "<p>Oversized streetwear fit. True to size — size down for a regular fit. See the size guide for measurements.</p>" }
+    { "type": "richtext", "id": "acc_shipping", "label": "Akordeon - Shipping information", "default": "<p>Free shipping over $75. Orders ship in 1-2 business days, delivery 5-10 days worldwide with tracking.</p>" },
+    { "type": "richtext", "id": "acc_returns", "label": "Akordeon - 14 days easy returns", "default": "<p>Not feeling it? Return within 14 days for a refund or exchange. No drama.</p>" },
+    { "type": "richtext", "id": "acc_size", "label": "Akordeon - Size", "default": "<p>Oversized streetwear fit. True to size - size down for a regular fit. See the size guide for measurements.</p>" }
   ],
   "presets": [ { "name": "Produkt" } ]
 }
