@@ -1,18 +1,273 @@
-<div class="g-wrap" style="padding:48px 24px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
-  <div>{% if product.featured_media %}<img src="{{ product.featured_media | image_url: width: 900 }}" style="width:100%;border:1px solid var(--line);border-radius:6px;display:block;">{% endif %}</div>
-  <div>
-    <h1 style="font-weight:800;font-size:clamp(24px,3vw,34px);letter-spacing:-0.02em;margin:0 0 10px;">{{ product.title }}</h1>
-    <div style="font-weight:700;font-size:20px;margin-bottom:20px;">{{ product.price | money }}{% if product.compare_at_price > product.price %} <s style="color:#999;font-weight:400;font-size:16px;">{{ product.compare_at_price | money }}</s>{% endif %}</div>
-    {% form 'product', product %}
-      {% unless product.has_only_default_variant %}
-      <select name="id" style="width:100%;padding:12px;border:1.5px solid var(--ink);border-radius:6px;font:inherit;margin-bottom:14px;background:#fff;">
-        {% for variant in product.variants %}<option value="{{ variant.id }}"{% unless variant.available %} disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} — vyprodáno{% endunless %}</option>{% endfor %}
-      </select>
-      {% else %}<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{% endunless %}
-      <button type="submit" class="g-btn" style="width:100%;"{% unless product.available %} disabled{% endunless %}>{% if product.available %}Přidat do košíku — {{ product.price | money }}{% else %}Vyprodáno{% endif %}</button>
-    {% endform %}
-    <div style="margin-top:24px;font-size:15px;line-height:1.6;">{{ product.description }}</div>
+{%- assign cur = product.selected_or_first_available_variant -%}
+{%- assign th = section.settings.low_stock | default: 10 -%}
+<section class="gpm g-wrap" id="gpm-{{ section.id }}" data-gpm>
+  <div class="gpm-grid">
+    {%- comment -%} ── MEDIA ── {%- endcomment -%}
+    <div class="gpm-media">
+      <div class="gpm-main" data-main-media>
+        {%- if product.featured_media -%}
+          <img src="{{ product.featured_media | image_url: width: 1100 }}" alt="{{ product.title | escape }}" data-main-img>
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+      <div class="gpm-thumbs">
+        {%- for m in product.media -%}
+          <button type="button" class="gpm-thumb{% if forloop.first %} on{% endif %}" data-thumb="{{ m | image_url: width: 900 }}" aria-label="Náhled {{ forloop.index }}">
+            <img src="{{ m | image_url: width: 180 }}" alt="" loading="lazy">
+          </button>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── INFO ── {%- endcomment -%}
+    <div class="gpm-info">
+      {%- if product.vendor != blank -%}<div class="gpm-eyebrow">{{ product.vendor }}</div>{%- endif -%}
+      <h1 class="gpm-title">{{ product.title }}</h1>
+
+      <div class="gpm-price">
+        {%- if cur.compare_at_price > cur.price -%}<s class="gpm-was" data-was>{{ cur.compare_at_price | money }}</s>{%- endif -%}
+        <span class="gpm-now" data-now>{{ cur.price | money }}</span>
+        <span class="gpm-sale" data-sale{% unless cur.compare_at_price > cur.price %} hidden{% endunless %}>Sale</span>
+      </div>
+      <div class="gpm-tax">Taxes included. <a href="{{ pages['shipping-policy'].url | default: routes.root_url }}">Shipping</a> calculated at checkout.</div>
+
+      {%- if section.settings.show_urgency -%}
+      <div class="gpm-stock" data-stock {% unless cur.inventory_management and cur.inventory_quantity > 0 and cur.inventory_quantity <= th %}hidden{% endunless %}>
+        ⚠️ Only <span data-stock-n>{{ cur.inventory_quantity }}</span> left in stock!
+      </div>
+      {%- endif -%}
+      {%- if section.settings.limited_text != blank -%}<div class="gpm-limited">{{ section.settings.limited_text }}</div>{%- endif -%}
+
+      {% form 'product', product, id: 'gpm-form', class: 'gpm-form' %}
+        <input type="hidden" name="id" value="{{ cur.id }}" data-variant-id>
+
+        {%- unless product.has_only_default_variant -%}
+          {%- for opt in product.options_with_values -%}
+          <div class="gpm-opt" data-opt-index="{{ forloop.index0 }}">
+            <div class="gpm-opt-label">{{ opt.name }}</div>
+            <div class="gpm-opt-vals">
+              {%- for val in opt.values -%}
+              <button type="button" class="gpm-val{% if opt.selected_value == val %} on{% endif %}" data-value="{{ val | escape }}">{{ val }}</button>
+              {%- endfor -%}
+            </div>
+          </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="gpm-qty-label">Quantity</div>
+        <div class="gpm-qty">
+          <button type="button" data-qty="-" aria-label="Méně">−</button>
+          <input type="number" name="quantity" value="1" min="1" inputmode="numeric" data-qty-input>
+          <button type="button" data-qty="+" aria-label="Více">+</button>
+        </div>
+
+        <button type="submit" class="g-btn g-btn--outline gpm-atc" data-atc {% unless cur.available %}disabled{% endunless %}>
+          <span data-atc-label>{% if cur.available %}{{ section.settings.atc_label | default: 'Add to cart' }}{% else %}Sold out{% endif %}</span>
+        </button>
+
+        {{ form | payment_button }}
+      {% endform %}
+
+      <div class="gpm-trust">♻ 14 days easy returns &nbsp;·&nbsp; ✔ World-class customer support</div>
+
+      {%- if shop.enabled_payment_types.size > 0 -%}
+      <div class="gpm-pay">
+        {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'gpm-pay-i' }}{%- endfor -%}
+      </div>
+      {%- endif -%}
+
+      {%- comment -%} ── ACCORDIONS ── {%- endcomment -%}
+      <div class="gpm-acc">
+        {%- if product.description != blank -%}
+        <div class="gpm-desc">{{ product.description }}</div>
+        {%- endif -%}
+        {%- assign accs = 'Shipping information|__ship,14 days easy returns|__ret,Size|__size' | split: ',' -%}
+        {%- for a in accs -%}
+          {%- assign parts = a | split: '|' -%}
+          {%- assign key = parts[1] | strip -%}
+          {%- assign body = section.settings[key] -%}
+          {%- if body != blank -%}
+          <details class="gpm-det">
+            <summary>{{ parts[0] }}<span class="gpm-chev">⌄</span></summary>
+            <div class="gpm-det-body">{{ body }}</div>
+          </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
   </div>
-</div>
-<style>@media (max-width:760px){ .g-wrap[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important;} }</style>
-{% schema %}{ "name": "Produkt", "settings": [] }{% endschema %}
+
+  {%- comment -%} ── STICKY BAR ── {%- endcomment -%}
+  <div class="gpm-sticky" data-sticky hidden>
+    <div class="gpm-sticky-in g-wrap">
+      <div class="gpm-sticky-info">
+        <strong>{{ product.title }}</strong>
+        <span data-sticky-price>{{ cur.price | money }}</span>
+      </div>
+      <button type="button" class="g-btn gpm-sticky-btn" data-sticky-atc>{{ section.settings.atc_label | default: 'Add to cart' }}</button>
+    </div>
+  </div>
+
+  <script type="application/json" data-variants>
+    [{%- for v in product.variants -%}{"id":{{ v.id }},"opts":{{ v.options | json }},"available":{{ v.available }},"inv":{{ v.inventory_quantity | default: 9999 }},"tracked":{% if v.inventory_management %}true{% else %}false{% endif %},"price":{{ v.price | json }},"priceM":{{ v.price | money | json }},"compareM":{% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},"mediaSrc":{% if v.featured_media %}{{ v.featured_media | image_url: width: 1100 | json }}{% else %}null{% endif %}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+  </script>
+</section>
+
+<style>
+.gpm{ padding:40px 24px 20px; }
+.gpm-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:48px; align-items:start; }
+.gpm-main{ border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--tag); }
+.gpm-main img{ width:100%; display:block; }
+.gpm-thumbs{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+.gpm-thumb{ width:66px; height:66px; border:1.5px solid var(--line); border-radius:6px; overflow:hidden; padding:0; cursor:pointer; background:#fff; }
+.gpm-thumb.on{ border-color:var(--ink); }
+.gpm-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.gpm-eyebrow{ font-family:var(--mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:8px; }
+.gpm-title{ font-weight:800; font-size:clamp(26px,3vw,38px); letter-spacing:-0.02em; line-height:1.05; margin:0 0 14px; }
+.gpm-price{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+.gpm-was{ color:var(--ink-muted); font-size:16px; }
+.gpm-now{ font-weight:700; font-size:22px; }
+.gpm-sale{ background:var(--ink); color:#fff; font-size:12px; font-weight:700; padding:3px 11px; border-radius:999px; }
+.gpm-sale[hidden]{ display:none; }
+.gpm-tax{ font-size:13px; color:var(--ink-soft); margin-bottom:16px; }
+.gpm-tax a{ color:var(--ink); }
+.gpm-stock{ color:#c0392b; font-weight:700; font-size:15px; margin-bottom:8px; }
+.gpm-stock[hidden]{ display:none; }
+.gpm-limited{ font-weight:800; font-size:14px; letter-spacing:.01em; text-transform:uppercase; margin-bottom:22px; }
+.gpm-opt{ margin-bottom:18px; }
+.gpm-opt-label{ font-size:14px; font-weight:600; margin-bottom:9px; }
+.gpm-opt-vals{ display:flex; gap:9px; flex-wrap:wrap; }
+.gpm-val{ min-width:52px; padding:11px 18px; border:1.5px solid var(--line); border-radius:999px; background:#fff; font:inherit; font-size:14px; cursor:pointer; transition:.15s; }
+.gpm-val:hover{ border-color:var(--ink); }
+.gpm-val.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
+.gpm-qty-label{ font-size:14px; font-weight:600; margin:4px 0 9px; }
+.gpm-qty{ display:inline-flex; align-items:center; border:1.5px solid var(--ink); border-radius:999px; overflow:hidden; margin-bottom:18px; }
+.gpm-qty button{ width:42px; height:44px; border:none; background:#fff; font-size:19px; cursor:pointer; }
+.gpm-qty input{ width:46px; height:44px; border:none; text-align:center; font:inherit; font-size:15px; -moz-appearance:textfield; }
+.gpm-qty input::-webkit-outer-spin-button,.gpm-qty input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+.gpm-atc{ width:100%; margin-bottom:12px; }
+#gpm-form .shopify-payment-button{ margin-bottom:6px; }
+.gpm-trust{ text-align:center; font-size:13px; color:var(--ink-soft); margin:14px 0 12px; }
+.gpm-pay{ display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin-bottom:8px; }
+.gpm-pay .gpm-pay-i{ width:38px; height:24px; }
+.gpm-acc{ margin-top:26px; border-top:1px solid var(--line); }
+.gpm-desc{ font-size:15px; line-height:1.65; color:var(--ink-soft); padding:18px 0; border-bottom:1px solid var(--line); }
+.gpm-det{ border-bottom:1px solid var(--line); }
+.gpm-det summary{ list-style:none; cursor:pointer; padding:16px 2px; font-weight:600; font-size:14px; display:flex; align-items:center; justify-content:space-between; }
+.gpm-det summary::-webkit-details-marker{ display:none; }
+.gpm-chev{ transition:transform .2s; }
+.gpm-det[open] .gpm-chev{ transform:rotate(180deg); }
+.gpm-det-body{ padding:0 2px 18px; font-size:14px; line-height:1.6; color:var(--ink-soft); }
+/* sticky */
+.gpm-sticky{ position:fixed; left:0; right:0; bottom:0; z-index:60; background:#fff; border-top:1px solid var(--line); box-shadow:0 -6px 24px rgba(0,0,0,.08); }
+.gpm-sticky-in{ display:flex; align-items:center; gap:16px; padding:12px 24px; }
+.gpm-sticky-info{ display:flex; flex-direction:column; line-height:1.2; font-size:13px; overflow:hidden; }
+.gpm-sticky-info strong{ font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.gpm-sticky-btn{ margin-left:auto; white-space:nowrap; }
+@media (max-width:820px){
+  .gpm-grid{ grid-template-columns:1fr; gap:22px; }
+  .gpm{ padding:24px 20px 90px; }
+}
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('gpm-{{ section.id }}');
+  if(!root) return;
+  var data = JSON.parse(root.querySelector('[data-variants]').textContent);
+  var idInput = root.querySelector('[data-variant-id]');
+  var opts = Array.prototype.map.call(root.querySelectorAll('.gpm-opt'), function(o){ return o; });
+  var th = {{ th }};
+
+  function selectedOptions(){
+    return opts.map(function(o){ var b=o.querySelector('.gpm-val.on'); return b?b.getAttribute('data-value'):null; });
+  }
+  function findVariant(){
+    if(!opts.length) return data[0];
+    var sel = selectedOptions();
+    return data.find(function(v){ return v.opts.every(function(val,i){ return val===sel[i]; }); });
+  }
+  function money(v){ return v.priceM; }
+  function render(){
+    var v = findVariant();
+    if(!v) return;
+    idInput.value = v.id;
+    var now = root.querySelector('[data-now]'); if(now) now.textContent = v.priceM;
+    var was = root.querySelector('[data-was]'); var sale = root.querySelector('[data-sale]');
+    var priceWrap = root.querySelector('.gpm-price');
+    if(v.compareM){
+      if(!was){ was=document.createElement('s'); was.className='gpm-was'; was.setAttribute('data-was',''); priceWrap.insertBefore(was, priceWrap.firstChild); }
+      was.textContent=v.compareM; was.hidden=false; if(sale) sale.hidden=false;
+    } else { if(was) was.hidden=true; if(sale) sale.hidden=true; }
+    // stock
+    var stock = root.querySelector('[data-stock]');
+    if(stock){
+      if(v.tracked && v.inv>0 && v.inv<=th){ stock.hidden=false; var n=stock.querySelector('[data-stock-n]'); if(n) n.textContent=v.inv; }
+      else stock.hidden=true;
+    }
+    // atc
+    var atc = root.querySelector('[data-atc]'); var lbl = root.querySelector('[data-atc-label]');
+    atc.disabled = !v.available; if(lbl) lbl.textContent = v.available ? ({{ section.settings.atc_label | default: 'Add to cart' | json }}) : 'Sold out';
+    // sticky price
+    var sp = root.querySelector('[data-sticky-price]'); if(sp) sp.textContent=v.priceM;
+    // media
+    if(v.mediaSrc){ var mi=root.querySelector('[data-main-img]'); if(mi) mi.src=v.mediaSrc; }
+  }
+
+  root.querySelectorAll('.gpm-opt-vals').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var b = e.target.closest('.gpm-val'); if(!b) return;
+      group.querySelectorAll('.gpm-val').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on'); render();
+    });
+  });
+
+  // qty
+  var qi = root.querySelector('[data-qty-input]');
+  root.querySelectorAll('[data-qty]').forEach(function(btn){
+    btn.addEventListener('click', function(){ var n=parseInt(qi.value,10)||1; n += (btn.getAttribute('data-qty')==='+'?1:-1); if(n<1)n=1; qi.value=n; });
+  });
+
+  // thumbnails
+  root.querySelectorAll('[data-thumb]').forEach(function(t){
+    t.addEventListener('click', function(){
+      var mi=root.querySelector('[data-main-img]'); if(mi) mi.src=t.getAttribute('data-thumb');
+      root.querySelectorAll('.gpm-thumb').forEach(function(x){x.classList.remove('on');}); t.classList.add('on');
+    });
+  });
+
+  // sticky add-to-cart
+  var sticky = root.querySelector('[data-sticky]');
+  var form = root.querySelector('#gpm-form');
+  var atcBtn = root.querySelector('[data-atc]');
+  if(sticky && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ sticky.hidden = en.isIntersecting; });
+    }, { rootMargin:'0px 0px -60px 0px' });
+    io.observe(atcBtn);
+  }
+  var sBtn = root.querySelector('[data-sticky-atc]');
+  if(sBtn && form){ sBtn.addEventListener('click', function(){ if(typeof form.requestSubmit==='function') form.requestSubmit(); else form.submit(); }); }
+
+  render();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Produkt",
+  "settings": [
+    { "type": "checkbox", "id": "show_urgency", "label": "Ukázat „Only X left in stock!“", "default": true },
+    { "type": "number", "id": "low_stock", "label": "Práh „posledních kusů“", "default": 10 },
+    { "type": "text", "id": "limited_text", "label": "Text pod cenou (urgence)", "default": "LIMITED STOCK. NEVER RESTOCKING!" },
+    { "type": "text", "id": "atc_label", "label": "Text tlačítka Add to cart", "default": "Add to cart" },
+    { "type": "richtext", "id": "__ship", "label": "Akordeon — Shipping information", "default": "<p>Free shipping over $75. Orders ship in 1–2 business days, delivery 5–10 days worldwide with tracking.</p>" },
+    { "type": "richtext", "id": "__ret", "label": "Akordeon — 14 days easy returns", "default": "<p>Not feeling it? Return within 14 days for a refund or exchange. No drama.</p>" },
+    { "type": "richtext", "id": "__size", "label": "Akordeon — Size", "default": "<p>Oversized streetwear fit. True to size — size down for a regular fit. See the size guide for measurements.</p>" }
+  ],
+  "presets": [ { "name": "Produkt" } ]
+}
+{% endschema %}

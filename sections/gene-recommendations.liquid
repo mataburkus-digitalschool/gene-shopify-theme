@@ -1,0 +1,43 @@
+{%- assign coll = product.collections.first -%}
+{%- assign pool = coll.products | default: collections.all.products -%}
+<section class="g-wrap grec" style="padding:40px 24px;">
+  <h2 class="grec-title">{{ section.settings.title | default: 'You may also like' }}</h2>
+  <div class="grec-grid">
+    {%- assign shown = 0 -%}
+    {%- for p in pool -%}
+      {%- if p.id != product.id and shown < 4 -%}
+        {%- assign shown = shown | plus: 1 -%}
+        <a class="grec-card" href="{{ p.url }}">
+          <div class="grec-img">
+            {%- if p.featured_media -%}<img src="{{ p.featured_media | image_url: width: 700 }}" alt="{{ p.title | escape }}" loading="lazy">{%- else -%}{{ 'product-2' | placeholder_svg_tag }}{%- endif -%}
+            {%- if p.compare_at_price > p.price -%}<span class="grec-sale">Sale</span>{%- endif -%}
+          </div>
+          <div class="grec-name">{{ p.title }}</div>
+          <div class="grec-price">
+            {%- if p.compare_at_price > p.price -%}<s>{{ p.compare_at_price | money }}</s> {%- endif -%}{{ p.price | money }}
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+.grec-title{ font-weight:800; font-size:clamp(22px,2.4vw,30px); letter-spacing:-0.02em; margin:0 0 22px; }
+.grec-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+.grec-card{ text-decoration:none; color:inherit; display:block; }
+.grec-img{ position:relative; aspect-ratio:1/1; border:1px solid var(--line); border-radius:6px; overflow:hidden; background:var(--tag); }
+.grec-img img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s var(--ease); }
+.grec-card:hover .grec-img img{ transform:scale(1.03); }
+.grec-sale{ position:absolute; top:10px; left:10px; background:var(--ink); color:#fff; font-size:11px; font-weight:700; padding:3px 9px; border-radius:4px; }
+.grec-name{ font-size:14px; margin:12px 0 4px; }
+.grec-price{ font-size:14px; font-weight:600; }
+.grec-price s{ color:var(--ink-muted); font-weight:400; }
+@media (max-width:820px){ .grec-grid{ grid-template-columns:repeat(2,1fr); gap:12px; } }
+</style>
+{% schema %}
+{
+  "name": "GENE — Doporučené",
+  "settings": [ { "type": "text", "id": "title", "label": "Nadpis", "default": "You may also like" } ],
+  "presets": [ { "name": "GENE — Doporučené" } ]
+}
+{% endschema %}

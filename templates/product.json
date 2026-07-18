@@ -12,9 +12,33 @@
     "main": {
       "type": "gene-product-main",
       "settings": {}
+    },
+    "reviews": {
+      "type": "gene-reviews",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "quote": "Heavyweight material and the fit is perfect.", "name": "Mason R.", "meta": "Verified buyer" } },
+        "r2": { "type": "review", "settings": { "quote": "Fit is crazy. Quality surprised me honestly.", "name": "Ethan M.", "meta": "Verified buyer" } },
+        "r3": { "type": "review", "settings": { "quote": "Shipping was fast and the quality is solid.", "name": "Jayden T.", "meta": "Verified buyer" } }
+      },
+      "block_order": ["r1", "r2", "r3"],
+      "settings": {
+        "title": "Customer Reviews",
+        "subtitle": "4.8 average · 8,900+ verified customers"
+      }
+    },
+    "trustpilot": {
+      "type": "gene-trustpilot",
+      "settings": {}
+    },
+    "recommendations": {
+      "type": "gene-recommendations",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "main",
+    "reviews",
+    "trustpilot",
+    "recommendations"
   ]
 }
