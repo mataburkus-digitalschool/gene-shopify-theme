@@ -1,5 +1,7 @@
 {%- comment -%} Práh pro dopravu zdarma v haléřích (150000 = 1500 Kč). Uprav dle skutečné hranice. {%- endcomment -%}
 {%- assign free_ship_threshold = 150000 -%}
+{%- comment -%} Sleva na bundle „kup 2 kusy" v %. Reálně nastav automatickou slevu v Shopify adminu (Discounts). {%- endcomment -%}
+{%- assign bundle_discount = 15 -%}
 
 <div class="g-wrap gcart" style="padding:48px 24px;max-width:920px;">
   <h1 style="font-weight:800;margin:0 0 22px;">Košík</h1>
@@ -20,6 +22,24 @@
       </div>
       <div class="gcart-ship-track"><div class="gcart-ship-fill" style="width:{{ pct }}%;"></div></div>
     </div>
+
+    {%- comment -%} ── BUNDLE „KUP 2, UŠETŘI" ── {%- endcomment -%}
+    {%- assign target = cart.items | sort: 'quantity' | first -%}
+    {%- if target and target.quantity < 2 and target.product.available -%}
+    {%- assign save2 = target.variant.price | times: bundle_discount | divided_by: 100 -%}
+    <div class="gcart-bundle">
+      <div class="gcart-bundle-ic">🎁</div>
+      <div class="gcart-bundle-txt">
+        <b>Vezmi 2 kusy a ušetři {{ bundle_discount }} %.</b>
+        <span>Přidej ještě jeden „{{ target.product.title }}" a ušetříš {{ save2 | money }} — sleva se sečte v pokladně.</span>
+      </div>
+      <form action="{{ routes.cart_add_url }}" method="post">
+        <input type="hidden" name="id" value="{{ target.variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="g-btn gcart-bundle-btn">+ Přidat druhý</button>
+      </form>
+    </div>
+    {%- endif -%}
 
     <form action="{{ routes.cart_url }}" method="post" class="gcart-form">
       {% for item in cart.items %}
@@ -113,6 +133,12 @@
 .gcart-ship-msg{ font-size:14.5px; margin-bottom:10px; }
 .gcart-ship-track{ height:9px; border-radius:999px; background:var(--tag); overflow:hidden; }
 .gcart-ship-fill{ height:100%; background:var(--ink); border-radius:999px; transition:width .4s ease; }
+.gcart-bundle{ display:flex; align-items:center; gap:14px; border:1.5px solid var(--ink); border-radius:12px; padding:14px 16px; margin-bottom:24px; background:var(--tag); flex-wrap:wrap; }
+.gcart-bundle-ic{ font-size:22px; }
+.gcart-bundle-txt{ flex:1; min-width:210px; font-size:14px; line-height:1.4; display:flex; flex-direction:column; gap:2px; }
+.gcart-bundle-txt span{ color:var(--ink-soft); font-size:13px; }
+.gcart-bundle-btn{ white-space:nowrap; padding:11px 18px; font-size:14px; }
+@media (max-width:520px){ .gcart-bundle-btn{ width:100%; } }
 .gcart-row{ display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line); align-items:center; }
 .gcart-row img{ width:64px; height:80px; object-fit:cover; border-radius:5px; display:block; }
 .gcart-info{ flex:1; min-width:0; }
