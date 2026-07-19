@@ -48,9 +48,10 @@
         {%- endunless -%}
       {%- endfor -%}
       {%- if use_cat_menu -%}
-        {%- for link in section.settings.category_menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
-      {%- else -%}
-        {%- for label in cat_labels -%}<a href="{{ routes.root_url }}collections/{{ cat_handles[forloop.index0] }}">{{ label }}</a>{%- endfor -%}
+        {%- for link in section.settings.category_menu.links -%}
+          {%- assign lt = link.title | downcase -%}
+          {%- unless lt == 'contact' or lt == 'kontakt' or link.url contains '/pages/contact' -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endunless -%}
+        {%- endfor -%}
       {%- endif -%}
       <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">{{ section.settings.contact_label | default: 'Contact' }}</a>
     </nav>
@@ -105,7 +106,7 @@
     { "type": "text", "id": "logo_text", "label": "Text loga (pokud není obrázek)", "default": "GENE®" },
     { "type": "text", "id": "tagline", "label": "Tagline pod logem", "default": "STREETWEAR" },
     { "type": "link_list", "id": "menu", "label": "Hlavní menu", "default": "main-menu" },
-    { "type": "link_list", "id": "category_menu", "label": "Menu kategorií (jinak Tees/Hoodies/Bottoms/Shorts)" },
+    { "type": "link_list", "id": "category_menu", "label": "Extra menu kategorií (volitelné, přidá se za hlavní menu)" },
     { "type": "text", "id": "search_label", "label": "Popisek hledání", "default": "Search" },
     { "type": "text", "id": "login_label", "label": "Text přihlášení", "default": "Log in" },
     { "type": "text", "id": "cart_label", "label": "Text košíku", "default": "Cart" },
