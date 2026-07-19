@@ -33,12 +33,9 @@
   <!-- slide-down menu (all screen sizes) -->
   <div class="gh-mobile">
     <nav class="gh-mnav">
-      <a href="{{ routes.all_products_collection_url }}">Catalog</a>
-      <a href="{{ routes.root_url }}collections/tees">Tees</a>
-      <a href="{{ routes.root_url }}collections/hoodies">Hoodies</a>
-      <a href="{{ routes.root_url }}collections/bottoms">Bottoms</a>
-      <a href="{{ routes.root_url }}collections/shorts">Shorts</a>
-      <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">{{ section.settings.contact_label | default: 'Contact' }}</a>
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
     </nav>
     <div class="gh-mactions">
       <a href="{{ routes.cart_url }}" class="gh-mact gh-mact--primary">{{ section.settings.cart_label }} <span>({{ cart.item_count }})</span></a>
