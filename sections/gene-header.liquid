@@ -49,6 +49,7 @@
       {%- else -%}
         {%- for label in cat_labels -%}<a href="{{ routes.root_url }}collections/{{ cat_handles[forloop.index0] }}">{{ label }}</a>{%- endfor -%}
       {%- endif -%}
+      <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">{{ section.settings.contact_label | default: 'Contact' }}</a>
     </nav>
     <div class="gh-mactions">
       <a href="{{ routes.cart_url }}" class="gh-mact gh-mact--primary">{{ section.settings.cart_label }} <span>({{ cart.item_count }})</span></a>
@@ -105,7 +106,9 @@
     { "type": "text", "id": "search_label", "label": "Popisek hledání", "default": "Search" },
     { "type": "text", "id": "login_label", "label": "Text přihlášení", "default": "Log in" },
     { "type": "text", "id": "cart_label", "label": "Text košíku", "default": "Cart" },
-    { "type": "text", "id": "profile_label", "label": "Text profilu (mobil)", "default": "Profil" }
+    { "type": "text", "id": "profile_label", "label": "Text profilu (mobil)", "default": "Profil" },
+    { "type": "text", "id": "contact_label", "label": "Kontakt — text", "default": "Contact" },
+    { "type": "url", "id": "contact_url", "label": "Kontakt — odkaz", "default": "/pages/contact" }
   ]
 }
 {% endschema %}

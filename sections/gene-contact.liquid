@@ -1,0 +1,92 @@
+<section class="g-wrap gcontact" style="padding:56px 24px;">
+  <div class="gcontact-grid">
+    <div class="gcontact-info">
+      {%- if section.settings.eyebrow != blank -%}<div class="g-eyebrow" style="margin-bottom:10px;">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h1 class="g-h2" style="margin:0 0 16px;">{{ section.settings.title }}</h1>
+      {%- if section.settings.intro != blank -%}<p class="gcontact-intro">{{ section.settings.intro }}</p>{%- endif -%}
+
+      <div class="gcontact-details">
+        {%- if section.settings.email != blank -%}
+          <div class="gcontact-item"><span>Email</span><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></div>
+        {%- endif -%}
+        {%- if section.settings.phone != blank -%}
+          <div class="gcontact-item"><span>Phone</span><a href="tel:{{ section.settings.phone | replace: ' ', '' }}">{{ section.settings.phone }}</a></div>
+        {%- endif -%}
+        {%- if section.settings.hours != blank -%}
+          <div class="gcontact-item"><span>Hours</span><span>{{ section.settings.hours }}</span></div>
+        {%- endif -%}
+        {%- if section.settings.address != blank -%}
+          <div class="gcontact-item"><span>Address</span><span>{{ section.settings.address }}</span></div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="gcontact-formwrap">
+      {%- form 'contact' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="gcontact-success">✓ {{ section.settings.success_text | default: 'Thanks — your message is on its way. We usually reply within 24 h.' }}</p>
+        {%- endif -%}
+        {{ form.errors | default_errors }}
+        <div class="gcontact-field">
+          <label for="gc-name">Name</label>
+          <input type="text" id="gc-name" name="contact[name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+        </div>
+        <div class="gcontact-field">
+          <label for="gc-email">Email *</label>
+          <input type="email" id="gc-email" name="contact[email]" required value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+        </div>
+        <div class="gcontact-field">
+          <label for="gc-subject">Subject</label>
+          <input type="text" id="gc-subject" name="contact[subject]" value="{{ form.subject }}">
+        </div>
+        <div class="gcontact-field">
+          <label for="gc-body">Message *</label>
+          <textarea id="gc-body" name="contact[body]" rows="6" required>{{ form.body }}</textarea>
+        </div>
+        <button type="submit" class="g-btn gcontact-submit">{{ section.settings.button_label | default: 'Send message' }}</button>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .gcontact-grid { display:grid; grid-template-columns:0.9fr 1.1fr; gap:48px; align-items:start; }
+  .gcontact-intro { font-size:16px; line-height:1.6; color:var(--ink-soft); max-width:42ch; margin:0 0 28px; }
+  .gcontact-details { display:flex; flex-direction:column; gap:16px; }
+  .gcontact-item { display:flex; flex-direction:column; gap:3px; }
+  .gcontact-item > span:first-child { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); }
+  .gcontact-item a, .gcontact-item > span:last-child { font-size:15px; font-weight:600; color:var(--ink); text-decoration:none; }
+  .gcontact-item a:hover { text-decoration:underline; }
+
+  .gcontact-formwrap { border:1px solid var(--line); border-radius:14px; padding:26px; }
+  .gcontact-field { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+  .gcontact-field label { font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft); }
+  .gcontact-field input, .gcontact-field textarea { font:inherit; font-size:15px; padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--paper); color:var(--ink); width:100%; resize:vertical; }
+  .gcontact-field input:focus, .gcontact-field textarea:focus { outline:none; border-color:var(--ink); }
+  .gcontact-submit { width:100%; padding:15px; font-size:15px; }
+  .gcontact-success { background:var(--ink); color:#fff; padding:14px 16px; border-radius:10px; font-size:14px; margin:0 0 18px; }
+
+  @media (max-width:800px){
+    .gcontact-grid { grid-template-columns:1fr; gap:32px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "GENE — Kontakt",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Get in touch" },
+    { "type": "text", "id": "title", "label": "Nadpis", "default": "Contact" },
+    { "type": "textarea", "id": "intro", "label": "Úvodní text", "default": "Questions about sizing, a drop or your order? Send us a message and we'll get back to you fast." },
+    { "type": "header", "content": "Kontaktní údaje" },
+    { "type": "text", "id": "email", "label": "Email", "default": "support@genestreetwear.com" },
+    { "type": "text", "id": "phone", "label": "Telefon" },
+    { "type": "text", "id": "hours", "label": "Otevírací doba / dostupnost", "default": "Mon–Fri, 9:00–17:00" },
+    { "type": "text", "id": "address", "label": "Adresa" },
+    { "type": "header", "content": "Formulář" },
+    { "type": "text", "id": "button_label", "label": "Text tlačítka", "default": "Send message" },
+    { "type": "text", "id": "success_text", "label": "Text po odeslání", "default": "Thanks — your message is on its way. We usually reply within 24 h." }
+  ],
+  "presets": [{ "name": "GENE — Kontakt" }]
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "contact": {
+      "type": "gene-contact",
+      "settings": {}
+    }
+  },
+  "order": ["contact"]
+}
