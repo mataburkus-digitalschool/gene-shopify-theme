@@ -82,6 +82,33 @@
     cursor: default; font-size: 12.5px;
   }
   #gene-grid-{{ section.id }} .gg-add--out:hover { background:var(--paper); }
+
+  /* Quick-add size modal */
+  .gg-modal { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; }
+  .gg-modal[hidden] { display: none; }
+  .gg-modal__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+  .gg-modal__panel { position: relative; z-index: 1; width: 460px; max-width: calc(100% - 32px); max-height: 85vh; overflow-y: auto; background: var(--paper); border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.28); }
+  .gg-modal__head { position: sticky; top: 0; background: var(--paper); display: grid; grid-template-columns: 24px 1fr 24px; align-items: center; padding: 16px; border-bottom: 1px solid var(--line); }
+  .gg-modal__title { grid-column: 2; text-align: center; font-weight: 800; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .gg-modal__close { grid-column: 3; background: none; border: none; padding: 0; cursor: pointer; color: var(--ink); display: inline-flex; }
+  .gg-modal__close svg { width: 22px; height: 22px; }
+  .gg-modal__prod { display: flex; gap: 14px; padding: 16px; }
+  .gg-modal__img { width: 84px; height: 100px; flex: none; border-radius: 8px; overflow: hidden; background: #EFEFEF; }
+  .gg-modal__img img { width: 100%; height: 100%; object-fit: cover; }
+  .gg-modal__meta { display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+  .gg-modal__name { font-weight: 600; font-size: 16px; }
+  .gg-modal__price { font-weight: 700; font-size: 15px; }
+  .gg-modal__label { padding: 6px 16px 4px; font-weight: 800; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .gg-modal__sizes { display: flex; flex-direction: column; padding-bottom: 8px; }
+  .gg-msize { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 17px 16px; background: none; border: none; border-top: 1px solid var(--line); font: inherit; font-weight: 700; font-size: 15px; text-align: left; color: var(--ink); cursor: pointer; }
+  .gg-msize:hover:not(.is-out) { background: rgba(0,0,0,0.05); }
+  .gg-msize.is-out { color: var(--ink-muted); cursor: default; }
+  .gg-msize__oos { font-weight: 700; font-size: 14px; color: var(--ink-muted); }
+  .gg-msize.is-loading { opacity: 0.5; }
+  @media (max-width: 600px) {
+    .gg-modal { align-items: flex-end; }
+    .gg-modal__panel { width: 100%; max-width: 100%; max-height: 88vh; border-radius: 18px 18px 0 0; }
+  }
 {% endstyle %}
 
 <div id="gene-grid-{{ section.id }}" data-cart-add-url="{{ routes.cart_add_url }}">
@@ -157,27 +184,16 @@
             </div>
             {%- if sold_out -%}
               <button class="gg-add gg-add--out" type="button" disabled>{{ section.settings.soldout_button_label }}</button>
-            {%- else -%}
-              {%- if section.settings.show_sizes and size_option != blank -%}
-                <div class="gg-sizes" role="group" aria-label="{{ size_option.name }}">
-                  {%- for value in size_option.values -%}
-                    {%- liquid
-                      assign v = product.variants | where: 'option1', value | first
-                    -%}
-                    <button type="button" class="gg-size{% if v.id == fav.id %} is-active{% endif %}"
-                      data-size data-variant-id="{{ v.id }}"
-                      {% unless v.available %}disabled{% endunless %}>{{ value }}</button>
-                  {%- endfor -%}
-                </div>
-              {%- endif -%}
-              {%- if section.settings.show_quick_add -%}
-                {%- if product.variants.size == 1 or size_option != blank -%}
-                  <button class="gg-add" type="button" data-add data-label="{{ section.settings.quick_add_label | escape }}">
-                    {{ section.settings.quick_add_label }}<span class="gg-add-price"> — {{ product.price | money }}</span>
-                  </button>
-                {%- else -%}
-                  <a class="gg-add" href="{{ product.url }}">{{ section.settings.options_label }}</a>
-                {%- endif -%}
+            {%- elsif section.settings.show_quick_add -%}
+              {%- if size_option != blank -%}
+                <button class="gg-add" type="button" data-qa-open>{{ section.settings.quick_add_label }}</button>
+                <script type="application/json" class="gg-qa">{"name":{{ product.title | json }},"price":{{ product.price | money | json }},"img":{{ product.featured_media | image_url: width: 320 | json }},"variants":[{%- for v in product.variants -%}{"id":{{ v.id }},"title":{{ v.title | json }},"available":{{ v.available }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]}</script>
+              {%- elsif product.variants.size == 1 -%}
+                <button class="gg-add" type="button" data-add data-label="{{ section.settings.quick_add_label | escape }}">
+                  {{ section.settings.quick_add_label }}<span class="gg-add-price"> — {{ product.price | money }}</span>
+                </button>
+              {%- else -%}
+                <a class="gg-add" href="{{ product.url }}">{{ section.settings.options_label }}</a>
               {%- endif -%}
             {%- endif -%}
           </div>
@@ -197,12 +213,84 @@
   </div>
 </div>
 
+<div class="gg-modal" id="gg-modal-{{ section.id }}" hidden>
+  <div class="gg-modal__overlay" data-qa-close></div>
+  <div class="gg-modal__panel" role="dialog" aria-modal="true" aria-label="{{ section.settings.quick_add_label }}">
+    <div class="gg-modal__head">
+      <span class="gg-modal__title">{{ section.settings.quick_add_label }}</span>
+      <button class="gg-modal__close" type="button" data-qa-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+    </div>
+    <div class="gg-modal__prod">
+      <div class="gg-modal__img"><img data-qa-img src="" alt="" loading="lazy"></div>
+      <div class="gg-modal__meta">
+        <div class="gg-modal__name" data-qa-name></div>
+        <div class="gg-modal__price" data-qa-price></div>
+      </div>
+    </div>
+    <div class="gg-modal__label">{{ section.settings.select_size_label }}</div>
+    <div class="gg-modal__sizes" data-qa-sizes></div>
+  </div>
+</div>
+
 <script>
 (function () {
   var root = document.getElementById('gene-grid-{{ section.id }}');
   if (!root || root.dataset.ggInit) return;
   root.dataset.ggInit = '1';
   var addUrl = root.dataset.cartAddUrl || '/cart/add';
+
+  // ---- Quick-add size modal (Gymshark style) ----
+  var modal = document.getElementById('gg-modal-{{ section.id }}');
+  var qaSizes = modal && modal.querySelector('[data-qa-sizes]');
+  var oosLabel = {{ section.settings.size_oos_label | json }};
+
+  function openModal(card) {
+    if (!modal || !card) return;
+    var dataEl = card.querySelector('.gg-qa');
+    if (!dataEl) return;
+    var d;
+    try { d = JSON.parse(dataEl.textContent); } catch (err) { return; }
+    var img = modal.querySelector('[data-qa-img]');
+    if (img) { if (d.img) { img.src = d.img; img.style.display = ''; } else { img.style.display = 'none'; } }
+    modal.querySelector('[data-qa-name]').textContent = d.name || '';
+    modal.querySelector('[data-qa-price]').textContent = d.price || '';
+    qaSizes.innerHTML = (d.variants || []).map(function (v) {
+      if (v.available) {
+        return '<button type="button" class="gg-msize" data-qa-size data-variant-id="' + v.id + '"><span>' + v.title + '</span></button>';
+      }
+      return '<div class="gg-msize is-out"><span>' + v.title + '</span><span class="gg-msize__oos">' + oosLabel + '</span></div>';
+    }).join('');
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() { if (modal) { modal.hidden = true; document.body.style.overflow = ''; } }
+
+  root.addEventListener('click', function (e) {
+    var openBtn = e.target.closest('[data-qa-open]');
+    if (openBtn) { openModal(openBtn.closest('[data-product]')); }
+  });
+  if (modal) {
+    modal.addEventListener('click', function (e) {
+      if (e.target.closest('[data-qa-close]')) { closeModal(); return; }
+      var sizeRow = e.target.closest('[data-qa-size]');
+      if (!sizeRow) return;
+      var variantId = sizeRow.dataset.variantId;
+      if (!variantId || sizeRow.classList.contains('is-loading')) return;
+      sizeRow.classList.add('is-loading');
+      fetch(addUrl + '.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('add failed');
+        closeModal();
+        refreshCart();
+      }).catch(function () { sizeRow.classList.remove('is-loading'); });
+    });
+  }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
 
   root.addEventListener('click', function (e) {
     var sizeBtn = e.target.closest('[data-size]');
@@ -294,6 +382,8 @@
     { "type": "text", "id": "added_label", "label": "Text po přidání", "default": "✓ Přidáno" },
     { "type": "text", "id": "options_label", "label": "Text u produktů s více variantami", "default": "Vybrat možnosti" },
     { "type": "text", "id": "soldout_button_label", "label": "Text tlačítka u vyprodaného", "default": "Vyprodáno" },
+    { "type": "text", "id": "select_size_label", "label": "Nadpis výběru velikosti (modal)", "default": "Select size" },
+    { "type": "text", "id": "size_oos_label", "label": "Text vyprodané velikosti (modal)", "default": "Out of stock" },
 
     { "type": "header", "content": "Styl tlačítek a karet" },
     { "type": "color", "id": "ink", "label": "Základní barva (text, rámečky, štítky)", "default": "#1A1A1A" },
