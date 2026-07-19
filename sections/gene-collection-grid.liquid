@@ -1,5 +1,5 @@
 <div class="g-wrap" style="padding:48px 24px;">
-  <h1 style="font-weight:800;font-size:clamp(28px,3.4vw,38px);letter-spacing:-0.02em;">{{ collection.title }}</h1>
+  <h1 style="font-weight:800;font-size:clamp(28px,3.4vw,38px);letter-spacing:-0.02em;text-transform:uppercase;">{{ collection.title }}</h1>
   {% paginate collection.products by 24 %}
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
     {% for product in collection.products %}

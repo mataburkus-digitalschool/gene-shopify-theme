@@ -1,6 +1,6 @@
 <section style="background:var(--ink);color:#fff;">
   <div class="g-wrap" style="padding:22px 24px;display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;text-align:center;">
-    <div style="font-weight:800;font-size:clamp(20px,2.6vw,28px);letter-spacing:-0.01em;">{{ section.settings.heading_prefix }} <span style="text-decoration:underline;text-underline-offset:4px;">{{ section.settings.heading_underline }}</span></div>
+    <div style="font-weight:800;font-size:clamp(20px,2.6vw,28px);letter-spacing:-0.01em;text-transform:uppercase;">{{ section.settings.heading_prefix }} <span style="text-decoration:underline;text-underline-offset:4px;">{{ section.settings.heading_underline }}</span></div>
     <div id="gcd-{{ section.id }}" style="display:flex;gap:8px;font-variant-numeric:tabular-nums;">
       {%- assign units = 'Hrs,Min,Sec' | split: ',' -%}
       {%- for u in units -%}
