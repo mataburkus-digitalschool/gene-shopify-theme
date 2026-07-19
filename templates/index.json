@@ -40,42 +40,26 @@
             "title": "Fast Shipping",
             "text": "5–10 day worldwide"
           }
-        },
-        "t3": {
-          "type": "item",
-          "settings": {
-            "title": "14-Day Returns",
-            "text": "Easy, no drama"
-          }
-        },
-        "t4": {
-          "type": "item",
-          "settings": {
-            "title": "Secure Checkout",
-            "text": "Apple · Google · Shop Pay"
-          }
         }
       },
       "block_order": [
         "t1",
-        "t2",
-        "t3",
-        "t4"
+        "t2"
       ],
       "settings": {}
     },
     "countdown": {
       "type": "gene-countdown",
       "settings": {
-        "heading_prefix": "SUMMER ARCHIVE —",
-        "heading_underline": "SALE DIES AT MIDNIGHT"
+        "heading_prefix": "SALE DIES AT MIDNIGHT",
+        "heading_underline": ""
       }
     },
     "grid_sale": {
       "type": "gene-product-grid",
       "settings": {
-        "eyebrow": "On sale now · while stock lasts",
-        "title": "Summer Archive",
+        "eyebrow": "",
+        "title": "Summer archive",
         "collection": "summer-archive",
         "products_to_show": 9,
         "show_view_all": true,
@@ -145,7 +129,7 @@
         "b3"
       ],
       "settings": {
-        "eyebrow": "Buy the set · save more",
+        "eyebrow": "",
         "title": "Bundles & Sets"
       }
     },
@@ -207,7 +191,7 @@
     "grid_new": {
       "type": "gene-product-grid",
       "settings": {
-        "eyebrow": "Fresh off the drop",
+        "eyebrow": "",
         "title": "New Arrivals",
         "collection": "new-arrivals",
         "products_to_show": 9,
