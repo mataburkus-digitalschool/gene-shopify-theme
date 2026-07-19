@@ -13,11 +13,23 @@
   "sections": {
     "announcement": {
       "type": "gene-announcement",
-      "settings": {}
+      "settings": {
+        "text": "Free shipping over $75 · 14-day returns · Code FAM10 — 10% off first drop"
+      }
     },
     "header": {
       "type": "gene-header",
-      "settings": {}
+      "settings": {
+        "logo_height": 40,
+        "logo_text": "GENE®",
+        "tagline": "",
+        "menu": "main-menu",
+        "category_menu": "",
+        "search_label": "Search",
+        "login_label": "Log in",
+        "cart_label": "Cart",
+        "profile_label": "Profil"
+      }
     }
   },
   "order": [
