@@ -29,7 +29,7 @@
       <img src="{{ 'hero.jpg' | asset_url }}" alt="{{ shop.name | escape }}" style="width:100%;height:100%;object-fit:cover;display:block;">
     {%- endif -%}
     {%- if section.settings.image_badge != blank -%}
-    <div class="gh-imgbadge" style="position:absolute;bottom:14px;left:14px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:7px 12px;border-radius:4px;">{{ section.settings.image_badge }}</div>
+    <div class="gh-imgbadge" style="position:absolute;bottom:14px;left:14px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:7px 14px;border-radius:999px;">{{ section.settings.image_badge }}</div>
     {%- endif -%}
   </div>
 </section>

@@ -22,7 +22,7 @@
     <div {{ block.shopify_attributes }} style="border:1.5px solid var(--ink);border-radius:6px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column;">
       <div style="position:relative;aspect-ratio:16/10;background:var(--tag);overflow:hidden;">
         {%- if img -%}<img src="{{ img | image_url: width: 800 }}" alt="{{ block.settings.title | escape }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">{%- else -%}{{ 'product-apparel-2' | placeholder_svg_tag }}{%- endif -%}
-        {%- if is_set -%}<span style="position:absolute;top:10px;left:10px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.1em;padding:4px 8px;border-radius:4px;">SAVE {{ save | money }}</span>{%- endif -%}
+        {%- if is_set -%}<span style="position:absolute;top:10px;left:10px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.1em;padding:5px 11px;border-radius:999px;">SAVE {{ save | money }}</span>{%- endif -%}
       </div>
       <div style="padding:16px 16px 18px;display:flex;flex-direction:column;gap:10px;flex:1;">
         <div style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);">{{ block.settings.tag }}</div>
