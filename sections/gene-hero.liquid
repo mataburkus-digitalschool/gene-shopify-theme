@@ -1,4 +1,4 @@
-<section class="g-wrap ghero" style="padding:56px 24px 44px;">
+<section class="g-wrap ghero">
   <div class="ghero-text">
     {%- if section.settings.badge != blank -%}
     <div class="gh-badge" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;">
@@ -34,13 +34,13 @@
   </div>
 </section>
 <style>
-.ghero { display:grid; grid-template-columns:1.05fr 0.95fr; gap:44px; align-items:center; }
+.ghero { display:grid; grid-template-columns:1.05fr 0.95fr; gap:44px; align-items:center; padding:28px 24px 26px; }
 .ghero-text { display:flex; flex-direction:column; }
 .ghero-btns .g-btn { white-space:nowrap; }
 .gh-h1-m { display:none; }
 @media (max-width:900px){
   /* mobil: krátký nadpis (1 řádek) → social proof těsně pod → velká fotka s tlačítky na ní */
-  .ghero { display:flex; flex-direction:column; gap:0; align-items:stretch; }
+  .ghero { display:flex; flex-direction:column; gap:0; align-items:stretch; padding:14px 20px 16px; }
   .ghero-text { display:contents; }
   .gh-badge { display:none; }
   .gh-sub { display:none; }
