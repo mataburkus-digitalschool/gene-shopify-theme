@@ -1,10 +1,10 @@
-{%- comment -%} Práh pro dopravu zdarma v haléřích (150000 = 1500 Kč). Uprav dle skutečné hranice. {%- endcomment -%}
+{%- comment -%} Free-shipping threshold in cents (150000 = 1500 CZK). Adjust to your real threshold. {%- endcomment -%}
 {%- assign free_ship_threshold = 150000 -%}
-{%- comment -%} Sleva na bundle „kup 2 kusy" v %. Reálně nastav automatickou slevu v Shopify adminu (Discounts). {%- endcomment -%}
+{%- comment -%} "Buy 2" bundle discount in %. Set the real automatic discount in Shopify admin (Discounts). {%- endcomment -%}
 {%- assign bundle_discount = 15 -%}
 
 <div class="g-wrap gcart" style="padding:48px 24px;max-width:920px;">
-  <h1 style="font-weight:800;margin:0 0 22px;">Košík</h1>
+  <h1 style="font-weight:800;margin:0 0 22px;">Cart</h1>
 
   {% if cart.item_count > 0 %}
 
@@ -15,28 +15,28 @@
     <div class="gcart-ship">
       <div class="gcart-ship-msg">
         {%- if remaining > 0 -%}
-          🚚 Přidej ještě <b>{{ remaining | money }}</b> a máš <b>dopravu zdarma</b>!
+          🚚 Add <b>{{ remaining | money }}</b> more to get <b>free shipping</b>!
         {%- else -%}
-          🎉 <b>Máš dopravu zdarma!</b> Můžeš jít do pokladny.
+          🎉 <b>You've got free shipping!</b> Head to checkout.
         {%- endif -%}
       </div>
       <div class="gcart-ship-track"><div class="gcart-ship-fill" style="width:{{ pct }}%;"></div></div>
     </div>
 
-    {%- comment -%} ── BUNDLE „KUP 2, UŠETŘI" ── {%- endcomment -%}
+    {%- comment -%} ── BUNDLE "BUY 2, SAVE" ── {%- endcomment -%}
     {%- assign target = cart.items | sort: 'quantity' | first -%}
     {%- if target and target.quantity < 2 and target.product.available -%}
     {%- assign save2 = target.variant.price | times: bundle_discount | divided_by: 100 -%}
     <div class="gcart-bundle">
       <div class="gcart-bundle-ic">🎁</div>
       <div class="gcart-bundle-txt">
-        <b>Vezmi 2 kusy a ušetři {{ bundle_discount }} %.</b>
-        <span>Přidej ještě jeden „{{ target.product.title }}" a ušetříš {{ save2 | money }} — sleva se sečte v pokladně.</span>
+        <b>Take 2 and save {{ bundle_discount }}%.</b>
+        <span>Add one more "{{ target.product.title }}" and save {{ save2 | money }} — the discount applies at checkout.</span>
       </div>
       <form action="{{ routes.cart_add_url }}" method="post">
         <input type="hidden" name="id" value="{{ target.variant.id }}">
         <input type="hidden" name="quantity" value="1">
-        <button type="submit" class="g-btn gcart-bundle-btn">+ Přidat druhý</button>
+        <button type="submit" class="g-btn gcart-bundle-btn">+ Add a second</button>
       </form>
     </div>
     {%- endif -%}
@@ -48,22 +48,22 @@
         <div class="gcart-info">
           <a href="{{ item.url }}" class="gcart-name">{{ item.product.title }}</a>
           {%- unless item.variant.title contains 'Default' -%}<div class="gcart-var">{{ item.variant.title }}</div>{%- endunless -%}
-          {%- if item.original_line_price > item.final_line_price -%}<div class="gcart-save">Ušetřeno {{ item.original_line_price | minus: item.final_line_price | money }}</div>{%- endif -%}
+          {%- if item.original_line_price > item.final_line_price -%}<div class="gcart-save">Saved {{ item.original_line_price | minus: item.final_line_price | money }}</div>{%- endif -%}
         </div>
-        <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="gcart-qty" aria-label="Množství">
+        <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="gcart-qty" aria-label="Quantity">
         <div class="gcart-price">{{ item.final_line_price | money }}</div>
-        <a href="{{ item.url_to_remove }}" class="gcart-remove" aria-label="Odebrat">✕</a>
+        <a href="{{ item.url_to_remove }}" class="gcart-remove" aria-label="Remove">✕</a>
       </div>
       {% endfor %}
 
       <div class="gcart-foot">
-        <button type="submit" class="g-btn g-btn--outline">Přepočítat</button>
+        <button type="submit" class="g-btn g-btn--outline">Update</button>
         <div class="gcart-foot-r">
-          <span class="gcart-total"><span style="font-weight:400;color:var(--ink-soft);font-size:14px;">Mezisoučet</span> <b>{{ cart.total_price | money }}</b></span>
-          <button type="submit" name="checkout" class="g-btn">Pokladna →</button>
+          <span class="gcart-total"><span style="font-weight:400;color:var(--ink-soft);font-size:14px;">Subtotal</span> <b>{{ cart.total_price | money }}</b></span>
+          <button type="submit" name="checkout" class="g-btn">Checkout →</button>
         </div>
       </div>
-      <div class="gcart-note">Doprava a slevy se spočítají v pokladně.</div>
+      <div class="gcart-note">Shipping &amp; discounts calculated at checkout.</div>
     </form>
 
     {%- comment -%} ── UPSELL ── {%- endcomment -%}
@@ -72,7 +72,7 @@
     {%- assign pool = collections.all.products -%}
     {%- assign upsell_count = 0 -%}
     <div class="gcart-up">
-      <h2 class="gcart-up-title">Mohlo by se ti líbit</h2>
+      <h2 class="gcart-up-title">You may also like</h2>
       <div class="gcart-up-grid">
         {%- for p in pool -%}
           {%- assign pid = p.id | append: ',' -%}
@@ -84,11 +84,7 @@
                 <div class="gcart-up-body">
                   <a href="{{ p.url }}" class="gcart-up-name">{{ p.title }}</a>
                   <div class="gcart-up-price">{%- if p.compare_at_price > p.price -%}<s>{{ p.compare_at_price | money }}</s> {%- endif -%}{{ p.price | money }}</div>
-                  <form action="{{ routes.cart_add_url }}" method="post">
-                    <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="g-btn g-btn--outline gcart-up-add">+ Přidat</button>
-                  </form>
+                  {% render 'gcart-add', p: p %}
                 </div>
               </div>
             {%- endif -%}
@@ -98,12 +94,12 @@
     </div>
 
   {% else %}
-    <p class="gcart-empty">Košík je zatím prázdný — mrkni na to, co teď letí. 👇</p>
-    <a class="g-btn g-btn--outline" href="{{ routes.all_products_collection_url | default: routes.root_url }}" style="margin-bottom:38px;">Prohlédnout obchod</a>
+    <p class="gcart-empty">Your cart is empty — check out what's dropping now. 👇</p>
+    <a class="g-btn g-btn--outline" href="{{ routes.all_products_collection_url | default: routes.root_url }}" style="margin-bottom:38px;">Browse the shop</a>
 
     {%- assign bs = collections['best-sellers'].products | default: collections['frontpage'].products | default: collections.all.products -%}
     <div class="gcart-up" style="border-top:none;margin-top:0;padding-top:0;">
-      <h2 class="gcart-up-title">Nejprodávanější</h2>
+      <h2 class="gcart-up-title">Best sellers</h2>
       <div class="gcart-up-grid gcart-up-grid--4">
         {%- assign n = 0 -%}
         {%- for p in bs -%}
@@ -114,11 +110,7 @@
               <div class="gcart-up-body">
                 <a href="{{ p.url }}" class="gcart-up-name">{{ p.title }}</a>
                 <div class="gcart-up-price">{%- if p.compare_at_price > p.price -%}<s>{{ p.compare_at_price | money }}</s> {%- endif -%}{{ p.price | money }}</div>
-                <form action="{{ routes.cart_add_url }}" method="post">
-                  <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
-                  <input type="hidden" name="quantity" value="1">
-                  <button type="submit" class="g-btn g-btn--outline gcart-up-add">+ Přidat</button>
-                </form>
+                {% render 'gcart-add', p: p %}
               </div>
             </div>
           {%- endif -%}
@@ -126,6 +118,28 @@
       </div>
     </div>
   {% endif %}
+</div>
+
+{%- comment -%} ── QUICK-ADD SIZE MODAL (matches homepage) ── {%- endcomment -%}
+<div class="gg-modal" id="gcart-qa-modal" hidden>
+  <div class="gg-modal__overlay" data-qa-close></div>
+  <div class="gg-modal__panel" role="dialog" aria-modal="true" aria-label="Quick add">
+    <div class="gg-modal__head">
+      <span class="gg-modal__title">Quick add</span>
+      <button class="gg-modal__close" type="button" data-qa-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+    </div>
+    <div class="gg-modal__prod">
+      <div class="gg-modal__img"><img data-qa-img src="" alt="" loading="lazy"></div>
+      <div class="gg-modal__meta">
+        <div class="gg-modal__name" data-qa-name></div>
+        <div class="gg-modal__price" data-qa-price></div>
+      </div>
+    </div>
+    <div class="gg-modal__label">Select size</div>
+    <div class="gg-modal__sizes" data-qa-sizes></div>
+  </div>
 </div>
 
 <style>
@@ -145,7 +159,7 @@
 .gcart-name{ font-weight:600; color:var(--ink); text-decoration:none; }
 .gcart-var{ font-size:12px; color:var(--ink-muted); margin-top:2px; }
 .gcart-save{ font-size:12px; color:#c0392b; font-weight:600; margin-top:3px; }
-.gcart-qty{ width:60px; padding:8px; border:1px solid var(--line); border-radius:6px; text-align:center; font:inherit; }
+.gcart-qty{ width:60px; padding:8px; border:1px solid var(--line); border-radius:6px; text-align:center; font:inherit; background:var(--paper); }
 .gcart-price{ font-weight:700; min-width:84px; text-align:right; }
 .gcart-remove{ color:var(--ink-muted); text-decoration:none; font-size:14px; padding:4px; }
 .gcart-remove:hover{ color:var(--ink); }
@@ -163,7 +177,7 @@
 .gcart-up-name{ font-size:14px; font-weight:600; color:var(--ink); text-decoration:none; }
 .gcart-up-price{ font-size:14px; font-weight:600; }
 .gcart-up-price s{ color:var(--ink-muted); font-weight:400; }
-.gcart-up-add{ margin-top:auto; padding:9px 14px; font-size:13px; }
+.gcart-up-add{ margin-top:auto; padding:9px 14px; font-size:13px; width:100%; }
 .gcart-empty{ color:var(--ink-soft); font-size:15px; margin:0 0 16px; }
 .gcart-up-grid--4{ grid-template-columns:repeat(4,1fr); }
 @media (max-width:900px){ .gcart-up-grid--4{ grid-template-columns:repeat(2,1fr); } }
@@ -172,4 +186,80 @@
   .gcart-foot{ flex-direction:column; align-items:stretch; }
   .gcart-foot-r{ justify-content:space-between; }
 }
+
+/* quick-add size modal */
+.gg-modal { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; }
+.gg-modal[hidden] { display: none; }
+.gg-modal__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+.gg-modal__panel { position: relative; z-index: 1; width: 460px; max-width: calc(100% - 32px); max-height: 85vh; overflow-y: auto; background: var(--paper); border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.28); }
+.gg-modal__head { position: sticky; top: 0; background: var(--paper); display: grid; grid-template-columns: 24px 1fr 24px; align-items: center; padding: 16px; border-bottom: 1px solid var(--line); }
+.gg-modal__title { grid-column: 2; text-align: center; font-weight: 800; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+.gg-modal__close { grid-column: 3; background: none; border: none; padding: 0; cursor: pointer; color: var(--ink); display: inline-flex; }
+.gg-modal__close svg { width: 22px; height: 22px; }
+.gg-modal__prod { display: flex; gap: 14px; padding: 16px; }
+.gg-modal__img { width: 84px; height: 100px; flex: none; border-radius: 8px; overflow: hidden; background: #EFEFEF; }
+.gg-modal__img img { width: 100%; height: 100%; object-fit: cover; }
+.gg-modal__meta { display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+.gg-modal__name { font-weight: 600; font-size: 16px; }
+.gg-modal__price { font-weight: 700; font-size: 15px; }
+.gg-modal__label { padding: 6px 16px 4px; font-weight: 800; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+.gg-modal__sizes { display: flex; flex-direction: column; padding-bottom: 8px; }
+.gg-msize { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 17px 16px; background: none; border: none; border-top: 1px solid var(--line); font: inherit; font-weight: 700; font-size: 15px; text-align: left; color: var(--ink); cursor: pointer; }
+.gg-msize:hover:not(.is-out) { background: rgba(0,0,0,0.05); }
+.gg-msize.is-out { color: var(--ink-muted); cursor: default; }
+.gg-msize__oos { font-weight: 700; font-size: 14px; color: var(--ink-muted); }
+.gg-msize.is-loading { opacity: 0.5; }
+@media (max-width: 600px) {
+  .gg-modal { align-items: flex-end; }
+  .gg-modal__panel { width: 100%; max-width: 100%; max-height: 88vh; border-radius: 18px 18px 0 0; }
+}
 </style>
+
+<script>
+(function () {
+  var modal = document.getElementById('gcart-qa-modal');
+  if (!modal) return;
+  var qaSizes = modal.querySelector('[data-qa-sizes]');
+
+  function openModal(card) {
+    var dataEl = card.querySelector('.gg-qa');
+    if (!dataEl) return;
+    var d; try { d = JSON.parse(dataEl.textContent); } catch (e) { return; }
+    var img = modal.querySelector('[data-qa-img]');
+    if (img) { if (d.img) { img.src = d.img; img.style.display = ''; } else { img.style.display = 'none'; } }
+    modal.querySelector('[data-qa-name]').textContent = d.name || '';
+    modal.querySelector('[data-qa-price]').textContent = d.price || '';
+    qaSizes.innerHTML = (d.variants || []).map(function (v) {
+      if (v.available) {
+        return '<button type="button" class="gg-msize" data-qa-size data-variant-id="' + v.id + '"><span>' + v.title + '</span></button>';
+      }
+      return '<div class="gg-msize is-out"><span>' + v.title + '</span><span class="gg-msize__oos">Out of stock</span></div>';
+    }).join('');
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() { modal.hidden = true; document.body.style.overflow = ''; }
+
+  document.addEventListener('click', function (e) {
+    var openBtn = e.target.closest('[data-qa-open]');
+    if (openBtn) { e.preventDefault(); openModal(openBtn.closest('.gcart-up-card')); return; }
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-qa-close]')) { closeModal(); return; }
+    var sizeRow = e.target.closest('[data-qa-size]');
+    if (!sizeRow || sizeRow.classList.contains('is-loading')) return;
+    var variantId = sizeRow.dataset.variantId;
+    if (!variantId) return;
+    sizeRow.classList.add('is-loading');
+    fetch('{{ routes.cart_add_url }}.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('add failed');
+      window.location.reload();
+    }).catch(function () { sizeRow.classList.remove('is-loading'); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+})();
+</script>
