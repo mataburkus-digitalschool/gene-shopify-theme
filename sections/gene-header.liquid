@@ -42,7 +42,10 @@
   <div class="gh-mobile">
     <nav class="gh-mnav">
       {%- for link in section.settings.menu.links -%}
-        <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- assign lt = link.title | downcase -%}
+        {%- unless lt == 'contact' or lt == 'kontakt' or link.url contains '/pages/contact' -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endunless -%}
       {%- endfor -%}
       {%- if use_cat_menu -%}
         {%- for link in section.settings.category_menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
