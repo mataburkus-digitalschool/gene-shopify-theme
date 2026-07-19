@@ -36,7 +36,7 @@
   }
   #gene-grid-{{ section.id }} .gg-card {
     border: 1px solid #DDDDDD; border-radius: {{ section.settings.card_radius }}px;
-    overflow: hidden; background: #fff; display: flex; flex-direction: column;
+    overflow: hidden; background:var(--paper); display: flex; flex-direction: column;
     transition: border-color .2s cubic-bezier(.2,.8,.2,1);
   }
   #gene-grid-{{ section.id }} .gg-card:hover { border-color: {{ section.settings.ink }}; }
@@ -51,7 +51,7 @@
     letter-spacing: 0.08em; padding: 4px 8px; border-radius: 4px; text-transform: uppercase;
     background: {{ section.settings.ink }}; color: #fff;
   }
-  #gene-grid-{{ section.id }} .gg-badge--out { background: #fff; color: {{ section.settings.ink }}; border: 1px solid {{ section.settings.ink }}; font-weight: 700; letter-spacing: 0.1em; }
+  #gene-grid-{{ section.id }} .gg-badge--out { background:var(--paper); color: {{ section.settings.ink }}; border: 1px solid {{ section.settings.ink }}; font-weight: 700; letter-spacing: 0.1em; }
   #gene-grid-{{ section.id }} .gg-badge--low { top: auto; bottom: 10px; background: rgba(26,26,26,0.9); letter-spacing: 0.06em; }
   #gene-grid-{{ section.id }} .gg-info { padding: 13px 13px 15px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
   #gene-grid-{{ section.id }} .gg-name { font-weight: 600; font-size: 14px; line-height: 1.25; color: inherit; text-decoration: none; }
@@ -62,7 +62,7 @@
   #gene-grid-{{ section.id }} .gg-size {
     padding: 6px 0; text-align: center; font-family: ui-monospace, 'SF Mono', Menlo, monospace;
     font-size: 10.5px; border-radius: 4px; cursor: pointer; border: 1px solid #DDDDDD;
-    background: #fff; color: inherit; transition: all .15s cubic-bezier(.2,.8,.2,1);
+    background:var(--paper); color: inherit; transition: all .15s cubic-bezier(.2,.8,.2,1);
   }
   #gene-grid-{{ section.id }} .gg-size[disabled] { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
   #gene-grid-{{ section.id }} .gg-size.is-active { background: {{ section.settings.ink }}; border-color: {{ section.settings.ink }}; color: #fff; }
@@ -78,10 +78,10 @@
   #gene-grid-{{ section.id }} .gg-add:hover { background: {{ section.settings.button_bg_hover }}; }
   #gene-grid-{{ section.id }} .gg-add:active { transform: scale(0.98); }
   #gene-grid-{{ section.id }} .gg-add--out {
-    background: #fff; color: {{ section.settings.ink }}; border: 1.5px solid {{ section.settings.ink }};
+    background:var(--paper); color: {{ section.settings.ink }}; border: 1.5px solid {{ section.settings.ink }};
     cursor: default; font-size: 12.5px;
   }
-  #gene-grid-{{ section.id }} .gg-add--out:hover { background: #fff; }
+  #gene-grid-{{ section.id }} .gg-add--out:hover { background:var(--paper); }
 {% endstyle %}
 
 <div id="gene-grid-{{ section.id }}" data-cart-add-url="{{ routes.cart_add_url }}">

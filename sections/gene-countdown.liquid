@@ -4,7 +4,7 @@
     <div id="gcd-{{ section.id }}" style="display:flex;gap:8px;font-variant-numeric:tabular-nums;">
       {%- assign units = 'Hrs,Min,Sec' | split: ',' -%}
       {%- for u in units -%}
-      <div style="background:#fff;color:var(--ink);border-radius:6px;padding:8px 12px;min-width:58px;">
+      <div style="background:var(--paper);color:var(--ink);border-radius:6px;padding:8px 12px;min-width:58px;">
         <div data-u="{{ forloop.index0 }}" style="font-weight:800;font-size:24px;line-height:1;">00</div>
         <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-top:3px;">{{ u }}</div>
       </div>

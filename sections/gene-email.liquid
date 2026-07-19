@@ -16,7 +16,7 @@
         <input type="hidden" name="contact[tags]" value="newsletter">
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <input type="email" name="contact[email]" required placeholder="{{ section.settings.placeholder }}" style="flex:1;min-width:180px;padding:14px 16px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:#fff;border-radius:999px;font:inherit;font-size:14px;">
-          <button type="submit" style="background:#fff;color:var(--ink);border:none;border-radius:999px;padding:14px 26px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;font-family:inherit;">{{ section.settings.btn_label }}</button>
+          <button type="submit" style="background:var(--paper);color:var(--ink);border:none;border-radius:999px;padding:14px 26px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;font-family:inherit;">{{ section.settings.btn_label }}</button>
         </div>
         <p style="font-size:11.5px;color:rgba(255,255,255,0.5);margin:12px 0 0;">{{ section.settings.legal }}</p>
         {%- endif -%}

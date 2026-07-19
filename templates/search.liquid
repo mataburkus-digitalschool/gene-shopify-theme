@@ -3,7 +3,7 @@
   <form action="{{ routes.search_url }}" method="get"><input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Hledat…" style="padding:12px;border:1.5px solid var(--ink);border-radius:999px;width:100%;max-width:420px;font:inherit;"></form>
   {% if search.performed %}
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:24px;">
-    {% for item in search.results %}<a href="{{ item.url }}" style="border:1px solid var(--line);border-radius:6px;padding:14px;text-decoration:none;background:#fff;display:block;font-weight:600;">{{ item.title }}</a>{% endfor %}
+    {% for item in search.results %}<a href="{{ item.url }}" style="border:1px solid var(--line);border-radius:6px;padding:14px;text-decoration:none;background:var(--paper);display:block;font-weight:600;">{{ item.title }}</a>{% endfor %}
   </div>
   {% endif %}
 </div>
