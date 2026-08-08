@@ -32,7 +32,14 @@
   </style>
 </head>
 <body>
-  {% sections 'header-group' %}
+  {%- comment -%}
+    Sekce vkládané napřímo, ne přes skupinu. Soubor sections/header-group.json
+    se do motivu v Shopify nepřenesl (v editoru kódu tam není), takže volání
+    {% sections 'header-group' %} nemělo co vykreslit a hlavička chyběla celá.
+    Statické sekce na žádný extra soubor nečekají.
+  {%- endcomment -%}
+  {% section 'gene-announcement' %}
+  {% section 'gene-header' %}
   <main>{{ content_for_layout }}</main>
 
   <footer style="background:#1A1A1A;color:#fff;margin-top:40px;padding:56px 24px 28px;">
