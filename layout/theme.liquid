@@ -32,7 +32,15 @@
   </style>
 </head>
 <body>
-  {% sections 'header-group' %}
+  {%- comment -%}
+    Hlavička se vkládá napřímo, ne přes sekční skupinu. JSON soubory skupin
+    vlastní theme editor — když jednou z motivu vypadnou (což se stalo, viz
+    commit s odstraněním "default" u url settingů), push z GitHubu je zpátky
+    nevytvoří a volání skupiny nemá co vykreslit. Statické sekce na žádný
+    další soubor nečekají.
+  {%- endcomment -%}
+  {% section 'gene-announcement' %}
+  {% section 'gene-header' %}
   <main>{{ content_for_layout }}</main>
 
   <footer style="background:#1A1A1A;color:#fff;margin-top:40px;padding:56px 24px 28px;">
