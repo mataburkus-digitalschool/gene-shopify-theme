@@ -1,3 +1,11 @@
+{%- comment -%}
+  Výchozí odkazy patří sem, ne do schématu. Nastavení typu "url" nesmí mít
+  "default" — Shopify na tom celý soubor odmítne při syncu z GitHubu a sekce
+  se do motivu vůbec nepřenese.
+{%- endcomment -%}
+{%- assign foot_contact_url = section.settings.contact_url | default: '/pages/contact' -%}
+{%- assign foot_tiktok = section.settings.tiktok | default: 'https://www.tiktok.com/@genestreetwear' -%}
+{%- assign foot_instagram = section.settings.instagram | default: 'https://www.instagram.com/genestreetwear' -%}
 <footer style="background:var(--ink);color:#fff;margin-top:40px;padding:56px 24px 28px;">
   <div class="g-wrap gfoot-grid">
     <div>
@@ -8,7 +16,7 @@
     <div>
       <h4 class="gfoot-h">{{ section.settings.policies_heading }}</h4>
       <div class="gfoot-links">
-        {%- if section.settings.contact_url != blank -%}<a href="{{ section.settings.contact_url }}">{{ section.settings.contact_label }}</a>{%- endif -%}
+        {%- if foot_contact_url != blank -%}<a href="{{ foot_contact_url }}">{{ section.settings.contact_label }}</a>{%- endif -%}
         {%- if shop.refund_policy != blank -%}<a href="{{ shop.refund_policy.url }}">Refund Policy</a>{%- endif -%}
         {%- if shop.terms_of_service != blank -%}<a href="{{ shop.terms_of_service.url }}">Terms of Service</a>{%- endif -%}
         {%- if shop.shipping_policy != blank -%}<a href="{{ shop.shipping_policy.url }}">Shipping Policy</a>{%- endif -%}
@@ -28,8 +36,8 @@
     <div>
       <h4 class="gfoot-h">{{ section.settings.links_heading }}</h4>
       <div class="gfoot-links">
-        {%- if section.settings.tiktok != blank -%}<a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener">TikTok</a>{%- endif -%}
-        {%- if section.settings.instagram != blank -%}<a href="{{ section.settings.instagram }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+        {%- if foot_tiktok != blank -%}<a href="{{ foot_tiktok }}" target="_blank" rel="noopener">TikTok</a>{%- endif -%}
+        {%- if foot_instagram != blank -%}<a href="{{ foot_instagram }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
       </div>
     </div>
 
@@ -71,7 +79,7 @@
     { "type": "textarea", "id": "text", "label": "Text pod logem", "default": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide." },
     { "type": "header", "content": "Sloupec: Policies" },
     { "type": "text", "id": "policies_heading", "label": "Nadpis", "default": "Policies" },
-    { "type": "url", "id": "contact_url", "label": "Contact Information — odkaz", "default": "/pages/contact" },
+    { "type": "url", "id": "contact_url", "label": "Contact Information — odkaz" },
     { "type": "text", "id": "contact_label", "label": "Contact Information — text", "default": "Contact Information" },
     { "type": "header", "content": "Sloupec: Contact Us" },
     { "type": "text", "id": "contact_heading", "label": "Nadpis", "default": "Contact Us:" },
@@ -79,8 +87,8 @@
     { "type": "text", "id": "contact_email", "label": "E-mail", "default": "support@genestreetwear.com" },
     { "type": "header", "content": "Sloupec: Our Links" },
     { "type": "text", "id": "links_heading", "label": "Nadpis", "default": "Our Links:" },
-    { "type": "url", "id": "tiktok", "label": "TikTok URL", "default": "https://www.tiktok.com/@genestreetwear" },
-    { "type": "url", "id": "instagram", "label": "Instagram URL", "default": "https://www.instagram.com/genestreetwear" },
+    { "type": "url", "id": "tiktok", "label": "TikTok URL" },
+    { "type": "url", "id": "instagram", "label": "Instagram URL" },
     { "type": "header", "content": "Dole" },
     { "type": "text", "id": "payments", "label": "Platební metody", "default": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna" }
   ],
