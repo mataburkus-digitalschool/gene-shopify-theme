@@ -64,31 +64,115 @@
 {% schema %}
 {
   "name": "Patička",
-  "enabled_on": { "groups": ["footer"] },
   "max_blocks": 2,
   "settings": [
-    { "type": "text", "id": "brand", "label": "Značka", "default": "GENE®" },
-    { "type": "textarea", "id": "text", "label": "Text pod logem", "default": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide." },
-    { "type": "header", "content": "Sloupec: Policies" },
-    { "type": "text", "id": "policies_heading", "label": "Nadpis", "default": "Policies" },
-    { "type": "url", "id": "contact_url", "label": "Contact Information — odkaz", "default": "/pages/contact" },
-    { "type": "text", "id": "contact_label", "label": "Contact Information — text", "default": "Contact Information" },
-    { "type": "header", "content": "Sloupec: Contact Us" },
-    { "type": "text", "id": "contact_heading", "label": "Nadpis", "default": "Contact Us:" },
-    { "type": "text", "id": "contact_intro", "label": "Popisek", "default": "Email us at:" },
-    { "type": "text", "id": "contact_email", "label": "E-mail", "default": "support@genestreetwear.com" },
-    { "type": "header", "content": "Sloupec: Our Links" },
-    { "type": "text", "id": "links_heading", "label": "Nadpis", "default": "Our Links:" },
-    { "type": "url", "id": "tiktok", "label": "TikTok URL", "default": "https://www.tiktok.com/@genestreetwear" },
-    { "type": "url", "id": "instagram", "label": "Instagram URL", "default": "https://www.instagram.com/genestreetwear" },
-    { "type": "header", "content": "Dole" },
-    { "type": "text", "id": "payments", "label": "Platební metody", "default": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna" }
+    {
+      "type": "text",
+      "id": "brand",
+      "label": "Značka",
+      "default": "GENE®"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text pod logem",
+      "default": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide."
+    },
+    {
+      "type": "header",
+      "content": "Sloupec: Policies"
+    },
+    {
+      "type": "text",
+      "id": "policies_heading",
+      "label": "Nadpis",
+      "default": "Policies"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Contact Information — odkaz",
+      "default": "/pages/contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Contact Information — text",
+      "default": "Contact Information"
+    },
+    {
+      "type": "header",
+      "content": "Sloupec: Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "contact_heading",
+      "label": "Nadpis",
+      "default": "Contact Us:"
+    },
+    {
+      "type": "text",
+      "id": "contact_intro",
+      "label": "Popisek",
+      "default": "Email us at:"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "E-mail",
+      "default": "support@genestreetwear.com"
+    },
+    {
+      "type": "header",
+      "content": "Sloupec: Our Links"
+    },
+    {
+      "type": "text",
+      "id": "links_heading",
+      "label": "Nadpis",
+      "default": "Our Links:"
+    },
+    {
+      "type": "url",
+      "id": "tiktok",
+      "label": "TikTok URL",
+      "default": "https://www.tiktok.com/@genestreetwear"
+    },
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram URL",
+      "default": "https://www.instagram.com/genestreetwear"
+    },
+    {
+      "type": "header",
+      "content": "Dole"
+    },
+    {
+      "type": "text",
+      "id": "payments",
+      "label": "Platební metody",
+      "default": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna"
+    }
   ],
   "blocks": [
-    { "type": "menu", "name": "Sloupec menu (volitelné)", "settings": [
-      { "type": "text", "id": "heading", "label": "Nadpis", "default": "Shop" },
-      { "type": "link_list", "id": "menu", "label": "Menu" }
-    ] }
+    {
+      "type": "menu",
+      "name": "Sloupec menu (volitelné)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Nadpis",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
   ]
 }
 {% endschema %}
