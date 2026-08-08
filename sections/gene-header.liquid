@@ -95,20 +95,81 @@
 {% schema %}
 {
   "name": "Hlavička",
-  "enabled_on": { "groups": ["header"] },
   "settings": [
-    { "type": "image_picker", "id": "logo", "label": "Logo (obrázek)" },
-    { "type": "range", "id": "logo_height", "label": "Výška loga", "min": 18, "max": 72, "step": 2, "unit": "px", "default": 40 },
-    { "type": "text", "id": "logo_text", "label": "Text loga (pokud není obrázek)", "default": "GENE®" },
-    { "type": "text", "id": "tagline", "label": "Tagline pod logem", "default": "STREETWEAR" },
-    { "type": "link_list", "id": "menu", "label": "Hlavní menu", "default": "main-menu" },
-    { "type": "link_list", "id": "category_menu", "label": "Extra menu kategorií (volitelné, přidá se za hlavní menu)" },
-    { "type": "text", "id": "search_label", "label": "Popisek hledání", "default": "Search" },
-    { "type": "text", "id": "login_label", "label": "Text přihlášení", "default": "Log in" },
-    { "type": "text", "id": "cart_label", "label": "Text košíku", "default": "Cart" },
-    { "type": "text", "id": "profile_label", "label": "Text profilu (mobil)", "default": "Profil" },
-    { "type": "text", "id": "contact_label", "label": "Kontakt — text", "default": "Contact" },
-    { "type": "url", "id": "contact_url", "label": "Kontakt — odkaz", "default": "/pages/contact" }
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo (obrázek)"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Výška loga",
+      "min": 18,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Text loga (pokud není obrázek)",
+      "default": "GENE®"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline pod logem",
+      "default": "STREETWEAR"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Hlavní menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "category_menu",
+      "label": "Extra menu kategorií (volitelné, přidá se za hlavní menu)"
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Popisek hledání",
+      "default": "Search"
+    },
+    {
+      "type": "text",
+      "id": "login_label",
+      "label": "Text přihlášení",
+      "default": "Log in"
+    },
+    {
+      "type": "text",
+      "id": "cart_label",
+      "label": "Text košíku",
+      "default": "Cart"
+    },
+    {
+      "type": "text",
+      "id": "profile_label",
+      "label": "Text profilu (mobil)",
+      "default": "Profil"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Kontakt — text",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Kontakt — odkaz",
+      "default": "/pages/contact"
+    }
   ]
 }
 {% endschema %}
