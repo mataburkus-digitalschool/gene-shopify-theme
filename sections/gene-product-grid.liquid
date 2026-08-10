@@ -40,7 +40,7 @@
     transition: border-color .2s cubic-bezier(.2,.8,.2,1);
   }
   #gene-grid-{{ section.id }} .gg-card:hover { border-color: {{ section.settings.ink }}; }
-  #gene-grid-{{ section.id }} .gg-media { position: relative; display: block; aspect-ratio: 4/5; background: #EFEFEF; overflow: hidden; }
+  #gene-grid-{{ section.id }} .gg-media { position: relative; display: block; aspect-ratio: 1/1; background: #EFEFEF; overflow: hidden; }
   #gene-grid-{{ section.id }} .gg-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   #gene-grid-{{ section.id }} .gg-img2 { opacity: 0; transition: opacity .3s cubic-bezier(.2,.8,.2,1); }
   #gene-grid-{{ section.id }} .gg-card:hover .gg-img2 { opacity: 1; }
@@ -144,13 +144,6 @@
           if section.settings.show_new_badge and product.tags contains 'new'
             assign is_new = true
           endif
-          assign size_option = blank
-          if product.options.size == 1
-            assign opt_name = product.options[0] | downcase
-            if opt_name == 'size' or opt_name == 'velikost'
-              assign size_option = product.options_with_values[0]
-            endif
-          endif
           assign fav = product.selected_or_first_available_variant
           assign low_qty = 0
           if section.settings.low_stock_threshold > 0 and sold_out == false and fav.inventory_management != blank and fav.inventory_quantity > 0 and fav.inventory_quantity <= section.settings.low_stock_threshold
@@ -160,10 +153,10 @@
         <div class="gg-card" data-product data-default-variant="{{ fav.id }}">
           <a class="gg-media" href="{{ product.url }}">
             {%- if product.featured_media -%}
-              <img src="{{ product.featured_media | image_url: width: 700 }}" alt="{{ product.title | escape }}" loading="lazy" width="700" height="875"{% if sold_out %} class="gg-soldout-img"{% endif %}>
+              <img src="{{ product.featured_media | image_url: width: 700 }}" alt="{{ product.title | escape }}" loading="lazy" width="700" height="700"{% if sold_out %} class="gg-soldout-img"{% endif %}>
             {%- endif -%}
             {%- if section.settings.show_secondary_image and product.media[1] -%}
-              <img class="gg-img2" src="{{ product.media[1] | image_url: width: 700 }}" alt="" loading="lazy" width="700" height="875">
+              <img class="gg-img2" src="{{ product.media[1] | image_url: width: 700 }}" alt="" loading="lazy" width="700" height="700">
             {%- endif -%}
             {%- if sold_out and section.settings.show_soldout_badge -%}
               <span class="gg-badge gg-badge--out">{{ section.settings.soldout_label }}</span>
@@ -185,16 +178,12 @@
             {%- if sold_out -%}
               <button class="gg-add gg-add--out" type="button" disabled>{{ section.settings.soldout_button_label }}</button>
             {%- elsif section.settings.show_quick_add -%}
-              {%- if size_option != blank -%}
-                <button class="gg-add" type="button" data-qa-open>{{ section.settings.quick_add_label }}</button>
-                <script type="application/json" class="gg-qa">{"name":{{ product.title | json }},"price":{{ product.price | money | json }},"img":{{ product.featured_media | image_url: width: 320 | json }},"variants":[{%- for v in product.variants -%}{"id":{{ v.id }},"title":{{ v.title | json }},"available":{{ v.available }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]}</script>
-              {%- elsif product.variants.size == 1 -%}
-                <button class="gg-add" type="button" data-add data-label="{{ section.settings.quick_add_label | escape }}">
-                  {{ section.settings.quick_add_label }}<span class="gg-add-price"> — {{ product.price | money }}</span>
-                </button>
-              {%- else -%}
-                <a class="gg-add" href="{{ product.url }}">{{ section.settings.options_label }}</a>
-              {%- endif -%}
+              {%- comment -%}
+                Jedno chování pro všechny karty: quick add vždy otevře výběr
+                velikosti. Produkt bez skutečných variant nabídne „One size".
+              {%- endcomment -%}
+              <button class="gg-add" type="button" data-qa-open>{{ section.settings.quick_add_label }}</button>
+              <script type="application/json" class="gg-qa">{"name":{{ product.title | json }},"price":{{ product.price | money | json }},"img":{{ product.featured_media | image_url: width: 320 | json }},"variants":[{%- for v in product.variants -%}{%- if product.has_only_default_variant -%}{%- assign vt = 'One size' -%}{%- else -%}{%- assign vt = v.title -%}{%- endif -%}{"id":{{ v.id }},"title":{{ vt | json }},"available":{{ v.available }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]}</script>
             {%- endif -%}
           </div>
         </div>
@@ -380,7 +369,6 @@
     { "type": "checkbox", "id": "show_quick_add", "label": "Tlačítko rychlého přidání", "default": true },
     { "type": "text", "id": "quick_add_label", "label": "Text tlačítka", "default": "Quick add" },
     { "type": "text", "id": "added_label", "label": "Text po přidání", "default": "✓ Přidáno" },
-    { "type": "text", "id": "options_label", "label": "Text u produktů s více variantami", "default": "Vybrat možnosti" },
     { "type": "text", "id": "soldout_button_label", "label": "Text tlačítka u vyprodaného", "default": "Vyprodáno" },
     { "type": "text", "id": "select_size_label", "label": "Nadpis výběru velikosti (modal)", "default": "Select size" },
     { "type": "text", "id": "size_oos_label", "label": "Text vyprodané velikosti (modal)", "default": "Out of stock" },

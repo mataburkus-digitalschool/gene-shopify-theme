@@ -1,25 +1,137 @@
-<section class="g-wrap" style="padding:64px 24px 8px;">
-  <div style="text-align:center;margin-bottom:28px;">
-    <div style="letter-spacing:2px;font-size:18px;">★★★★★</div>
-    <h2 class="g-h2" style="margin:8px 0 4px;">{{ section.settings.title }}</h2>
-    <p style="font-size:14px;color:var(--ink-soft);margin:0;">{{ section.settings.subtitle }}</p>
+{%- comment -%}
+  Recenze jedou v nekonečné smyčce. Karty se proto vypisují dvakrát — druhá
+  sada je jen vizuální kopie (aria-hidden), díky které pás při posunu o půlku
+  své šířky navazuje bez skoku. Rychlost je odvozená od počtu recenzí, aby
+  tempo zůstalo stejné, ať jich klient přidá kolik chce.
+{%- endcomment -%}
+{%- assign per_card = section.settings.speed | default: 6 -%}
+{%- assign count = section.blocks.size -%}
+{%- if count < 1 -%}{%- assign count = 1 -%}{%- endif -%}
+{%- assign dur = count | times: per_card -%}
+
+<section class="grev" id="grev-{{ section.id }}">
+  <div class="g-wrap grev-head">
+    <div class="grev-stars-lg" aria-hidden="true">★★★★★</div>
+    <h2 class="g-h2 grev-title">{{ section.settings.title }}</h2>
+    {%- if section.settings.subtitle != blank -%}
+      <p class="grev-sub">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
   </div>
-  <div class="grev-grid">
-    {%- for block in section.blocks -%}
-    <div {{ block.shopify_attributes }} style="border:1px solid var(--line);border-radius:6px;padding:20px;background:var(--paper);">
-      <div style="letter-spacing:1px;font-size:13px;margin-bottom:10px;">★★★★★</div>
-      <p style="font-size:14.5px;line-height:1.55;margin:0 0 16px;">"{{ block.settings.quote }}"</p>
-      <div style="display:flex;align-items:center;gap:10px;">
-        {%- if block.settings.avatar -%}<img src="{{ block.settings.avatar | image_url: width: 80 }}" alt="" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">{%- endif -%}
-        <div><b style="font-size:13px;">{{ block.settings.name }}</b><div style="font-size:11px;color:var(--ink-muted);font-family:var(--mono);">{{ block.settings.meta }}</div></div>
-      </div>
+
+  {%- if section.blocks.size > 0 -%}
+  <div class="grev-marquee">
+    <div class="grev-track" style="animation-duration:{{ dur }}s;">
+      {%- for block in section.blocks -%}
+        <article class="grev-card" {{ block.shopify_attributes }}>
+          <div class="grev-stars" aria-hidden="true">★★★★★</div>
+          <p class="grev-quote">“{{ block.settings.quote }}”</p>
+          <div class="grev-who">
+            {%- if block.settings.avatar -%}
+              <img class="grev-ava" src="{{ block.settings.avatar | image_url: width: 96 }}" alt="" width="44" height="44" loading="lazy">
+            {%- else -%}
+              <span class="grev-ava grev-ava--ph" aria-hidden="true">{{ block.settings.name | slice: 0 }}</span>
+            {%- endif -%}
+            <div>
+              <b class="grev-name">{{ block.settings.name }}</b>
+              <div class="grev-meta">{{ block.settings.meta }}</div>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+
+      {%- comment -%} kopie pro plynulé napojení smyčky {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        <article class="grev-card grev-card--dup" aria-hidden="true">
+          <div class="grev-stars">★★★★★</div>
+          <p class="grev-quote">“{{ block.settings.quote }}”</p>
+          <div class="grev-who">
+            {%- if block.settings.avatar -%}
+              <img class="grev-ava" src="{{ block.settings.avatar | image_url: width: 96 }}" alt="" width="44" height="44" loading="lazy">
+            {%- else -%}
+              <span class="grev-ava grev-ava--ph">{{ block.settings.name | slice: 0 }}</span>
+            {%- endif -%}
+            <div>
+              <b class="grev-name">{{ block.settings.name }}</b>
+              <div class="grev-meta">{{ block.settings.meta }}</div>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
     </div>
-    {%- endfor -%}
   </div>
+  {%- endif -%}
 </section>
+
 <style>
-.grev-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-@media (max-width:900px){ .grev-grid{ grid-template-columns:1fr; } }
+  #grev-{{ section.id }} { padding:64px 0 40px; }
+  #grev-{{ section.id }} .grev-head { text-align:center; margin-bottom:34px; }
+  #grev-{{ section.id }} .grev-stars-lg { letter-spacing:3px; font-size:20px; }
+  #grev-{{ section.id }} .grev-title { margin:10px 0 6px; }
+  #grev-{{ section.id }} .grev-sub { font-size:14.5px; color:var(--ink-soft); margin:0; }
+
+  #grev-{{ section.id }} .grev-marquee {
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+            mask-image:linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  }
+  #grev-{{ section.id }} .grev-track {
+    display:flex; gap:20px; width:max-content;
+    animation-name:grev-scroll-{{ section.id }};
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+  }
+  #grev-{{ section.id }} .grev-marquee:hover .grev-track,
+  #grev-{{ section.id }} .grev-marquee:focus-within .grev-track { animation-play-state:paused; }
+
+  @keyframes grev-scroll-{{ section.id }} {
+    from { transform:translateX(0); }
+    to   { transform:translateX(calc(-50% - 10px)); }
+  }
+
+  #grev-{{ section.id }} .grev-card {
+    flex:0 0 380px; box-sizing:border-box;
+    border:1px solid var(--line); background:var(--paper);
+    border-radius:6px; padding:28px 26px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  #grev-{{ section.id }} .grev-stars { letter-spacing:2px; font-size:15px; }
+  #grev-{{ section.id }} .grev-quote {
+    font-size:17px; line-height:1.5; margin:0; flex:1;
+    letter-spacing:-0.01em; text-wrap:pretty;
+  }
+  #grev-{{ section.id }} .grev-who { display:flex; align-items:center; gap:12px; }
+  #grev-{{ section.id }} .grev-ava {
+    width:44px; height:44px; border-radius:50%; object-fit:cover; flex:none;
+  }
+  #grev-{{ section.id }} .grev-ava--ph {
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--tag); color:var(--ink-soft);
+    font-weight:700; font-size:16px; text-transform:uppercase;
+  }
+  #grev-{{ section.id }} .grev-name { font-size:14px; }
+  #grev-{{ section.id }} .grev-meta {
+    font-size:11.5px; color:var(--ink-muted); font-family:var(--mono);
+  }
+
+  @media (max-width:600px){
+    #grev-{{ section.id }} { padding:48px 0 28px; }
+    #grev-{{ section.id }} .grev-card { flex-basis:290px; padding:22px 20px; }
+    #grev-{{ section.id }} .grev-quote { font-size:15.5px; }
+  }
+
+  {%- comment -%}
+    Bez animace zůstane pás obyčejně posuvný prstem a kopie se schová, aby
+    se recenze nezobrazovaly dvakrát.
+  {%- endcomment -%}
+  @media (prefers-reduced-motion: reduce){
+    #grev-{{ section.id }} .grev-track { animation:none; width:auto; }
+    #grev-{{ section.id }} .grev-marquee {
+      overflow-x:auto; scroll-snap-type:x mandatory;
+      padding:0 24px; -webkit-mask-image:none; mask-image:none;
+    }
+    #grev-{{ section.id }} .grev-card { scroll-snap-align:center; }
+    #grev-{{ section.id }} .grev-card--dup { display:none; }
+  }
 </style>
 {% schema %}
 {
@@ -27,7 +139,8 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "title", "label": "Titulek", "default": "Loved by the fam" },
-    { "type": "text", "id": "subtitle", "label": "Podtitulek", "default": "4.8 average · 8,900+ verified customers" }
+    { "type": "text", "id": "subtitle", "label": "Podtitulek", "default": "4.8 average · 8,900+ verified customers" },
+    { "type": "range", "id": "speed", "label": "Sekund na jednu recenzi", "info": "Vyšší číslo = pomalejší posun.", "min": 2, "max": 14, "step": 1, "unit": "s", "default": 6 }
   ],
   "blocks": [
     { "type": "review", "name": "Recenze", "settings": [

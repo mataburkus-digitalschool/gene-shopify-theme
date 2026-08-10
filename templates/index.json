@@ -270,28 +270,28 @@
           "type": "stat",
           "settings": {
             "value": "2019",
-            "label": "Založeno"
+            "label": "Founded"
           }
         },
         "s2": {
           "type": "stat",
           "settings": {
-            "value": "50+",
-            "label": "Zemí"
+            "value": "Worldwide",
+            "label": "Shipping"
           }
         },
         "s3": {
           "type": "stat",
           "settings": {
-            "value": "8 900+",
-            "label": "Zákazníků"
+            "value": "8,900+",
+            "label": "Customers"
           }
         },
         "s4": {
           "type": "stat",
           "settings": {
             "value": "Limited",
-            "label": "Každý drop"
+            "label": "Every drop"
           }
         }
       },
