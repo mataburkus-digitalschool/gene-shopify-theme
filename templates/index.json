@@ -60,7 +60,7 @@
       "settings": {
         "eyebrow": "",
         "title": "Summer archive",
-        "collection": "sale",
+        "collection": "summer-archive",
         "products_to_show": 4,
         "show_view_all": true,
         "view_all_label": "View all",
@@ -77,7 +77,6 @@
         "show_quick_add": true,
         "quick_add_label": "Quick add",
         "added_label": "✓ Přidáno",
-        "options_label": "Vybrat možnosti",
         "soldout_button_label": "Vyprodáno",
         "select_size_label": "Select size",
         "size_oos_label": "Out of stock",
@@ -207,7 +206,6 @@
         "show_quick_add": true,
         "quick_add_label": "Quick add",
         "added_label": "✓ Přidáno",
-        "options_label": "Vybrat možnosti",
         "soldout_button_label": "Vyprodáno",
         "select_size_label": "Select size",
         "size_oos_label": "Out of stock",
@@ -345,7 +343,8 @@
       ],
       "settings": {
         "title": "Loved by the fam",
-        "subtitle": "4.8 average · 8,900+ verified customers"
+        "subtitle": "4.8 average · 8,900+ verified customers",
+        "speed": 6
       }
     },
     "banner": {
