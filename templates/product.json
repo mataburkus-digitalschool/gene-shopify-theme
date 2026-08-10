@@ -11,16 +11,49 @@
   "sections": {
     "main": {
       "type": "gene-product-main",
-      "settings": {}
+      "settings": {
+        "show_urgency": true,
+        "low_stock": 10,
+        "limited_text": "LIMITED STOCK. NEVER RESTOCKING!",
+        "atc_label": "Add to cart",
+        "acc_shipping": "<p>Free shipping over $75. Orders ship in 1-2 business days, delivery 5-10 days worldwide with tracking.</p>",
+        "acc_returns": "<p>Not feeling it? Return within 14 days for a refund or exchange. No drama.</p>",
+        "acc_size": "<p>Oversized streetwear fit. True to size - size down for a regular fit. See the size guide for measurements.</p>"
+      }
     },
     "reviews": {
       "type": "gene-reviews",
       "blocks": {
-        "r1": { "type": "review", "settings": { "quote": "Heavyweight material and the fit is perfect.", "name": "Mason R.", "meta": "Verified buyer" } },
-        "r2": { "type": "review", "settings": { "quote": "Fit is crazy. Quality surprised me honestly.", "name": "Ethan M.", "meta": "Verified buyer" } },
-        "r3": { "type": "review", "settings": { "quote": "Shipping was fast and the quality is solid.", "name": "Jayden T.", "meta": "Verified buyer" } }
+        "r1": {
+          "type": "review",
+          "settings": {
+            "quote": "Heavyweight material and the fit is perfect.",
+            "name": "Mason R.",
+            "meta": "Verified buyer"
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "quote": "Fit is crazy. Quality surprised me honestly.",
+            "name": "Ethan M.",
+            "meta": "Verified buyer"
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "quote": "Shipping was fast and the quality is solid.",
+            "name": "Jayden T.",
+            "meta": "Verified buyer"
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3"],
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
       "settings": {
         "title": "Customer Reviews",
         "subtitle": "4.8 average · 8,900+ verified customers"
@@ -28,11 +61,18 @@
     },
     "trustpilot": {
       "type": "gene-trustpilot",
-      "settings": {}
+      "settings": {
+        "word": "Excellent",
+        "rating": "4.9",
+        "count": "1000+",
+        "bg": "#e3e2de"
+      }
     },
     "recommendations": {
       "type": "gene-recommendations",
-      "settings": {}
+      "settings": {
+        "title": "You may also like"
+      }
     }
   },
   "order": [
