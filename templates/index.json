@@ -60,7 +60,7 @@
       "settings": {
         "eyebrow": "",
         "title": "Summer archive",
-        "collection": "summer-archive",
+        "collection": "sale",
         "products_to_show": 9,
         "show_view_all": true,
         "view_all_label": "View all",
@@ -79,6 +79,8 @@
         "added_label": "✓ Přidáno",
         "options_label": "Vybrat možnosti",
         "soldout_button_label": "Vyprodáno",
+        "select_size_label": "Select size",
+        "size_oos_label": "Out of stock",
         "ink": "#1a1a1a",
         "button_bg": "#1a1a1a",
         "button_bg_hover": "#000000",
@@ -140,7 +142,6 @@
           "type": "tile",
           "settings": {
             "collection": "",
-            "image": "shopify://shop_images/Image_15_3a6a0df4-8547-452b-895e-685c062157aa.jpg",
             "title": ""
           }
         },
@@ -148,7 +149,6 @@
           "type": "tile",
           "settings": {
             "collection": "",
-            "image": "shopify://shop_images/Image_11.jpg",
             "title": ""
           }
         },
@@ -156,7 +156,6 @@
           "type": "tile",
           "settings": {
             "collection": "",
-            "image": "shopify://shop_images/Image_12.jpg",
             "title": ""
           }
         },
@@ -164,7 +163,6 @@
           "type": "tile",
           "settings": {
             "collection": "",
-            "image": "shopify://shop_images/Image_14.jpg",
             "title": ""
           }
         },
@@ -172,7 +170,6 @@
           "type": "tile",
           "settings": {
             "collection": "",
-            "image": "shopify://shop_images/Image_13.jpg",
             "title": ""
           }
         }
@@ -212,6 +209,8 @@
         "added_label": "✓ Přidáno",
         "options_label": "Vybrat možnosti",
         "soldout_button_label": "Vyprodáno",
+        "select_size_label": "Select size",
+        "size_oos_label": "Out of stock",
         "ink": "#1a1a1a",
         "button_bg": "#1a1a1a",
         "button_bg_hover": "#000000",
