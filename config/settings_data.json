@@ -41,15 +41,15 @@
               "heading": "Policies",
               "new_tab": false,
               "l1_label": "Refund Policy",
-              "l1_url": "/pages/refund-policy",
+              "l1_url": "shopify://policies/refund-policy",
               "l2_label": "Terms of Service",
-              "l2_url": "/pages/terms-of-service",
+              "l2_url": "shopify://policies/terms-of-service",
               "l3_label": "Shipping Policy",
-              "l3_url": "/pages/shipping-policy",
+              "l3_url": "shopify://policies/shipping-policy",
               "l4_label": "Privacy Policy",
-              "l4_url": "/pages/privacy-policy",
+              "l4_url": "shopify://policies/privacy-policy",
               "l5_label": "Contact Information",
-              "l5_url": "/pages/contact",
+              "l5_url": "shopify://policies/contact-information",
               "l6_label": "",
               "l6_url": ""
             }
@@ -92,8 +92,8 @@
           "copyright": "© 2026 GENE STREETWEAR",
           "payments": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna",
           "credit": "Designed by Digital School",
-          "bg": "#1A1A1A",
-          "text_color": "#FFFFFF"
+          "bg": "#1a1a1a",
+          "text_color": "#ffffff"
         }
       }
     },
