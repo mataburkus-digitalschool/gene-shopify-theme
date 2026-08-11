@@ -19,7 +19,7 @@
       "gene-header": {
         "type": "gene-header",
         "settings": {
-          "logo_height": 54,
+          "logo_height": 48,
           "logo_text": "GENE®",
           "tagline": "",
           "menu": "main-menu",
