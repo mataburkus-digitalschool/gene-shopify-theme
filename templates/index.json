@@ -190,7 +190,7 @@
         "eyebrow": "",
         "title": "New Arrivals",
         "collection": "new-arrivals",
-        "products_to_show": 9,
+        "products_to_show": 6,
         "show_view_all": true,
         "view_all_label": "View all",
         "columns_desktop": 4,
@@ -222,8 +222,8 @@
     "marquee": {
       "type": "gene-marquee",
       "settings": {
-        "text": "OVER 8,900+ CUSTOMERS | BUILT DIFFERENT | WORN LOUD | LIMITED DROPS · NO RESTOCK",
-        "speed": 26
+        "text": "OVER 8,900+ CUSTOMERS | BUILT DIFFERENT | WORN LOUD | LIMITED DROPS · NO RESTOCK OVER 8,900+ CUSTOMERS | BUILT DIFFERENT | WORN LOUD | LIMITED DROPS · NO RESTOCK",
+        "speed": 34
       }
     },
     "why": {
