@@ -51,7 +51,7 @@
     "countdown": {
       "type": "gene-countdown",
       "settings": {
-        "heading_prefix": "SALE DIES AT MIDNIGHT",
+        "heading_prefix": "SALE DIES AT MIDNIGHT!",
         "heading_underline": ""
       }
     },
@@ -220,13 +220,6 @@
         "title": "Bundles & Sets"
       }
     },
-    "marquee": {
-      "type": "gene-marquee",
-      "settings": {
-        "text": "OVER 8,900+ CUSTOMERS | BUILT DIFFERENT | WORN LOUD | LIMITED DROPS · NO RESTOCK OVER 8,900+ CUSTOMERS | BUILT DIFFERENT | WORN LOUD | LIMITED DROPS · NO RESTOCK",
-        "speed": 34
-      }
-    },
     "why": {
       "type": "gene-why",
       "blocks": {
@@ -260,53 +253,6 @@
       "disabled": true,
       "settings": {
         "title": "Why GENE hits different"
-      }
-    },
-    "about": {
-      "type": "gene-about",
-      "blocks": {
-        "s1": {
-          "type": "stat",
-          "settings": {
-            "value": "2019",
-            "label": "Founded"
-          }
-        },
-        "s2": {
-          "type": "stat",
-          "settings": {
-            "value": "Worldwide",
-            "label": "Shipping"
-          }
-        },
-        "s3": {
-          "type": "stat",
-          "settings": {
-            "value": "8,900+",
-            "label": "Customers"
-          }
-        },
-        "s4": {
-          "type": "stat",
-          "settings": {
-            "value": "Limited",
-            "label": "Every drop"
-          }
-        }
-      },
-      "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "settings": {
-        "eyebrow": "About Gene · Est. 2019",
-        "heading": "Born from the streets. Built for the bold.",
-        "body": "<p>Gene Streetwear was founded in 2019 by a group of young creatives tired of paying $200+ for a hoodie just because of a logo. Fire fits shouldn't come with a fire price tag.</p><p>We started small. One hoodie. One vision — premium streetwear without the premium markup. Today we ship worldwide to thousands who refuse to blend in.</p><p>This isn't fast fashion. It's streetwear for people who know exactly what they want.</p>",
-        "tagline": "Limited pieces · Real price · No compromises",
-        "btn_label": "Shop the drop",
-        "btn_url": ""
       }
     },
     "reviews": {
@@ -357,13 +303,14 @@
         "speed": 10
       }
     },
-    "banner": {
-      "type": "gene-banner",
+    "gene_trustpilot_ataCLK": {
+      "type": "gene-trustpilot",
+      "name": "GENE — Trustpilot",
       "settings": {
-        "image": "shopify://shop_images/6cc103f8d389c4e1c252557a355bcc57.jpg",
-        "heading": "BUILT DIFFERENT.\nWORN LOUD.",
-        "btn_label": "SHOP THE DROP",
-        "btn_url": "shopify://collections/new-arrivals"
+        "word": "Excellent",
+        "rating": "4.9",
+        "count": "1000+",
+        "bg": "#E3E2DE"
       }
     },
     "faq": {
@@ -416,6 +363,69 @@
         "title": "Frequently asked"
       }
     },
+    "banner": {
+      "type": "gene-banner",
+      "settings": {
+        "image": "shopify://shop_images/6cc103f8d389c4e1c252557a355bcc57.jpg",
+        "heading": "BUILT DIFFERENT.\nWORN LOUD.",
+        "btn_label": "SHOP THE DROP",
+        "btn_url": "shopify://collections/new-arrivals"
+      }
+    },
+    "marquee": {
+      "type": "gene-marquee",
+      "settings": {
+        "text": "OVER 8,900+ CUSTOMERS | BUILT DIFFERENT | WORN LOUD | LIMITED DROPS · NO RESTOCK OVER 8,900+ CUSTOMERS | BUILT DIFFERENT | WORN LOUD | LIMITED DROPS · NO RESTOCK",
+        "speed": 34
+      }
+    },
+    "about": {
+      "type": "gene-about",
+      "blocks": {
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "2019",
+            "label": "Founded"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "value": "Worldwide",
+            "label": "Shipping"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "value": "8,900+",
+            "label": "Customers"
+          }
+        },
+        "s4": {
+          "type": "stat",
+          "settings": {
+            "value": "Limited",
+            "label": "Every drop"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "settings": {
+        "eyebrow": "About Gene · Est. 2019",
+        "heading": "Born from the streets. Built for the bold.",
+        "body": "<p>Gene Streetwear was founded in 2019 by a group of young creatives tired of paying $200+ for a hoodie just because of a logo. Fire fits shouldn't come with a fire price tag.</p><p>We started small. One hoodie. One vision — premium streetwear without the premium markup. Today we ship worldwide to thousands who refuse to blend in.</p><p>This isn't fast fashion. It's streetwear for people who know exactly what they want.</p>",
+        "tagline": "Limited pieces · Real price · No compromises",
+        "btn_label": "Shop the drop",
+        "btn_url": ""
+      }
+    },
     "email": {
       "type": "gene-email",
       "settings": {
@@ -427,16 +437,6 @@
         "legal": "By signing up you agree to receive email marketing. Unsubscribe anytime.",
         "success_title": "You're in.",
         "success_text": "Use code WELCOME10 at checkout for 10% off."
-      }
-    },
-    "gene_trustpilot_ataCLK": {
-      "type": "gene-trustpilot",
-      "name": "GENE — Trustpilot",
-      "settings": {
-        "word": "Excellent",
-        "rating": "4.9",
-        "count": "1000+",
-        "bg": "#E3E2DE"
       }
     }
   },
