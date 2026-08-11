@@ -16,9 +16,9 @@
         "heading": "WORN LOUD.",
         "heading_mobile": "WORN LOUD.",
         "subheading": "Limited streetwear drops built to stand out. Once a piece sells out, it's gone for good.",
-        "btn1_label": "Archive",
-        "btn1_url": "",
-        "btn2_label": "Bundles",
+        "btn1_label": "SUMMER SALE",
+        "btn1_url": "shopify://collections/sale",
+        "btn2_label": "",
         "btn2_url": "",
         "rating": "4.8 from 8,900+ verified customers",
         "image_badge": "SS ARCHIVE ’26 · UP TO 35% OFF"
@@ -90,6 +90,91 @@
         "padding_bottom": 48
       }
     },
+    "collections": {
+      "type": "gene-collections",
+      "blocks": {
+        "c1": {
+          "type": "tile",
+          "settings": {
+            "collection": "new-arrivals",
+            "title": ""
+          }
+        },
+        "c2": {
+          "type": "tile",
+          "settings": {
+            "collection": "hoodies",
+            "title": ""
+          }
+        },
+        "c3": {
+          "type": "tile",
+          "settings": {
+            "collection": "tees",
+            "title": ""
+          }
+        },
+        "c4": {
+          "type": "tile",
+          "settings": {
+            "collection": "shorts",
+            "title": ""
+          }
+        },
+        "c5": {
+          "type": "tile",
+          "settings": {
+            "collection": "bottoms",
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5"
+      ],
+      "settings": {
+        "title": ""
+      }
+    },
+    "grid_new": {
+      "type": "gene-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "title": "New Arrivals",
+        "collection": "new-arrivals",
+        "products_to_show": 6,
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "show_secondary_image": true,
+        "show_sale_badge": false,
+        "show_new_badge": true,
+        "show_soldout_badge": true,
+        "soldout_label": "SOLD OUT",
+        "low_stock_threshold": 3,
+        "low_stock_label": "Only [n] left",
+        "show_sizes": false,
+        "show_quick_add": true,
+        "preview_label": "View product",
+        "added_label": "✓ Přidáno",
+        "soldout_button_label": "Vyprodáno",
+        "select_size_label": "Select size",
+        "size_oos_label": "Out of stock",
+        "ink": "#1a1a1a",
+        "button_bg": "#1a1a1a",
+        "button_bg_hover": "#000000",
+        "button_text": "#ffffff",
+        "button_radius": 40,
+        "card_radius": 6,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "bundles": {
       "type": "gene-bundles",
       "blocks": {
@@ -132,91 +217,6 @@
       "settings": {
         "eyebrow": "",
         "title": "Bundles & Sets"
-      }
-    },
-    "collections": {
-      "type": "gene-collections",
-      "blocks": {
-        "c1": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "title": ""
-          }
-        },
-        "c2": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "title": ""
-          }
-        },
-        "c3": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "title": ""
-          }
-        },
-        "c4": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "title": ""
-          }
-        },
-        "c5": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "title": ""
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4",
-        "c5"
-      ],
-      "settings": {
-        "title": "Shop by category"
-      }
-    },
-    "grid_new": {
-      "type": "gene-product-grid",
-      "settings": {
-        "eyebrow": "",
-        "title": "New Arrivals",
-        "collection": "new-arrivals",
-        "products_to_show": 6,
-        "show_view_all": true,
-        "view_all_label": "View all",
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "show_secondary_image": true,
-        "show_sale_badge": false,
-        "show_new_badge": true,
-        "show_soldout_badge": true,
-        "soldout_label": "SOLD OUT",
-        "low_stock_threshold": 3,
-        "low_stock_label": "Only [n] left",
-        "show_sizes": false,
-        "show_quick_add": true,
-        "preview_label": "View product",
-        "added_label": "✓ Přidáno",
-        "soldout_button_label": "Vyprodáno",
-        "select_size_label": "Select size",
-        "size_oos_label": "Out of stock",
-        "ink": "#1a1a1a",
-        "button_bg": "#1a1a1a",
-        "button_bg_hover": "#000000",
-        "button_text": "#ffffff",
-        "button_radius": 40,
-        "card_radius": 6,
-        "padding_top": 48,
-        "padding_bottom": 48
       }
     },
     "marquee": {
@@ -424,9 +424,9 @@
     "trust",
     "countdown",
     "grid_sale",
-    "bundles",
     "collections",
     "grid_new",
+    "bundles",
     "marquee",
     "why",
     "about",
