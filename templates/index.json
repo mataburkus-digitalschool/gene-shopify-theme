@@ -387,7 +387,13 @@
         "image": "shopify://shop_images/hale_kamo_posilam_ti_photo_shoot_mho_brandu_ale_potebuju_aby_si_na_modely_dal_moji_novou_kolekci_ob_vxbsyzlevms6p3h3bia6_0.png",
         "heading": "BUILT DIFFERENT.\nWORN LOUD.",
         "btn_label": "SHOP THE DROP",
-        "btn_url": "shopify://collections/new-arrivals"
+        "btn_url": "shopify://collections/new-arrivals",
+        "min_height": 440,
+        "overlay": 50,
+        "heading_size": 5,
+        "text_color": "#ffffff",
+        "bg": "#1a1a1a",
+        "space_top": 64
       }
     },
     "marquee": {
@@ -439,7 +445,7 @@
         "eyebrow": "About Gene · Est. 2019",
         "heading": "Born from the streets. Built for the bold.",
         "body": "<p>Gene Streetwear was founded in 2019 by a group of young creatives tired of paying $200+ for a hoodie just because of a logo. Fire fits shouldn't come with a fire price tag.</p><p>We started small. One hoodie. One vision — premium streetwear without the premium markup. Today we ship worldwide to thousands who refuse to blend in.</p><p>This isn't fast fashion. It's streetwear for people who know exactly what they want.</p>",
-        "tagline": "Limited pieces · Real price · No compromises",
+        "tagline": "Limited Drop Only · worldwide shipping",
         "btn_label": "Shop the drop",
         "btn_url": "shopify://collections/sale"
       }
