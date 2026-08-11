@@ -258,6 +258,22 @@
     "reviews": {
       "type": "gene-reviews",
       "blocks": {
+        "review_zb9Ret": {
+          "type": "review",
+          "settings": {
+            "quote": "Their shipping actually fast ash",
+            "name": "Sophie K.",
+            "meta": "Verified buyer"
+          }
+        },
+        "review_RwX7NR": {
+          "type": "review",
+          "settings": {
+            "quote": "Shipping was fast and the quality is solid.",
+            "name": "Jayden T.",
+            "meta": "Verified buyer"
+          }
+        },
         "r1": {
           "type": "review",
           "settings": {
@@ -277,8 +293,8 @@
         "review_rbXNLH": {
           "type": "review",
           "settings": {
-            "quote": "Perfect fit and premium materials. Exactly what I was looking for!",
-            "name": "Avraam C.",
+            "quote": "Fit is crazy. Quality surprised me honestly.",
+            "name": "Ethan M.",
             "meta": "Verified buyer"
           }
         },
@@ -292,6 +308,8 @@
         }
       },
       "block_order": [
+        "review_zb9Ret",
+        "review_RwX7NR",
         "r1",
         "r2",
         "review_rbXNLH",
@@ -310,7 +328,7 @@
         "word": "Excellent",
         "rating": "4.9",
         "count": "1000+",
-        "bg": "#E3E2DE"
+        "bg": "#e3e2de"
       }
     },
     "faq": {
