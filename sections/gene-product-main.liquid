@@ -51,9 +51,16 @@
       <div class="gpm-tax">Taxes included. <a href="{{ pages['shipping-policy'].url | default: routes.root_url }}">Shipping</a> calculated at checkout.</div>
 
       {%- if section.settings.show_urgency -%}
-      {%- comment -%} urgence patří jen ke zlevněným kusům {%- endcomment -%}
+      {%- comment -%}
+        Urgence patří jen ke zlevněným kusům. Číslo se vybírá ze seznamu podle
+        id produktu — napříč katalogem se tak střídá, ale u jednoho produktu
+        zůstává pořád stejné, takže při dalším načtení neposkočí.
+      {%- endcomment -%}
+      {%- assign nums = section.settings.urgency_numbers | default: '10,5' | split: ',' -%}
+      {%- assign pick = product.id | modulo: nums.size -%}
+      {%- assign left = nums[pick] | strip -%}
       <div class="gpm-stock" data-stock {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>
-        ⚠️ {{ section.settings.urgency_text | default: 'Less than 10 left in stock!' }}
+        ⚠️ {{ section.settings.urgency_text | default: 'Less than [n] left in stock!' | replace: '[n]', left }}
       </div>
       {%- endif -%}
       {%- if section.settings.limited_text != blank -%}<div class="gpm-limited">{{ section.settings.limited_text }}</div>{%- endif -%}
@@ -91,9 +98,11 @@
         {{ form | payment_button }}
       {% endform %}
 
-      <div class="gpm-trust">♻ 14 days easy returns &nbsp;·&nbsp; ✔ World-class customer support</div>
+      {%- if section.settings.show_trust -%}
+        <div class="gpm-trust">♻ 14 days easy returns &nbsp;·&nbsp; ✔ World-class customer support</div>
+      {%- endif -%}
 
-      {%- if shop.enabled_payment_types.size > 0 -%}
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
       <div class="gpm-pay">
         {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'gpm-pay-i' }}{%- endfor -%}
       </div>
@@ -301,7 +310,10 @@
   "name": "Produkt",
   "settings": [
     { "type": "checkbox", "id": "show_urgency", "label": "Ukázat hlášku o docházejících kusech", "info": "Zobrazí se jen u zlevněných produktů.", "default": true },
-    { "type": "text", "id": "urgency_text", "label": "Text hlášky", "default": "Less than 10 left in stock!" },
+    { "type": "text", "id": "urgency_text", "label": "Text hlášky", "info": "[n] se nahradí číslem ze seznamu níž.", "default": "Less than [n] left in stock!" },
+    { "type": "text", "id": "urgency_numbers", "label": "Čísla k prostřídání", "info": "Oddělené čárkou. Produkt dostane jedno podle svého id a drží si ho.", "default": "10,5" },
+    { "type": "checkbox", "id": "show_trust", "label": "Řádek o vrácení a podpoře", "info": "Nech vypnuté, pokud stejný text přidává aplikace — jinak bude dvakrát.", "default": false },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Ikony platebních metod", "info": "Nech vypnuté, pokud ikony přidává aplikace — jinak budou dvakrát.", "default": false },
     { "type": "text", "id": "limited_text", "label": "Text pod cenou (urgence)", "default": "LIMITED STOCK. NEVER RESTOCKING!" },
     { "type": "text", "id": "atc_label", "label": "Text tlačítka Add to cart", "default": "Add to cart" },
     { "type": "select", "id": "image_fit", "label": "Fotky ve čtverci", "info": "„Vejít se“ ukáže celou fotku, „Vyplnit“ ji ořízne na čtverec.", "options": [ { "value": "contain", "label": "Vejít se (bez ořezu)" }, { "value": "cover", "label": "Vyplnit (ořízne)" } ], "default": "contain" },
