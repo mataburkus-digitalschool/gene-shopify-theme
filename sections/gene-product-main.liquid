@@ -120,21 +120,6 @@
     </div>
   </div>
 
-  {%- comment -%} ── STICKY BAR ── {%- endcomment -%}
-  {%- comment -%}
-    Lišta visí u spodní hrany po celou dobu, ne až když odscrolluješ pod
-    tlačítko. Aby nikdy nepřekryla obsah, rezervuje si místo padding na body
-    níž ve stylech — ten se vypisuje jen na stránce produktu.
-  {%- endcomment -%}
-  <div class="gpm-sticky" data-sticky>
-    <div class="gpm-sticky-in g-wrap">
-      <div class="gpm-sticky-info">
-        <strong>{{ product.title }}</strong>
-        <span data-sticky-price>{{ cur.price | money }}</span>
-      </div>
-      <button type="button" class="g-btn gpm-sticky-btn" data-sticky-atc>{{ section.settings.atc_label | default: 'Add to cart' }}</button>
-    </div>
-  </div>
 
   <script type="application/json" data-variants>
     [{%- for v in product.variants -%}{"id":{{ v.id }},"opts":{{ v.options | json }},"available":{{ v.available }},"inv":{{ v.inventory_quantity | default: 9999 }},"tracked":{% if v.inventory_management %}true{% else %}false{% endif %},"price":{{ v.price | json }},"priceM":{{ v.price | money | json }},"compareM":{% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},"mediaId":{% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
@@ -200,16 +185,9 @@
 .gpm-chev{ transition:transform .2s; }
 .gpm-det[open] .gpm-chev{ transform:rotate(180deg); }
 .gpm-det-body{ padding:0 2px 18px; font-size:14px; line-height:1.6; color:var(--ink-soft); }
-/* sticky */
-body{ padding-bottom:78px; }
-.gpm-sticky{ position:fixed; left:0; right:0; bottom:0; z-index:60; background:var(--paper); border-top:1px solid var(--line); box-shadow:0 -6px 24px rgba(0,0,0,.08); padding-bottom:env(safe-area-inset-bottom); }
-.gpm-sticky-in{ display:flex; align-items:center; gap:16px; padding:12px 24px; }
-.gpm-sticky-info{ display:flex; flex-direction:column; line-height:1.2; font-size:13px; overflow:hidden; }
-.gpm-sticky-info strong{ font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.gpm-sticky-btn{ margin-left:auto; white-space:nowrap; }
 @media (max-width:820px){
   .gpm-grid{ grid-template-columns:1fr; gap:22px; }
-  .gpm{ padding:24px 20px 90px; }
+  .gpm{ padding:24px 20px 30px; }
 }
 </style>
 
@@ -252,8 +230,6 @@ body{ padding-bottom:78px; }
     // atc
     var atc = root.querySelector('[data-atc]'); var lbl = root.querySelector('[data-atc-label]');
     atc.disabled = !v.available; if(lbl) lbl.textContent = v.available ? ({{ section.settings.atc_label | default: 'Add to cart' | json }}) : 'Sold out';
-    // sticky price
-    var sp = root.querySelector('[data-sticky-price]'); if(sp) sp.textContent=v.priceM;
     // media — u varianty s vlastní fotkou přejedeme na její snímek
     if(v.mediaId){
       var slide = root.querySelector('[data-media-id="'+v.mediaId+'"]');
@@ -319,10 +295,6 @@ body{ padding-bottom:78px; }
     sync();
   }
 
-  // sticky add-to-cart — lišta je vidět pořád, jen odesílá formulář
-  var form = root.querySelector('#gpm-form');
-  var sBtn = root.querySelector('[data-sticky-atc]');
-  if(sBtn && form){ sBtn.addEventListener('click', function(){ if(typeof form.requestSubmit==='function') form.requestSubmit(); else form.submit(); }); }
 
   render();
 })();
