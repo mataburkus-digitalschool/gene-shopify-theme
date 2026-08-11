@@ -56,7 +56,7 @@
 
   .gqa__prod{ display:flex; gap:14px; align-items:center; padding-right:52px; }
   .gqa__img{ width:84px; height:84px; flex:none; border-radius:8px; overflow:hidden; background:var(--tag); }
-  .gqa__img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .gqa__img img{ width:100%; height:100%; object-fit:cover; display:block; opacity:1; transition:opacity .18s var(--ease); }
   .gqa__name{ font-weight:700; font-size:16px; line-height:1.25; }
   .gqa__price{ font-weight:700; font-size:15px; margin-top:4px; }
   .gqa__price s{ color:var(--ink-muted); font-weight:400; margin-right:6px; }
@@ -147,6 +147,29 @@
     }
   }
 
+  // Fotka podle vybrané varianty. Když ta svoji nemá, zkusíme jinou se
+  // stejnou první volbou (tou bývá barva) a teprve pak fotku produktu.
+  function variantImage() {
+    var v = matchingVariant();
+    if (v && v.img) return v.img;
+    if (picked.length) {
+      var sib = (data.variants || []).filter(function (x) { return x.img && x.opts[0] === picked[0]; })[0];
+      if (sib) return sib.img;
+    }
+    return data.img;
+  }
+
+  function showImage(src) {
+    var img = modal.querySelector('[data-qa-img]');
+    if (!img) return;
+    if (!src) { img.style.display = 'none'; return; }
+    if (img.getAttribute('src') === src) { img.style.display = ''; return; }
+    img.style.opacity = '0';
+    img.src = src;
+    img.style.display = '';
+    img.onload = function () { img.style.opacity = '1'; };
+  }
+
   function renderOptions() {
     optsWrap.innerHTML = (data.options || []).map(function (opt, i) {
       var vals = opt.values.map(function (val) {
@@ -158,6 +181,8 @@
              ' <span>' + (picked[i] || '') + '</span></div><div class="gqa__vals">' + vals + '</div></div>';
     }).join('');
 
+    showImage(variantImage());
+
     var v = matchingVariant();
     addBtn.disabled = !v || !v.available;
     addLabel.textContent = v && v.available ? 'Add to cart' : (v ? 'Sold out' : 'Select options');
@@ -168,8 +193,6 @@
     if (!dataEl) return;
     try { data = JSON.parse(dataEl.textContent); } catch (e) { return; }
 
-    var img = modal.querySelector('[data-qa-img]');
-    if (img) { if (data.img) { img.src = data.img; img.style.display = ''; } else { img.style.display = 'none'; } }
     modal.querySelector('[data-qa-name]').textContent = data.name || '';
     modal.querySelector('[data-qa-price]').innerHTML =
       (data.compare ? '<s>' + data.compare + '</s>' : '') + (data.price || '');
@@ -182,6 +205,7 @@
     optsWrap.hidden = !!data.singleVariant;
     if (data.singleVariant) {
       optsWrap.innerHTML = '';
+      showImage(variantImage());
       addBtn.disabled = !(first && first.available);
       addLabel.textContent = addBtn.disabled ? 'Sold out' : 'Add to cart';
     } else {
