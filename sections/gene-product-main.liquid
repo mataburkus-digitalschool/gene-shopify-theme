@@ -51,15 +51,9 @@
       <div class="gpm-tax">Taxes included. <a href="{{ pages['shipping-policy'].url | default: routes.root_url }}">Shipping</a> calculated at checkout.</div>
 
       {%- if section.settings.show_urgency -%}
-      {%- comment -%}
-        Urgence patří jen ke zlevněným kusům. Číslo je náhodné 1–10 a losuje
-        se jednou za načtení stránky — ne při každém přepnutí varianty, aby
-        neposkakovalo, když si člověk proklikává velikosti. Na serveru se
-        vypíše hodnota odvozená od id produktu, ať se první vykreslení
-        neškube, a skript ji hned nahradí.
-      {%- endcomment -%}
+      {%- comment -%} urgence patří jen ke zlevněným kusům {%- endcomment -%}
       <div class="gpm-stock" data-stock {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>
-        ⚠️ Only <span data-stock-n>{{ product.id | modulo: 10 | plus: 1 }}</span> left in stock!
+        ⚠️ {{ section.settings.urgency_text | default: 'Less than 10 left in stock!' }}
       </div>
       {%- endif -%}
       {%- if section.settings.limited_text != blank -%}<div class="gpm-limited">{{ section.settings.limited_text }}</div>{%- endif -%}
@@ -205,7 +199,6 @@
   var idInput = root.querySelector('[data-variant-id]');
   var track = root.querySelector('[data-track]');
   var opts = Array.prototype.map.call(root.querySelectorAll('.gpm-opt'), function(o){ return o; });
-  var stockLeft = 1 + Math.floor(Math.random() * 10);   // 1–10, jednou za načtení
 
   function selectedOptions(){
     return opts.map(function(o){ var b=o.querySelector('.gpm-val.on'); return b?b.getAttribute('data-value'):null; });
@@ -229,10 +222,7 @@
     } else { if(was) was.hidden=true; if(sale) sale.hidden=true; }
     // urgence — jen u zlevněné varianty
     var stock = root.querySelector('[data-stock]');
-    if(stock){
-      stock.hidden = !v.compareM;
-      if(!stock.hidden){ var n = stock.querySelector('[data-stock-n]'); if(n) n.textContent = stockLeft; }
-    }
+    if(stock) stock.hidden = !v.compareM;
     // atc
     var atc = root.querySelector('[data-atc]'); var lbl = root.querySelector('[data-atc-label]');
     atc.disabled = !v.available; if(lbl) lbl.textContent = v.available ? ({{ section.settings.atc_label | default: 'Add to cart' | json }}) : 'Sold out';
@@ -310,7 +300,8 @@
 {
   "name": "Produkt",
   "settings": [
-    { "type": "checkbox", "id": "show_urgency", "label": "Ukázat „Only X left in stock!“", "info": "Zobrazí se jen u zlevněných produktů. Číslo je náhodné 1–10 a mění se s každým načtením stránky.", "default": true },
+    { "type": "checkbox", "id": "show_urgency", "label": "Ukázat hlášku o docházejících kusech", "info": "Zobrazí se jen u zlevněných produktů.", "default": true },
+    { "type": "text", "id": "urgency_text", "label": "Text hlášky", "default": "Less than 10 left in stock!" },
     { "type": "text", "id": "limited_text", "label": "Text pod cenou (urgence)", "default": "LIMITED STOCK. NEVER RESTOCKING!" },
     { "type": "text", "id": "atc_label", "label": "Text tlačítka Add to cart", "default": "Add to cart" },
     { "type": "select", "id": "image_fit", "label": "Fotky ve čtverci", "info": "„Vejít se“ ukáže celou fotku, „Vyplnit“ ji ořízne na čtverec.", "options": [ { "value": "contain", "label": "Vejít se (bez ořezu)" }, { "value": "cover", "label": "Vyplnit (ořízne)" } ], "default": "contain" },
