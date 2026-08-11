@@ -1,26 +1,71 @@
-<section style="position:relative;margin:64px 0 0;min-height:440px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+{%- comment -%}
+  Výška i síla ztmavení jsou nastavitelné — dřív byly natvrdo 440 px a 50 %,
+  takže baner nešlo zmenšit a s tmavou fotkou vypadal jako prázdný blok.
+  Bez obrázku se vykreslí jen barva pozadí, žádné šrafování.
+{%- endcomment -%}
+{%- assign overlay = section.settings.overlay | default: 50 | divided_by: 100.0 -%}
+<section class="gban" id="gban-{{ section.id }}">
   {%- if section.settings.image -%}
-  <img src="{{ section.settings.image | image_url: width: 2000 }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-  {%- else -%}
-  <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#2a2a2a 0 6px,#222 6px 12px);"></div>
-  {%- endif -%}
-  <div style="position:absolute;inset:0;background:rgba(26,26,26,0.5);"></div>
-  <div style="position:relative;text-align:center;color:#fff;padding:24px;">
-    <h2 style="font-weight:800;font-size:clamp(34px,5vw,60px);letter-spacing:-0.02em;margin:0 0 20px;line-height:1;text-transform:uppercase;">{{ section.settings.heading | newline_to_br }}</h2>
-    {%- if section.settings.btn_label != blank -%}
-    <a href="{{ section.settings.btn_url }}" style="display:inline-flex;align-items:center;gap:9px;background:var(--paper);color:var(--ink);border-radius:999px;padding:14px 30px;font-weight:700;font-size:15px;text-decoration:none;"><span style="font-size:0.7em;">●</span> {{ section.settings.btn_label }}</a>
+    <img class="gban-img" src="{{ section.settings.image | image_url: width: 2000 }}" alt="" loading="lazy">
+    {%- if section.settings.overlay > 0 -%}
+      <div class="gban-veil"></div>
     {%- endif -%}
-  </div>
+  {%- endif -%}
+
+  {%- if section.settings.heading != blank or section.settings.btn_label != blank -%}
+    <div class="gban-in">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="gban-h">{{ section.settings.heading | newline_to_br }}</h2>
+      {%- endif -%}
+      {%- if section.settings.btn_label != blank -%}
+        <a class="gban-btn" href="{{ section.settings.btn_url | default: routes.all_products_collection_url }}">
+          <span class="gban-dot">●</span> {{ section.settings.btn_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </section>
+
+<style>
+  #gban-{{ section.id }} {
+    position:relative; display:flex; align-items:center; justify-content:center;
+    overflow:hidden; margin:{{ section.settings.space_top }}px 0 0;
+    min-height:{{ section.settings.min_height }}px;
+    background:{{ section.settings.bg }};
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  #gban-{{ section.id }} .gban-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  #gban-{{ section.id }} .gban-veil { position:absolute; inset:0; background:rgba(26,26,26,{{ overlay }}); }
+  #gban-{{ section.id }} .gban-in { position:relative; text-align:center; color:{{ section.settings.text_color }}; padding:24px; }
+  #gban-{{ section.id }} .gban-h {
+    font-weight:800; font-size:clamp(30px,{{ section.settings.heading_size }}vw,{{ section.settings.heading_size | times: 12 }}px);
+    letter-spacing:-0.02em; margin:0; line-height:1; text-transform:uppercase;
+  }
+  #gban-{{ section.id }} .gban-h + .gban-btn { margin-top:20px; }
+  #gban-{{ section.id }} .gban-btn {
+    display:inline-flex; align-items:center; gap:9px; background:var(--paper); color:var(--ink);
+    border-radius:999px; padding:14px 30px; font-weight:700; font-size:15px; text-decoration:none;
+    transition:opacity .15s var(--ease);
+  }
+  #gban-{{ section.id }} .gban-btn:hover { opacity:.9; }
+  #gban-{{ section.id }} .gban-dot { font-size:0.7em; }
+</style>
 {% schema %}
 {
   "name": "GENE — Banner",
   "tag": "section",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Obrázek pozadí" },
+    { "type": "image_picker", "id": "image", "label": "Obrázek pozadí", "info": "Bez obrázku se použije jen barva pozadí." },
     { "type": "textarea", "id": "heading", "label": "Titulek", "default": "BUILT DIFFERENT.\nWORN LOUD." },
     { "type": "text", "id": "btn_label", "label": "Tlačítko — text", "default": "Shop the drop" },
-    { "type": "url", "id": "btn_url", "label": "Tlačítko — odkaz" }
+    { "type": "url", "id": "btn_url", "label": "Tlačítko — odkaz" },
+    { "type": "header", "content": "Vzhled" },
+    { "type": "range", "id": "min_height", "label": "Výška", "min": 120, "max": 700, "step": 10, "unit": "px", "default": 440 },
+    { "type": "range", "id": "overlay", "label": "Ztmavení fotky", "info": "0 = fotka beze změny.", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "heading_size", "label": "Velikost titulku", "min": 3, "max": 7, "step": 1, "unit": "vw", "default": 5 },
+    { "type": "color", "id": "text_color", "label": "Barva textu", "default": "#FFFFFF" },
+    { "type": "color", "id": "bg", "label": "Barva pozadí (bez fotky)", "default": "#1A1A1A" },
+    { "type": "range", "id": "space_top", "label": "Mezera nad banerem", "min": 0, "max": 120, "step": 4, "default": 64 }
   ],
   "presets": [ { "name": "GENE — Banner" } ]
 }
