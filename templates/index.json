@@ -417,6 +417,46 @@
         "success_title": "You're in.",
         "success_text": "Use code FAM10 at checkout for 10% off."
       }
+    },
+    "social": {
+      "type": "gene-social",
+      "blocks": {
+        "c1": {
+          "type": "clip",
+          "settings": {
+            "handle": "@genestreetwear"
+          }
+        },
+        "c2": {
+          "type": "clip",
+          "settings": {
+            "handle": "@genestreetwear"
+          }
+        },
+        "c3": {
+          "type": "clip",
+          "settings": {
+            "handle": "@genestreetwear"
+          }
+        },
+        "c4": {
+          "type": "clip",
+          "settings": {
+            "handle": "@genestreetwear"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "title": "See it styled by our community",
+        "subtitle": "Tag us on social media to be featured",
+        "bg": "#e3e2de"
+      }
     }
   },
   "order": [
@@ -431,6 +471,7 @@
     "why",
     "about",
     "reviews",
+    "social",
     "banner",
     "faq",
     "email"

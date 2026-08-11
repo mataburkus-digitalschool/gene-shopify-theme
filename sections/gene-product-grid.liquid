@@ -40,20 +40,21 @@
     transition: border-color .2s cubic-bezier(.2,.8,.2,1);
   }
   #gene-grid-{{ section.id }} .gg-card:hover { border-color: {{ section.settings.ink }}; }
+  #gene-grid-{{ section.id }} .gg-mediawrap { position: relative; }
   #gene-grid-{{ section.id }} .gg-media { position: relative; display: block; aspect-ratio: 1/1; background: #EFEFEF; overflow: hidden; }
   #gene-grid-{{ section.id }} .gg-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  #gene-grid-{{ section.id }} .gg-zoom {
-    position: absolute; right: 10px; bottom: 10px; z-index: 2; pointer-events: none;
-    width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+  #gene-grid-{{ section.id }} .gg-qabtn {
+    position: absolute; right: 10px; bottom: 10px; z-index: 2; border: none; cursor: pointer;
+    width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
     border-radius: 50%; background: rgba(227,226,222,.92); color: {{ section.settings.ink }};
     box-shadow: 0 2px 10px rgba(0,0,0,.14);
     transition: transform .2s cubic-bezier(.2,.8,.2,1), background .2s cubic-bezier(.2,.8,.2,1);
   }
-  #gene-grid-{{ section.id }} .gg-zoom svg { width: 18px; height: 18px; display: block; }
-  #gene-grid-{{ section.id }} .gg-card:hover .gg-zoom { transform: scale(1.1); background: #fff; }
+  #gene-grid-{{ section.id }} .gg-qabtn svg { width: 18px; height: 18px; display: block; }
+  #gene-grid-{{ section.id }} .gg-card:hover .gg-qabtn { transform: scale(1.1); background: #fff; }
   @media (max-width: 640px) {
-    #gene-grid-{{ section.id }} .gg-zoom { width: 28px; height: 28px; right: 7px; bottom: 7px; }
-    #gene-grid-{{ section.id }} .gg-zoom svg { width: 15px; height: 15px; }
+    #gene-grid-{{ section.id }} .gg-qabtn { width: 28px; height: 28px; right: 7px; bottom: 7px; }
+    #gene-grid-{{ section.id }} .gg-qabtn svg { width: 15px; height: 15px; }
   }
   #gene-grid-{{ section.id }} .gg-img2 { opacity: 0; transition: opacity .3s cubic-bezier(.2,.8,.2,1); }
   #gene-grid-{{ section.id }} .gg-card:hover .gg-img2 { opacity: 1; }
@@ -80,12 +81,11 @@
   #gene-grid-{{ section.id }} .gg-size[disabled] { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
   #gene-grid-{{ section.id }} .gg-size.is-active { background: {{ section.settings.ink }}; border-color: {{ section.settings.ink }}; color: #fff; }
   #gene-grid-{{ section.id }} .gg-add {
-    margin-top: auto; width: 100%;
+    margin-top: auto; width: 100%; box-sizing: border-box; text-align: center; text-decoration: none; display: block;
     background: {{ section.settings.button_bg }}; color: {{ section.settings.button_text }};
     border: none; border-radius: {{ btn_radius_css }}; padding: 10px;
     font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit;
     transition: background .2s cubic-bezier(.2,.8,.2,1), transform .08s;
-    text-align: center; text-decoration: none; display: block;
   }
   #gene-grid-{{ section.id }} .gg-sizes + .gg-add { margin-top: 6px; }
   #gene-grid-{{ section.id }} .gg-add:hover { background: {{ section.settings.button_bg_hover }}; }
@@ -95,33 +95,6 @@
     cursor: default; font-size: 12.5px;
   }
   #gene-grid-{{ section.id }} .gg-add--out:hover { background:var(--paper); }
-
-  /* Quick-add size modal */
-  .gg-modal { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; }
-  .gg-modal[hidden] { display: none; }
-  .gg-modal__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
-  .gg-modal__panel { position: relative; z-index: 1; width: 460px; max-width: calc(100% - 32px); max-height: 85vh; overflow-y: auto; background: var(--paper); border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.28); }
-  .gg-modal__head { position: sticky; top: 0; background: var(--paper); display: grid; grid-template-columns: 24px 1fr 24px; align-items: center; padding: 16px; border-bottom: 1px solid var(--line); }
-  .gg-modal__title { grid-column: 2; text-align: center; font-weight: 800; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
-  .gg-modal__close { grid-column: 3; background: none; border: none; padding: 0; cursor: pointer; color: var(--ink); display: inline-flex; }
-  .gg-modal__close svg { width: 22px; height: 22px; }
-  .gg-modal__prod { display: flex; gap: 14px; padding: 16px; }
-  .gg-modal__img { width: 84px; height: 100px; flex: none; border-radius: 8px; overflow: hidden; background: #EFEFEF; }
-  .gg-modal__img img { width: 100%; height: 100%; object-fit: cover; }
-  .gg-modal__meta { display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-  .gg-modal__name { font-weight: 600; font-size: 16px; }
-  .gg-modal__price { font-weight: 700; font-size: 15px; }
-  .gg-modal__label { padding: 6px 16px 4px; font-weight: 800; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
-  .gg-modal__sizes { display: flex; flex-direction: column; padding-bottom: 8px; }
-  .gg-msize { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 17px 16px; background: none; border: none; border-top: 1px solid var(--line); font: inherit; font-weight: 700; font-size: 15px; text-align: left; color: var(--ink); cursor: pointer; }
-  .gg-msize:hover:not(.is-out) { background: rgba(0,0,0,0.05); }
-  .gg-msize.is-out { color: var(--ink-muted); cursor: default; }
-  .gg-msize__oos { font-weight: 700; font-size: 14px; color: var(--ink-muted); }
-  .gg-msize.is-loading { opacity: 0.5; }
-  @media (max-width: 600px) {
-    .gg-modal { align-items: flex-end; }
-    .gg-modal__panel { width: 100%; max-width: 100%; max-height: 88vh; border-radius: 18px 18px 0 0; }
-  }
 {% endstyle %}
 
 <div id="gene-grid-{{ section.id }}" data-cart-add-url="{{ routes.cart_add_url }}">
@@ -160,6 +133,8 @@
           endif
         -%}
         <div class="gg-card" data-product data-default-variant="{{ fav.id }}">
+          {%- comment -%} ikona košíku stojí vedle odkazu, ne v něm {%- endcomment -%}
+          <div class="gg-mediawrap">
           <a class="gg-media" href="{{ product.url }}">
             {%- if product.featured_media -%}
               <img src="{{ product.featured_media | image_url: width: 700 }}" alt="{{ product.title | escape }}" loading="lazy" width="700" height="700"{% if sold_out %} class="gg-soldout-img"{% endif %}>
@@ -177,11 +152,13 @@
             {%- if low_qty > 0 -%}
               <span class="gg-badge gg-badge--low">{{ section.settings.low_stock_label | replace: '[n]', low_qty }}</span>
             {%- endif -%}
-            {%- comment -%} lupa napovídá, že se dá na produkt kliknout {%- endcomment -%}
-            <span class="gg-zoom" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8M11 8.4v5.2M8.4 11h5.2"/></svg>
-            </span>
           </a>
+          {%- if section.settings.show_quick_add and sold_out == false -%}
+            <button class="gg-qabtn" type="button" data-qa-open aria-label="Přidat {{ product.title | escape }} do košíku">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8.5h11v10a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-10Z"/><path d="M7.5 8.5V6.5a2.5 2.5 0 0 1 5 0v2"/><path d="M19 3.5v5M16.5 6h5"/></svg>
+            </button>
+          {%- endif -%}
+          </div>
           <div class="gg-info">
             <a class="gg-name" href="{{ product.url }}">{{ product.title }}</a>
             <div class="gg-prices">
@@ -190,13 +167,13 @@
             </div>
             {%- if sold_out -%}
               <button class="gg-add gg-add--out" type="button" disabled>{{ section.settings.soldout_button_label }}</button>
-            {%- elsif section.settings.show_quick_add -%}
+            {%- else -%}
               {%- comment -%}
-                Jedno chování pro všechny karty: quick add vždy otevře výběr
-                velikosti. Produkt bez skutečných variant nabídne „One size".
+                Textové tlačítko vede na produkt; do košíku se přidává ikonou
+                nad ním, která otevře výběr velikosti.
               {%- endcomment -%}
-              <button class="gg-add" type="button" data-qa-open>{{ section.settings.quick_add_label }}</button>
-              <script type="application/json" class="gg-qa">{"name":{{ product.title | json }},"price":{{ product.price | money | json }},"img":{{ product.featured_media | image_url: width: 320 | json }},"variants":[{%- for v in product.variants -%}{%- if product.has_only_default_variant -%}{%- assign vt = 'One size' -%}{%- else -%}{%- assign vt = v.title -%}{%- endif -%}{"id":{{ v.id }},"title":{{ vt | json }},"available":{{ v.available }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]}</script>
+              <a class="gg-add" href="{{ product.url }}">{{ section.settings.quick_add_label }}</a>
+              <script type="application/json" class="gg-qa">{"name":{{ product.title | json }},"price":{{ product.price | money | json }},"compare":{% if on_sale %}{{ product.compare_at_price | money | json }}{% else %}null{% endif %},"img":{{ product.featured_media | image_url: width: 320 | json }},"url":{{ product.url | json }},"variants":[{%- for v in product.variants -%}{%- if product.has_only_default_variant -%}{%- assign vt = 'One size' -%}{%- else -%}{%- assign vt = v.title -%}{%- endif -%}{"id":{{ v.id }},"title":{{ vt | json }},"available":{{ v.available }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]}</script>
             {%- endif -%}
           </div>
         </div>
@@ -215,141 +192,7 @@
   </div>
 </div>
 
-<div class="gg-modal" id="gg-modal-{{ section.id }}" hidden>
-  <div class="gg-modal__overlay" data-qa-close></div>
-  <div class="gg-modal__panel" role="dialog" aria-modal="true" aria-label="{{ section.settings.quick_add_label }}">
-    <div class="gg-modal__head">
-      <span class="gg-modal__title">{{ section.settings.quick_add_label }}</span>
-      <button class="gg-modal__close" type="button" data-qa-close aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
-      </button>
-    </div>
-    <div class="gg-modal__prod">
-      <div class="gg-modal__img"><img data-qa-img src="" alt="" loading="lazy"></div>
-      <div class="gg-modal__meta">
-        <div class="gg-modal__name" data-qa-name></div>
-        <div class="gg-modal__price" data-qa-price></div>
-      </div>
-    </div>
-    <div class="gg-modal__label">{{ section.settings.select_size_label }}</div>
-    <div class="gg-modal__sizes" data-qa-sizes></div>
-  </div>
-</div>
 
-<script>
-(function () {
-  var root = document.getElementById('gene-grid-{{ section.id }}');
-  if (!root || root.dataset.ggInit) return;
-  root.dataset.ggInit = '1';
-  var addUrl = root.dataset.cartAddUrl || '/cart/add';
-
-  // ---- Quick-add size modal (Gymshark style) ----
-  var modal = document.getElementById('gg-modal-{{ section.id }}');
-  var qaSizes = modal && modal.querySelector('[data-qa-sizes]');
-  var oosLabel = {{ section.settings.size_oos_label | json }};
-
-  function openModal(card) {
-    if (!modal || !card) return;
-    var dataEl = card.querySelector('.gg-qa');
-    if (!dataEl) return;
-    var d;
-    try { d = JSON.parse(dataEl.textContent); } catch (err) { return; }
-    var img = modal.querySelector('[data-qa-img]');
-    if (img) { if (d.img) { img.src = d.img; img.style.display = ''; } else { img.style.display = 'none'; } }
-    modal.querySelector('[data-qa-name]').textContent = d.name || '';
-    modal.querySelector('[data-qa-price]').textContent = d.price || '';
-    qaSizes.innerHTML = (d.variants || []).map(function (v) {
-      if (v.available) {
-        return '<button type="button" class="gg-msize" data-qa-size data-variant-id="' + v.id + '"><span>' + v.title + '</span></button>';
-      }
-      return '<div class="gg-msize is-out"><span>' + v.title + '</span><span class="gg-msize__oos">' + oosLabel + '</span></div>';
-    }).join('');
-    modal.hidden = false;
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() { if (modal) { modal.hidden = true; document.body.style.overflow = ''; } }
-
-  root.addEventListener('click', function (e) {
-    var openBtn = e.target.closest('[data-qa-open]');
-    if (openBtn) { openModal(openBtn.closest('[data-product]')); }
-  });
-  if (modal) {
-    modal.addEventListener('click', function (e) {
-      if (e.target.closest('[data-qa-close]')) { closeModal(); return; }
-      var sizeRow = e.target.closest('[data-qa-size]');
-      if (!sizeRow) return;
-      var variantId = sizeRow.dataset.variantId;
-      if (!variantId || sizeRow.classList.contains('is-loading')) return;
-      sizeRow.classList.add('is-loading');
-      fetch(addUrl + '.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ id: Number(variantId), quantity: 1 })
-      }).then(function (r) {
-        if (!r.ok) throw new Error('add failed');
-        closeModal();
-        refreshCart();
-      }).catch(function () { sizeRow.classList.remove('is-loading'); });
-    });
-  }
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
-
-  root.addEventListener('click', function (e) {
-    var sizeBtn = e.target.closest('[data-size]');
-    if (sizeBtn && !sizeBtn.disabled) {
-      var card = sizeBtn.closest('[data-product]');
-      card.querySelectorAll('[data-size]').forEach(function (b) { b.classList.remove('is-active'); });
-      sizeBtn.classList.add('is-active');
-      return;
-    }
-    var addBtn = e.target.closest('[data-add]');
-    if (addBtn) {
-      var c = addBtn.closest('[data-product]');
-      var active = c.querySelector('[data-size].is-active');
-      var variantId = active ? active.dataset.variantId : c.dataset.defaultVariant;
-      if (!variantId) return;
-      var original = addBtn.textContent;
-      addBtn.disabled = true;
-      addBtn.textContent = '…';
-      fetch(addUrl + '.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ id: Number(variantId), quantity: 1 })
-      }).then(function (r) {
-        if (!r.ok) throw new Error('add failed');
-        addBtn.textContent = {{ section.settings.added_label | json }};
-        refreshCart();
-        setTimeout(function () { addBtn.textContent = original; addBtn.disabled = false; }, 1600);
-      }).catch(function () {
-        addBtn.textContent = original;
-        addBtn.disabled = false;
-      });
-    }
-  });
-
-  function refreshCart() {
-    // Aktualizace počítadla košíku + otevření drawer (Dawn-kompatibilní, s fallbackem)
-    fetch('{{ routes.cart_url }}.js').then(function (r) { return r.json(); }).then(function (cart) {
-      document.querySelectorAll('[data-cart-count], .cart-count-bubble span[aria-hidden]').forEach(function (el) {
-        el.textContent = cart.item_count;
-      });
-    });
-    var drawer = document.querySelector('cart-drawer');
-    if (drawer) {
-      fetch(window.location.pathname + '?sections=cart-drawer').then(function (r) { return r.json(); }).then(function (sections) {
-        if (sections['cart-drawer']) {
-          var tmp = document.createElement('div');
-          tmp.innerHTML = sections['cart-drawer'];
-          var fresh = tmp.querySelector('cart-drawer');
-          if (fresh) drawer.innerHTML = fresh.innerHTML;
-        }
-        if (typeof drawer.open === 'function') drawer.open();
-        else drawer.classList.add('active', 'animate');
-      }).catch(function () {});
-    }
-  }
-})();
-</script>
 
 {% schema %}
 {
@@ -379,8 +222,8 @@
 
     { "type": "header", "content": "Rychlé přidání do košíku" },
     { "type": "checkbox", "id": "show_sizes", "label": "Výběr velikosti (varianta „Size“ / „Velikost“)", "default": true },
-    { "type": "checkbox", "id": "show_quick_add", "label": "Tlačítko rychlého přidání", "default": true },
-    { "type": "text", "id": "quick_add_label", "label": "Text tlačítka", "default": "Quick add" },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Ikona rychlého přidání ve fotce", "default": true },
+    { "type": "text", "id": "quick_add_label", "label": "Text tlačítka pod cenou", "default": "Preview" },
     { "type": "text", "id": "added_label", "label": "Text po přidání", "default": "✓ Přidáno" },
     { "type": "text", "id": "soldout_button_label", "label": "Text tlačítka u vyprodaného", "default": "Vyprodáno" },
     { "type": "text", "id": "select_size_label", "label": "Nadpis výběru velikosti (modal)", "default": "Select size" },

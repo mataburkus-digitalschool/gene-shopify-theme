@@ -1,0 +1,208 @@
+{%- comment -%}
+  Jeden sdílený panel rychlého přidání pro celý motiv. Vykresluje se jednou
+  z layoutu; sekce s produkty jen dávají na kartu data-product, na ikonu
+  data-qa-open a dovnitř JSON .gg-qa s variantami. Dřív měla každá mřížka
+  vlastní kopii modalu i obsluhy a všechny tři se rozjížděly.
+{%- endcomment -%}
+<div class="gqa" id="gene-quick-add" hidden>
+  <div class="gqa__overlay" data-qa-close></div>
+  <div class="gqa__panel" role="dialog" aria-modal="true" aria-label="Rychlé přidání do košíku">
+    <button class="gqa__close" type="button" data-qa-close aria-label="Zavřít">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <div class="gqa__prod">
+      <div class="gqa__img"><img data-qa-img src="" alt="" loading="lazy"></div>
+      <div class="gqa__meta">
+        <div class="gqa__name" data-qa-name></div>
+        <div class="gqa__price" data-qa-price></div>
+      </div>
+    </div>
+
+    <div class="gqa__label" data-qa-size-label>Size</div>
+    <div class="gqa__sizes" data-qa-sizes></div>
+
+    <div class="gqa__buy">
+      <div class="gqa__qty">
+        <button type="button" data-qa-qty="-" aria-label="Méně">−</button>
+        <input type="number" value="1" min="1" inputmode="numeric" data-qa-qty-input aria-label="Množství">
+        <button type="button" data-qa-qty="+" aria-label="Více">+</button>
+      </div>
+      <button type="button" class="gqa__atc" data-qa-add>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 8.5h11v10a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-10Z"/><path d="M7.5 8.5V6.5a2.5 2.5 0 0 1 5 0v2"/><path d="M19 3.5v5M16.5 6h5"/></svg>
+        <span data-qa-add-label>Add to cart</span>
+      </button>
+    </div>
+
+    <a class="gqa__more" data-qa-link href="#">View full details</a>
+  </div>
+</div>
+
+<style>
+  .gqa{ position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; }
+  .gqa[hidden]{ display:none; }
+  .gqa__overlay{ position:absolute; inset:0; background:rgba(0,0,0,.5); }
+  .gqa__panel{
+    position:relative; z-index:1; width:520px; max-width:calc(100% - 32px); max-height:88vh;
+    overflow-y:auto; background:var(--paper); border-radius:16px; padding:22px;
+    box-shadow:0 20px 60px rgba(0,0,0,.28);
+  }
+  .gqa__close{
+    position:absolute; top:14px; right:14px; width:38px; height:38px; padding:0;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--paper); color:var(--ink); border:1px solid var(--line);
+    border-radius:10px; cursor:pointer;
+  }
+  .gqa__close svg{ width:20px; height:20px; }
+
+  .gqa__prod{ display:flex; gap:14px; align-items:center; padding-right:52px; }
+  .gqa__img{ width:84px; height:84px; flex:none; border-radius:8px; overflow:hidden; background:var(--tag); }
+  .gqa__img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .gqa__name{ font-weight:700; font-size:16px; line-height:1.25; }
+  .gqa__price{ font-weight:700; font-size:15px; margin-top:4px; }
+  .gqa__price s{ color:var(--ink-muted); font-weight:400; margin-right:6px; }
+
+  .gqa__label{ font-size:14px; font-weight:600; margin:22px 0 10px; }
+  .gqa__sizes{ display:flex; flex-wrap:wrap; gap:9px; }
+  .gqa__size{
+    min-width:56px; padding:12px 16px; border:1.5px solid var(--line); border-radius:10px;
+    background:var(--paper); color:var(--ink); font:inherit; font-size:14px; font-weight:600;
+    cursor:pointer; transition:border-color .15s var(--ease), background .15s var(--ease);
+  }
+  .gqa__size:hover:not(:disabled){ border-color:var(--ink); }
+  .gqa__size.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .gqa__size:disabled{ color:var(--ink-muted); border-style:dashed; cursor:default; text-decoration:line-through; }
+
+  .gqa__buy{ display:flex; align-items:stretch; gap:10px; margin-top:20px; }
+  .gqa__qty{ display:inline-flex; align-items:center; flex:none; border:1.5px solid var(--line); border-radius:10px; overflow:hidden; }
+  .gqa__qty button{ width:40px; height:52px; border:none; background:var(--paper); color:var(--ink); font-size:19px; cursor:pointer; }
+  .gqa__qty input{ width:44px; height:52px; border:none; text-align:center; font:inherit; font-size:15px; background:var(--paper); color:var(--ink); -moz-appearance:textfield; }
+  .gqa__qty input::-webkit-outer-spin-button,.gqa__qty input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  .gqa__atc{
+    flex:1; min-width:0; display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    background:var(--ink); color:#fff; border:none; border-radius:10px; padding:0 20px; height:52px;
+    font:inherit; font-size:15px; font-weight:700; cursor:pointer; transition:opacity .15s var(--ease);
+  }
+  .gqa__atc svg{ width:19px; height:19px; flex:none; }
+  .gqa__atc:hover{ opacity:.9; }
+  .gqa__atc:disabled{ opacity:.45; cursor:default; }
+
+  .gqa__more{ display:block; text-align:center; margin-top:16px; font-size:13.5px; color:var(--ink-soft); }
+
+  @media (max-width:600px){
+    .gqa{ align-items:flex-end; }
+    .gqa__panel{ width:100%; max-width:100%; border-radius:18px 18px 0 0; padding:18px 16px calc(18px + env(safe-area-inset-bottom)); }
+    .gqa__size{ min-width:50px; padding:11px 13px; }
+  }
+</style>
+
+<script>
+(function () {
+  var modal = document.getElementById('gene-quick-add');
+  if (!modal || modal.dataset.init) return;
+  modal.dataset.init = '1';
+
+  var sizesWrap = modal.querySelector('[data-qa-sizes]');
+  var sizeLabel = modal.querySelector('[data-qa-size-label]');
+  var qtyInput  = modal.querySelector('[data-qa-qty-input]');
+  var addBtn    = modal.querySelector('[data-qa-add]');
+  var addLabel  = modal.querySelector('[data-qa-add-label]');
+  var link      = modal.querySelector('[data-qa-link]');
+  var current   = null;
+
+  function refreshCart() {
+    fetch('{{ routes.cart_url }}.js').then(function (r) { return r.json(); }).then(function (cart) {
+      document.querySelectorAll('[data-cart-count]').forEach(function (el) {
+        el.textContent = cart.item_count;
+        el.classList.toggle('is-empty', cart.item_count === 0);
+      });
+    }).catch(function () {});
+  }
+
+  function selected() { return sizesWrap.querySelector('.gqa__size.on'); }
+
+  function open(card) {
+    var dataEl = card && card.querySelector('script.gg-qa');
+    if (!dataEl) return;
+    var d; try { d = JSON.parse(dataEl.textContent); } catch (e) { return; }
+    current = d;
+
+    var img = modal.querySelector('[data-qa-img]');
+    if (img) { if (d.img) { img.src = d.img; img.style.display = ''; } else { img.style.display = 'none'; } }
+    modal.querySelector('[data-qa-name]').textContent = d.name || '';
+    modal.querySelector('[data-qa-price]').innerHTML =
+      (d.compare ? '<s>' + d.compare + '</s>' : '') + (d.price || '');
+    if (link) { link.href = d.url || '#'; link.hidden = !d.url; }
+
+    // jediná varianta bez skutečných velikostí — výběr nemá co nabídnout
+    var onlyOne = (d.variants || []).length === 1 && /^(one size|default title)$/i.test(d.variants[0].title || '');
+    sizeLabel.hidden = onlyOne;
+    sizesWrap.hidden = onlyOne;
+    sizesWrap.innerHTML = onlyOne ? '' : (d.variants || []).map(function (v) {
+      return '<button type="button" class="gqa__size" data-variant-id="' + v.id + '"' +
+             (v.available ? '' : ' disabled') + '>' + v.title + '</button>';
+    }).join('');
+
+    var first = onlyOne ? null : sizesWrap.querySelector('.gqa__size:not(:disabled)');
+    if (first) first.classList.add('on');
+
+    qtyInput.value = 1;
+    addBtn.disabled = onlyOne ? !d.variants[0].available : !first;
+    addLabel.textContent = addBtn.disabled ? 'Sold out' : 'Add to cart';
+
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() { modal.hidden = true; document.body.style.overflow = ''; current = null; }
+
+  document.addEventListener('click', function (e) {
+    var openBtn = e.target.closest('[data-qa-open]');
+    if (openBtn) { e.preventDefault(); open(openBtn.closest('[data-product]')); }
+  });
+
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-qa-close]')) { close(); return; }
+
+    var size = e.target.closest('.gqa__size');
+    if (size && !size.disabled) {
+      sizesWrap.querySelectorAll('.gqa__size').forEach(function (b) { b.classList.remove('on'); });
+      size.classList.add('on');
+      addBtn.disabled = false;
+      addLabel.textContent = 'Add to cart';
+      return;
+    }
+
+    var step = e.target.closest('[data-qa-qty]');
+    if (step) {
+      var n = parseInt(qtyInput.value, 10) || 1;
+      n += step.getAttribute('data-qa-qty') === '+' ? 1 : -1;
+      qtyInput.value = n < 1 ? 1 : n;
+      return;
+    }
+
+    if (e.target.closest('[data-qa-add]') && !addBtn.disabled && current) {
+      var sel = selected();
+      var id = sel ? sel.dataset.variantId : (current.variants[0] && current.variants[0].id);
+      if (!id) return;
+      addBtn.disabled = true;
+      addLabel.textContent = '…';
+      fetch('{{ routes.cart_add_url }}.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: Number(id), quantity: parseInt(qtyInput.value, 10) || 1 })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('add');
+        addLabel.textContent = '✓ Added';
+        refreshCart();
+        setTimeout(close, 700);
+      }).catch(function () {
+        addBtn.disabled = false;
+        addLabel.textContent = 'Add to cart';
+      });
+    }
+  });
+
+  document.addEventListener('keydown', function (e) { if (!modal.hidden && e.key === 'Escape') close(); });
+})();
+</script>

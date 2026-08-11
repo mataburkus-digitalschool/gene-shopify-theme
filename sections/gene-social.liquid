@@ -1,0 +1,184 @@
+{%- comment -%}
+  Videa a fotky od zákazníků. Každá dlaždice je blok — nahraješ do něj buď
+  video, nebo fotku, a volitelně odkaz na příspěvek. Video se přehraje až po
+  kliknutí, aby stránka netahala megabajty hned při načtení; do té doby je
+  vidět plakátek s tlačítkem play.
+{%- endcomment -%}
+<section class="gsoc" id="gsoc-{{ section.id }}">
+  <div class="g-wrap gsoc-head">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="g-eyebrow gsoc-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 class="g-h2 gsoc-title">{{ section.settings.title }}</h2>
+    {%- if section.settings.subtitle != blank -%}
+      <p class="gsoc-sub">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+  <div class="gsoc-rail" data-rail tabindex="0" role="group" aria-label="{{ section.settings.title | escape }}">
+    {%- for block in section.blocks -%}
+      <article class="gsoc-item" {{ block.shopify_attributes }}>
+        {%- if block.settings.video != blank -%}
+          <div class="gsoc-media" data-video>
+            {{ block.settings.video
+               | video_tag: image_size: '600x', controls: true, playsinline: true, preload: 'none',
+                 poster: block.settings.image, class: 'gsoc-vid' }}
+            <button type="button" class="gsoc-play" data-play aria-label="Přehrát video">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
+            </button>
+          </div>
+        {%- elsif block.settings.image != blank -%}
+          <div class="gsoc-media">
+            <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">
+          </div>
+        {%- else -%}
+          <div class="gsoc-media gsoc-media--empty">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+        {%- endif -%}
+
+        {%- if block.settings.link != blank -%}
+          <a class="gsoc-link" href="{{ block.settings.link }}" target="_blank" rel="noopener">
+            {{ block.settings.handle | default: 'View post' }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+        {%- elsif block.settings.handle != blank -%}
+          <span class="gsoc-link gsoc-link--plain">{{ block.settings.handle }}</span>
+        {%- endif -%}
+      </article>
+    {%- endfor -%}
+  </div>
+
+  <div class="g-wrap gsoc-nav">
+    <button type="button" class="gsoc-arrow" data-prev aria-label="Předchozí">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button type="button" class="gsoc-arrow" data-next aria-label="Další">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <span class="gsoc-hint">Táhni / swipe</span>
+  </div>
+  {%- endif -%}
+</section>
+
+<style>
+  #gsoc-{{ section.id }} { padding:64px 0 40px; background:{{ section.settings.bg }}; }
+  #gsoc-{{ section.id }} .gsoc-head { text-align:center; margin-bottom:28px; }
+  #gsoc-{{ section.id }} .gsoc-eyebrow { margin:0 0 10px; }
+  #gsoc-{{ section.id }} .gsoc-title { margin:0 0 8px; }
+  #gsoc-{{ section.id }} .gsoc-sub { font-size:14.5px; color:var(--ink-soft); margin:0; }
+
+  #gsoc-{{ section.id }} .gsoc-rail {
+    display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth;
+    padding:0 24px; scrollbar-width:none; -webkit-overflow-scrolling:touch; outline:none;
+  }
+  #gsoc-{{ section.id }} .gsoc-rail::-webkit-scrollbar { display:none; }
+  #gsoc-{{ section.id }} .gsoc-item { flex:0 0 clamp(220px, 24vw, 300px); scroll-snap-align:center; }
+  #gsoc-{{ section.id }} .gsoc-media {
+    position:relative; aspect-ratio:9/16; border-radius:10px; overflow:hidden; background:var(--tag);
+  }
+  #gsoc-{{ section.id }} .gsoc-media img,
+  #gsoc-{{ section.id }} .gsoc-media video,
+  #gsoc-{{ section.id }} .gsoc-media svg { width:100%; height:100%; object-fit:cover; display:block; }
+  #gsoc-{{ section.id }} .gsoc-play {
+    position:absolute; inset:0; margin:auto; width:58px; height:58px; padding:0;
+    display:inline-flex; align-items:center; justify-content:center;
+    border:none; border-radius:50%; background:rgba(255,255,255,.88); color:var(--ink);
+    cursor:pointer; box-shadow:0 4px 18px rgba(0,0,0,.22);
+    transition:transform .2s var(--ease), opacity .2s var(--ease);
+  }
+  #gsoc-{{ section.id }} .gsoc-play svg { width:24px; height:24px; margin-left:3px; }
+  #gsoc-{{ section.id }} .gsoc-play:hover { transform:scale(1.07); }
+  #gsoc-{{ section.id }} .gsoc-media.is-playing .gsoc-play { opacity:0; pointer-events:none; }
+
+  #gsoc-{{ section.id }} .gsoc-link {
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px;
+    font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:var(--ink); text-decoration:none;
+  }
+  #gsoc-{{ section.id }} .gsoc-link svg { width:13px; height:13px; }
+  #gsoc-{{ section.id }} .gsoc-link:hover { text-decoration:underline; }
+  #gsoc-{{ section.id }} .gsoc-link--plain { color:var(--ink-soft); }
+
+  #gsoc-{{ section.id }} .gsoc-nav { display:flex; align-items:center; gap:10px; margin-top:22px; }
+  #gsoc-{{ section.id }} .gsoc-arrow {
+    width:42px; height:42px; padding:0; display:inline-flex; align-items:center; justify-content:center;
+    border:1.5px solid var(--line); border-radius:50%; background:var(--paper); color:var(--ink); cursor:pointer;
+    transition:border-color .18s var(--ease);
+  }
+  #gsoc-{{ section.id }} .gsoc-arrow:hover:not([disabled]) { border-color:var(--ink); }
+  #gsoc-{{ section.id }} .gsoc-arrow[disabled] { opacity:.35; cursor:default; }
+  #gsoc-{{ section.id }} .gsoc-arrow svg { width:19px; height:19px; }
+  #gsoc-{{ section.id }} .gsoc-hint { margin-left:auto; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-muted); }
+
+  @media (max-width:600px){
+    #gsoc-{{ section.id }} { padding:48px 0 28px; }
+    #gsoc-{{ section.id }} .gsoc-rail { padding:0 16px; gap:10px; }
+    #gsoc-{{ section.id }} .gsoc-item { flex-basis:74%; }
+  }
+</style>
+
+<script>
+(function () {
+  var root = document.getElementById('gsoc-{{ section.id }}');
+  if (!root || root.dataset.init) return;
+  root.dataset.init = '1';
+  var rail = root.querySelector('[data-rail]');
+  if (!rail) return;
+
+  // video se načte a přehraje až na kliknutí; ostatní se zastaví
+  root.querySelectorAll('[data-play]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var wrap = btn.closest('[data-video]');
+      var vid = wrap && wrap.querySelector('video');
+      if (!vid) return;
+      root.querySelectorAll('[data-video]').forEach(function (w) {
+        var v = w.querySelector('video');
+        if (v && v !== vid) { v.pause(); w.classList.remove('is-playing'); }
+      });
+      wrap.classList.add('is-playing');
+      vid.play();
+    });
+  });
+  root.querySelectorAll('[data-video] video').forEach(function (v) {
+    v.addEventListener('pause', function () { v.closest('[data-video]').classList.remove('is-playing'); });
+  });
+
+  var prev = root.querySelector('[data-prev]');
+  var next = root.querySelector('[data-next]');
+  function step() {
+    var item = rail.querySelector('.gsoc-item');
+    return item ? item.getBoundingClientRect().width + 14 : rail.clientWidth * 0.8;
+  }
+  function sync() {
+    if (prev) prev.disabled = rail.scrollLeft < 4;
+    if (next) next.disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 4;
+  }
+  if (prev) prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+  if (next) next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+  var t;
+  rail.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(sync, 60); }, { passive: true });
+  sync();
+})();
+</script>
+{% schema %}
+{
+  "name": "GENE — Videa od zákazníků",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Nadřádek", "default": "" },
+    { "type": "text", "id": "title", "label": "Titulek", "default": "See it styled by our community" },
+    { "type": "text", "id": "subtitle", "label": "Podtitulek", "default": "Tag us on social media to be featured" },
+    { "type": "color", "id": "bg", "label": "Pozadí", "default": "#E3E2DE" }
+  ],
+  "blocks": [
+    { "type": "clip", "name": "Video / fotka", "settings": [
+      { "type": "video", "id": "video", "label": "Video", "info": "Nahraj video ze Shopify knihovny. Když ho necháš prázdné, ukáže se fotka." },
+      { "type": "image_picker", "id": "image", "label": "Fotka / plakátek videa" },
+      { "type": "text", "id": "alt", "label": "Popis fotky (alt)", "default": "" },
+      { "type": "text", "id": "handle", "label": "Popisek pod dlaždicí", "default": "@genestreetwear" },
+      { "type": "url", "id": "link", "label": "Odkaz na příspěvek" }
+    ] }
+  ],
+  "max_blocks": 12,
+  "presets": [ { "name": "GENE — Videa od zákazníků", "blocks": [ { "type": "clip" }, { "type": "clip" }, { "type": "clip" }, { "type": "clip" } ] } ]
+}
+{% endschema %}
