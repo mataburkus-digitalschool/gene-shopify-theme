@@ -16,6 +16,7 @@
         "low_stock": 10,
         "limited_text": "LIMITED STOCK. NEVER RESTOCKING!",
         "atc_label": "Add to cart",
+        "image_fit": "cover",
         "acc_shipping": "<p>Free shipping over $75. Orders ship in 1-2 business days, delivery 5-10 days worldwide with tracking.</p>",
         "acc_returns": "<p>Not feeling it? Return within 14 days for a refund or exchange. No drama.</p>",
         "acc_size": "<p>Oversized streetwear fit. True to size - size down for a regular fit. See the size guide for measurements.</p>"
@@ -56,7 +57,8 @@
       ],
       "settings": {
         "title": "Customer Reviews",
-        "subtitle": "4.8 average · 8,900+ verified customers"
+        "subtitle": "4.8 average · 8,900+ verified customers",
+        "speed": 6
       }
     },
     "recommendations": {
