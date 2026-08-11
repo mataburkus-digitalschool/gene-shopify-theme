@@ -126,13 +126,25 @@
     });
   }
 
-  // Hodnota je dostupná, když k ní existuje skladová varianta při zbytku
-  // současného výběru — jinak by šlo naklikat kombinaci, která neexistuje.
+  // Dostupnost se posuzuje jen podle voleb PŘED touhle. Kdyby se přihlíželo
+  // i k těm následujícím, zašedla by barva jen proto, že v ní není zrovna
+  // vybraná velikost — a nešla by kliknout.
   function valueAvailable(index, value) {
     return (data.variants || []).some(function (v) {
       if (!v.available || v.opts[index] !== value) return false;
-      return v.opts.every(function (val, i) { return i === index || val === picked[i]; });
+      for (var j = 0; j < index; j++) { if (v.opts[j] !== picked[j]) return false; }
+      return true;
     });
+  }
+
+  // Po změně volby doladíme následující, aby výběr seděl na existující variantě
+  function repairFrom(index) {
+    for (var i = index + 1; i < (data.options || []).length; i++) {
+      if (!valueAvailable(i, picked[i])) {
+        var fix = data.options[i].values.filter(function (val) { return valueAvailable(i, val); })[0];
+        if (fix) picked[i] = fix;
+      }
+    }
   }
 
   function renderOptions() {
@@ -193,7 +205,9 @@
 
     var val = e.target.closest('.gqa__val');
     if (val && !val.disabled) {
-      picked[Number(val.dataset.opt)] = val.dataset.val;
+      var idx = Number(val.dataset.opt);
+      picked[idx] = val.dataset.val;
+      repairFrom(idx);
       renderOptions();
       return;
     }
