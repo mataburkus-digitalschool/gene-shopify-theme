@@ -43,55 +43,8 @@
   {% section 'gene-header' %}
   <main>{{ content_for_layout }}</main>
 
-  <footer style="background:#1A1A1A;color:#fff;margin-top:40px;padding:56px 24px 28px;">
-
-    <div class="g-wrap gfoot-grid">
-      <div>
-        <img src="{{ 'gene-logo.png' | asset_url }}" alt="{{ shop.name }}" style="height:34px;width:auto;display:block;filter:invert(1) brightness(2);margin-bottom:14px;">
-        <p style="font-size:13px;color:rgba(255,255,255,0.6);max-width:260px;line-height:1.55;margin:0;">Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide.</p>
-      </div>
-      <div>
-        <h4 class="gfoot-h">Policies</h4>
-        <div class="gfoot-links">
-          <a href="/pages/refund-policy">Refund Policy</a>
-          <a href="/pages/terms-of-service">Terms of Service</a>
-          <a href="/pages/shipping-policy">Shipping Policy</a>
-          <a href="/pages/privacy-policy">Privacy Policy</a>
-          <a href="/pages/contact">Contact Information</a>
-        </div>
-      </div>
-      <div>
-        <h4 class="gfoot-h">Contact Us:</h4>
-        <div class="gfoot-links">
-          <span style="color:rgba(255,255,255,0.65);">Email us at:</span>
-          <a href="mailto:support@genestreetwear.com">support@genestreetwear.com</a>
-        </div>
-      </div>
-      <div>
-        <h4 class="gfoot-h">Our Links:</h4>
-        <div class="gfoot-links">
-          <a href="https://www.tiktok.com/@genestreetwear" target="_blank" rel="noopener">TikTok</a>
-          <a href="https://www.instagram.com/genestreetwear" target="_blank" rel="noopener">Instagram</a>
-        </div>
-      </div>
-    </div>
-    <div class="g-wrap" style="margin-top:36px;border-top:1px solid rgba(255,255,255,0.15);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(255,255,255,0.5);">
-      <span>© 2026 GENE STREETWEAR</span>
-      <span style="font-family:'JetBrains Mono',monospace;">Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna</span>
-      <span style="font-family:'JetBrains Mono',monospace;">Designed by Digital School</span>
-    </div>
-  </footer>
+  {% section 'gene-footer' %}
   {% render 'gene-quick-add' %}
 
-  <style>
-    .gfoot-grid { display:flex; flex-wrap:wrap; gap:36px 56px; align-items:flex-start; }
-    .gfoot-grid > div:first-child { flex:1 1 240px; min-width:220px; max-width:320px; }
-    .gfoot-grid > div { flex:0 0 auto; }
-    .gfoot-h { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.5); margin:0 0 14px; }
-    .gfoot-links { display:flex; flex-direction:column; gap:9px; font-size:13.5px; }
-    .gfoot-links a { color:rgba(255,255,255,0.85); text-decoration:none; }
-    .gfoot-links a:hover { color:#fff; text-decoration:underline; }
-    @media (max-width:900px){ .gfoot-grid{ gap:28px 40px; } .gfoot-grid > div:first-child{ flex-basis:100%; max-width:none; } }
-  </style>
 </body>
 </html>

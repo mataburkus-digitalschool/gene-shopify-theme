@@ -31,6 +31,70 @@
           "contact_label": "Contact",
           "contact_url": ""
         }
+      },
+      "gene-footer": {
+        "type": "gene-footer",
+        "blocks": {
+          "policies": {
+            "type": "links",
+            "settings": {
+              "heading": "Policies",
+              "new_tab": false,
+              "l1_label": "Refund Policy",
+              "l1_url": "/pages/refund-policy",
+              "l2_label": "Terms of Service",
+              "l2_url": "/pages/terms-of-service",
+              "l3_label": "Shipping Policy",
+              "l3_url": "/pages/shipping-policy",
+              "l4_label": "Privacy Policy",
+              "l4_url": "/pages/privacy-policy",
+              "l5_label": "Contact Information",
+              "l5_url": "/pages/contact",
+              "l6_label": "",
+              "l6_url": ""
+            }
+          },
+          "contact": {
+            "type": "text",
+            "settings": {
+              "heading": "Contact Us:",
+              "text": "<p>Email us at:<br><a href=\"mailto:support@genestreetwear.com\">support@genestreetwear.com</a></p>"
+            }
+          },
+          "social": {
+            "type": "links",
+            "settings": {
+              "heading": "Our Links:",
+              "new_tab": true,
+              "l1_label": "TikTok",
+              "l1_url": "https://www.tiktok.com/@genestreetwear",
+              "l2_label": "Instagram",
+              "l2_url": "https://www.instagram.com/genestreetwear",
+              "l3_label": "",
+              "l3_url": "",
+              "l4_label": "",
+              "l4_url": "",
+              "l5_label": "",
+              "l5_url": "",
+              "l6_label": "",
+              "l6_url": ""
+            }
+          }
+        },
+        "block_order": [
+          "policies",
+          "contact",
+          "social"
+        ],
+        "settings": {
+          "logo_height": 34,
+          "about": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide.",
+          "copyright": "© 2026 GENE STREETWEAR",
+          "payments": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna",
+          "credit": "Designed by Digital School",
+          "bg": "#1A1A1A",
+          "text_color": "#FFFFFF"
+        }
       }
     },
     "content_for_index": [],

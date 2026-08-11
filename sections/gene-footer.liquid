@@ -1,0 +1,143 @@
+{%- comment -%}
+  Patička byla natvrdo v layoutu, takže v editoru nešla vůbec upravit.
+  Teď je to sekce: sloupce jsou bloky, které jde přidávat, mazat a
+  přejmenovávat, a odkazy se vybírají přes výběr stránky.
+
+  Pozor při úpravách schématu: nastavení typu "url" nesmí mít "default" —
+  Shopify na tom soubor odmítne a sekce se do motivu vůbec nepřenese.
+{%- endcomment -%}
+<footer class="gfoot" id="gfoot-{{ section.id }}">
+  <div class="g-wrap gfoot-grid">
+    <div class="gfoot-brand">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name }}" style="height:{{ section.settings.logo_height }}px;">
+      {%- else -%}
+        <img src="{{ 'gene-logo.png' | asset_url }}" alt="{{ shop.name }}" style="height:{{ section.settings.logo_height }}px;">
+      {%- endif -%}
+      {%- if section.settings.about != blank -%}
+        <p class="gfoot-about">{{ section.settings.about }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      <div class="gfoot-col" {{ block.shopify_attributes }}>
+        {%- if block.settings.heading != blank -%}
+          <h4 class="gfoot-h">{{ block.settings.heading }}</h4>
+        {%- endif -%}
+
+        {%- case block.type -%}
+          {%- when 'links' -%}
+            <div class="gfoot-links">
+              {%- for i in (1..6) -%}
+                {%- assign lkey = 'l' | append: i | append: '_label' -%}
+                {%- assign ukey = 'l' | append: i | append: '_url' -%}
+                {%- assign lab = block.settings[lkey] -%}
+                {%- assign url = block.settings[ukey] -%}
+                {%- if lab != blank -%}
+                  {%- if url != blank -%}
+                    <a href="{{ url }}"{% if block.settings.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ lab }}</a>
+                  {%- else -%}
+                    <span>{{ lab }}</span>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+          {%- when 'menu' -%}
+            <div class="gfoot-links">
+              {%- for link in block.settings.menu.links -%}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {%- endfor -%}
+            </div>
+
+          {%- when 'text' -%}
+            <div class="gfoot-links gfoot-rich">{{ block.settings.text }}</div>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="g-wrap gfoot-bottom">
+    {%- if section.settings.copyright != blank -%}<span>{{ section.settings.copyright }}</span>{%- endif -%}
+    {%- if section.settings.payments != blank -%}<span class="gfoot-mono">{{ section.settings.payments }}</span>{%- endif -%}
+    {%- if section.settings.credit != blank -%}<span class="gfoot-mono">{{ section.settings.credit }}</span>{%- endif -%}
+  </div>
+</footer>
+
+<style>
+  #gfoot-{{ section.id }} { background:{{ section.settings.bg }}; color:{{ section.settings.text_color }}; margin-top:40px; padding:56px 24px 28px; }
+  #gfoot-{{ section.id }} .gfoot-grid { display:flex; flex-wrap:wrap; gap:36px 56px; align-items:flex-start; }
+  #gfoot-{{ section.id }} .gfoot-brand { flex:1 1 240px; min-width:220px; max-width:320px; }
+  #gfoot-{{ section.id }} .gfoot-brand img { width:auto; display:block; filter:invert(1) brightness(2); margin-bottom:14px; }
+  #gfoot-{{ section.id }} .gfoot-about { font-size:13px; opacity:.6; max-width:260px; line-height:1.55; margin:0; }
+  #gfoot-{{ section.id }} .gfoot-col { flex:0 0 auto; }
+  #gfoot-{{ section.id }} .gfoot-h { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; opacity:.5; margin:0 0 14px; }
+  #gfoot-{{ section.id }} .gfoot-links { display:flex; flex-direction:column; gap:9px; font-size:13.5px; }
+  #gfoot-{{ section.id }} .gfoot-links a { color:inherit; opacity:.85; text-decoration:none; }
+  #gfoot-{{ section.id }} .gfoot-links a:hover { opacity:1; text-decoration:underline; }
+  #gfoot-{{ section.id }} .gfoot-links span { opacity:.65; }
+  #gfoot-{{ section.id }} .gfoot-rich p { margin:0 0 9px; }
+  #gfoot-{{ section.id }} .gfoot-rich a { text-decoration:underline; }
+  #gfoot-{{ section.id }} .gfoot-bottom { margin-top:36px; border-top:1px solid rgba(255,255,255,0.15); padding-top:20px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12px; opacity:.5; }
+  #gfoot-{{ section.id }} .gfoot-mono { font-family:var(--mono); }
+  @media (max-width:900px){
+    #gfoot-{{ section.id }} .gfoot-grid { gap:28px 40px; }
+    #gfoot-{{ section.id }} .gfoot-brand { flex-basis:100%; max-width:none; }
+  }
+</style>
+{% schema %}
+{
+  "name": "GENE — Patička",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_height", "label": "Výška loga", "min": 18, "max": 70, "step": 2, "unit": "px", "default": 34 },
+    { "type": "textarea", "id": "about", "label": "Text pod logem", "default": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide." },
+    { "type": "header", "content": "Spodní řádek" },
+    { "type": "text", "id": "copyright", "label": "Vlevo", "default": "© 2026 GENE STREETWEAR" },
+    { "type": "text", "id": "payments", "label": "Uprostřed", "default": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna" },
+    { "type": "text", "id": "credit", "label": "Vpravo", "default": "Designed by Digital School" },
+    { "type": "header", "content": "Barvy" },
+    { "type": "color", "id": "bg", "label": "Pozadí", "default": "#1A1A1A" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" }
+  ],
+  "blocks": [
+    {
+      "type": "links",
+      "name": "Sloupec — vlastní odkazy",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Nadpis sloupce", "default": "Policies" },
+        { "type": "checkbox", "id": "new_tab", "label": "Otevírat v novém okně", "default": false },
+        { "type": "text", "id": "l1_label", "label": "Odkaz 1 — text" },
+        { "type": "url",  "id": "l1_url",   "label": "Odkaz 1 — cíl" },
+        { "type": "text", "id": "l2_label", "label": "Odkaz 2 — text" },
+        { "type": "url",  "id": "l2_url",   "label": "Odkaz 2 — cíl" },
+        { "type": "text", "id": "l3_label", "label": "Odkaz 3 — text" },
+        { "type": "url",  "id": "l3_url",   "label": "Odkaz 3 — cíl" },
+        { "type": "text", "id": "l4_label", "label": "Odkaz 4 — text" },
+        { "type": "url",  "id": "l4_url",   "label": "Odkaz 4 — cíl" },
+        { "type": "text", "id": "l5_label", "label": "Odkaz 5 — text" },
+        { "type": "url",  "id": "l5_url",   "label": "Odkaz 5 — cíl" },
+        { "type": "text", "id": "l6_label", "label": "Odkaz 6 — text" },
+        { "type": "url",  "id": "l6_url",   "label": "Odkaz 6 — cíl" }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Sloupec — menu z navigace",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Nadpis sloupce", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "info": "Menu se spravuje v Obchod → Navigace." }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Sloupec — text",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Nadpis sloupce", "default": "Contact Us:" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Email us at: support@genestreetwear.com</p>" }
+      ]
+    }
+  ],
+  "max_blocks": 5
+}
+{% endschema %}
