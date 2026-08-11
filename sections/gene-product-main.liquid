@@ -65,7 +65,7 @@
       {%- assign lastdigit = idstr | slice: -1 | times: 1 -%}
       {%- assign pick = lastdigit | modulo: nums.size -%}
       {%- assign left = nums[pick] | strip -%}
-      <div class="gpm-stock" data-stock {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>
+      <div class="gpm-stock" data-dbg="id={{ product.id }};idstr={{ idstr }};last={{ lastdigit }};size={{ nums.size }};pick={{ pick }};left={{ left }}" data-stock {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>
         ⚠️ {{ section.settings.urgency_text | default: 'Less than [n] left in stock!' | replace: '[n]', left }}
       </div>
       {%- endif -%}
