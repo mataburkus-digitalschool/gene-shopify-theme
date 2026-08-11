@@ -57,7 +57,13 @@
         zůstává pořád stejné, takže při dalším načtení neposkočí.
       {%- endcomment -%}
       {%- assign nums = section.settings.urgency_numbers | default: '10,5' | split: ',' -%}
-      {%- assign pick = product.id | modulo: nums.size -%}
+      {%- comment -%}
+        modulo počítá na id produktu (14 míst) nespolehlivě, tak se bere
+        poslední číslice id — ta je dost náhodná na prostřídání seznamu.
+      {%- endcomment -%}
+      {%- assign idstr = product.id | append: '' -%}
+      {%- assign lastdigit = idstr | slice: -1 | times: 1 -%}
+      {%- assign pick = lastdigit | modulo: nums.size -%}
       {%- assign left = nums[pick] | strip -%}
       <div class="gpm-stock" data-stock {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>
         ⚠️ {{ section.settings.urgency_text | default: 'Less than [n] left in stock!' | replace: '[n]', left }}
