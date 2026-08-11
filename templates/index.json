@@ -350,9 +350,10 @@
     "banner": {
       "type": "gene-banner",
       "settings": {
+        "image": "shopify://shop_images/6cc103f8d389c4e1c252557a355bcc57.jpg",
         "heading": "BUILT DIFFERENT.\nWORN LOUD.",
-        "btn_label": "Shop the drop",
-        "btn_url": ""
+        "btn_label": "SHOP THE DROP",
+        "btn_url": "shopify://collections/new-arrivals"
       }
     },
     "faq": {
