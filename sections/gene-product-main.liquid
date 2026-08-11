@@ -24,10 +24,10 @@
         </div>
 
         {%- if product.media.size > 1 -%}
-          <button type="button" class="gpm-nav gpm-nav--prev" data-prev aria-label="Předchozí fotka">
+          <button type="button" class="gpm-nav gpm-nav--prev" data-prev aria-label="Previous photo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
-          <button type="button" class="gpm-nav gpm-nav--next" data-next aria-label="Další fotka">
+          <button type="button" class="gpm-nav gpm-nav--next" data-next aria-label="Next photo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
           </button>
           <div class="gpm-dots" data-dots>
@@ -78,9 +78,9 @@
         {%- comment -%} množství a Add to cart drží jednu řadu, platba je pod nimi {%- endcomment -%}
         <div class="gpm-buy">
           <div class="gpm-qty">
-            <button type="button" data-qty="-" aria-label="Méně">−</button>
+            <button type="button" data-qty="-" aria-label="Decrease quantity">−</button>
             <input type="number" name="quantity" value="1" min="1" inputmode="numeric" data-qty-input>
-            <button type="button" data-qty="+" aria-label="Více">+</button>
+            <button type="button" data-qty="+" aria-label="Increase quantity">+</button>
           </div>
 
           <button type="submit" class="g-btn g-btn--outline gpm-atc" data-atc {% unless cur.available %}disabled{% endunless %}>

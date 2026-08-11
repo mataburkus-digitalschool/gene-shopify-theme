@@ -104,7 +104,7 @@
         method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
         body: JSON.stringify({ items:items })
       }).then(function(r){ if(!r.ok) throw 0;
-        btn.textContent = '✓ Přidáno';
+        btn.textContent = '✓ Added';
         fetch('{{ routes.cart_url }}.js').then(function(r){return r.json();}).then(function(c){
           document.querySelectorAll('[data-cart-count]').forEach(function(el){ el.textContent = c.item_count; });
         });

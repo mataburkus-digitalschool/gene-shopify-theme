@@ -20,7 +20,7 @@
             {%- if sold_out -%}<span class="gcg-badge">Sold out</span>{%- elsif product.compare_at_price > product.price -%}<span class="gcg-badge gcg-badge--sale">Sale</span>{%- endif -%}
           </a>
           {%- unless sold_out -%}
-            <button class="gcg-qa" type="button" data-qa-open aria-label="Přidat {{ product.title | escape }} do košíku">
+            <button class="gcg-qa" type="button" data-qa-open aria-label="Add {{ product.title | escape }} to cart">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8.5h11v10a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-10Z"/><path d="M7.5 8.5V6.5a2.5 2.5 0 0 1 5 0v2"/><path d="M19 3.5v5M16.5 6h5"/></svg>
             </button>
           {%- endunless -%}

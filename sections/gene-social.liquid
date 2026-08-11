@@ -22,7 +22,7 @@
         {%- if block.settings.video != blank -%}
           <div class="gsoc-media" data-video>
             {{ block.settings.video | video_tag: image_size: '800x', controls: true, playsinline: true, preload: 'none', class: 'gsoc-vid' }}
-            <button type="button" class="gsoc-play" data-play aria-label="Přehrát video">
+            <button type="button" class="gsoc-play" data-play aria-label="Play video">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
             </button>
           </div>
@@ -47,10 +47,10 @@
   </div>
 
   <div class="g-wrap gsoc-nav">
-    <button type="button" class="gsoc-arrow" data-prev aria-label="Předchozí">
+    <button type="button" class="gsoc-arrow" data-prev aria-label="Previous">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <button type="button" class="gsoc-arrow" data-next aria-label="Další">
+    <button type="button" class="gsoc-arrow" data-next aria-label="Next">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
     <span class="gsoc-hint">Táhni / swipe</span>
