@@ -66,11 +66,22 @@
       "settings": {
         "title": "You may also like"
       }
+    },
+    "gene_trustpilot_mREKA3": {
+      "type": "gene-trustpilot",
+      "name": "GENE — Trustpilot",
+      "settings": {
+        "word": "Excellent",
+        "rating": "4.9",
+        "count": "1000+",
+        "bg": "#E3E2DE"
+      }
     }
   },
   "order": [
     "main",
     "reviews",
+    "gene_trustpilot_mREKA3",
     "recommendations"
   ]
 }
