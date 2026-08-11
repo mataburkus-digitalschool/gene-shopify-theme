@@ -21,9 +21,7 @@
       <article class="gsoc-item" {{ block.shopify_attributes }}>
         {%- if block.settings.video != blank -%}
           <div class="gsoc-media" data-video>
-            {{ block.settings.video
-               | video_tag: image_size: '600x', controls: true, playsinline: true, preload: 'none',
-                 poster: block.settings.image, class: 'gsoc-vid' }}
+            {{ block.settings.video | video_tag: image_size: '800x', controls: true, playsinline: true, preload: 'none', class: 'gsoc-vid' }}
             <button type="button" class="gsoc-play" data-play aria-label="Přehrát video">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
             </button>
