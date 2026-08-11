@@ -1,5 +1,4 @@
 {%- assign cur = product.selected_or_first_available_variant -%}
-{%- assign th = section.settings.low_stock | default: 10 -%}
 <section class="gpm g-wrap" id="gpm-{{ section.id }}" data-gpm>
   <div class="gpm-grid">
     {%- comment -%} ── MEDIA ── {%- endcomment -%}
@@ -52,8 +51,15 @@
       <div class="gpm-tax">Taxes included. <a href="{{ pages['shipping-policy'].url | default: routes.root_url }}">Shipping</a> calculated at checkout.</div>
 
       {%- if section.settings.show_urgency -%}
-      <div class="gpm-stock" data-stock {% unless cur.inventory_management and cur.inventory_quantity > 0 and cur.inventory_quantity <= th %}hidden{% endunless %}>
-        ⚠️ Only <span data-stock-n>{{ cur.inventory_quantity }}</span> left in stock!
+      {%- comment -%}
+        Urgence patří jen ke zlevněným kusům. Číslo je náhodné 1–10 a losuje
+        se jednou za načtení stránky — ne při každém přepnutí varianty, aby
+        neposkakovalo, když si člověk proklikává velikosti. Na serveru se
+        vypíše hodnota odvozená od id produktu, ať se první vykreslení
+        neškube, a skript ji hned nahradí.
+      {%- endcomment -%}
+      <div class="gpm-stock" data-stock {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>
+        ⚠️ Only <span data-stock-n>{{ product.id | modulo: 10 | plus: 1 }}</span> left in stock!
       </div>
       {%- endif -%}
       {%- if section.settings.limited_text != blank -%}<div class="gpm-limited">{{ section.settings.limited_text }}</div>{%- endif -%}
@@ -122,7 +128,7 @@
 
 
   <script type="application/json" data-variants>
-    [{%- for v in product.variants -%}{"id":{{ v.id }},"opts":{{ v.options | json }},"available":{{ v.available }},"inv":{{ v.inventory_quantity | default: 9999 }},"tracked":{% if v.inventory_management %}true{% else %}false{% endif %},"price":{{ v.price | json }},"priceM":{{ v.price | money | json }},"compareM":{% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},"mediaId":{% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+    [{%- for v in product.variants -%}{"id":{{ v.id }},"opts":{{ v.options | json }},"available":{{ v.available }},"price":{{ v.price | json }},"priceM":{{ v.price | money | json }},"compareM":{% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},"mediaId":{% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
   </script>
 </section>
 
@@ -199,7 +205,7 @@
   var idInput = root.querySelector('[data-variant-id]');
   var track = root.querySelector('[data-track]');
   var opts = Array.prototype.map.call(root.querySelectorAll('.gpm-opt'), function(o){ return o; });
-  var th = {{ th }};
+  var stockLeft = 1 + Math.floor(Math.random() * 10);   // 1–10, jednou za načtení
 
   function selectedOptions(){
     return opts.map(function(o){ var b=o.querySelector('.gpm-val.on'); return b?b.getAttribute('data-value'):null; });
@@ -221,11 +227,11 @@
       if(!was){ was=document.createElement('s'); was.className='gpm-was'; was.setAttribute('data-was',''); priceWrap.insertBefore(was, priceWrap.firstChild); }
       was.textContent=v.compareM; was.hidden=false; if(sale) sale.hidden=false;
     } else { if(was) was.hidden=true; if(sale) sale.hidden=true; }
-    // stock
+    // urgence — jen u zlevněné varianty
     var stock = root.querySelector('[data-stock]');
     if(stock){
-      if(v.tracked && v.inv>0 && v.inv<=th){ stock.hidden=false; var n=stock.querySelector('[data-stock-n]'); if(n) n.textContent=v.inv; }
-      else stock.hidden=true;
+      stock.hidden = !v.compareM;
+      if(!stock.hidden){ var n = stock.querySelector('[data-stock-n]'); if(n) n.textContent = stockLeft; }
     }
     // atc
     var atc = root.querySelector('[data-atc]'); var lbl = root.querySelector('[data-atc-label]');
@@ -304,8 +310,7 @@
 {
   "name": "Produkt",
   "settings": [
-    { "type": "checkbox", "id": "show_urgency", "label": "Ukázat „Only X left in stock!“", "default": true },
-    { "type": "number", "id": "low_stock", "label": "Práh „posledních kusů“", "default": 10 },
+    { "type": "checkbox", "id": "show_urgency", "label": "Ukázat „Only X left in stock!“", "info": "Zobrazí se jen u zlevněných produktů. Číslo je náhodné 1–10 a mění se s každým načtením stránky.", "default": true },
     { "type": "text", "id": "limited_text", "label": "Text pod cenou (urgence)", "default": "LIMITED STOCK. NEVER RESTOCKING!" },
     { "type": "text", "id": "atc_label", "label": "Text tlačítka Add to cart", "default": "Add to cart" },
     { "type": "select", "id": "image_fit", "label": "Fotky ve čtverci", "info": "„Vejít se“ ukáže celou fotku, „Vyplnit“ ji ořízne na čtverec.", "options": [ { "value": "contain", "label": "Vejít se (bez ořezu)" }, { "value": "cover", "label": "Vyplnit (ořízne)" } ], "default": "contain" },
