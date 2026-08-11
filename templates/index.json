@@ -327,6 +327,14 @@
             "meta": "Verified buyer"
           }
         },
+        "review_rbXNLH": {
+          "type": "review",
+          "settings": {
+            "quote": "Perfect fit and premium materials. Exactly what I was looking for!",
+            "name": "Avraam C.",
+            "meta": "Verified buyer"
+          }
+        },
         "r3": {
           "type": "review",
           "settings": {
@@ -339,6 +347,7 @@
       "block_order": [
         "r1",
         "r2",
+        "review_rbXNLH",
         "r3"
       ],
       "settings": {
