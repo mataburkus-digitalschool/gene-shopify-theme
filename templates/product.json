@@ -61,12 +61,6 @@
         "speed": 6
       }
     },
-    "recommendations": {
-      "type": "gene-recommendations",
-      "settings": {
-        "title": "You may also like"
-      }
-    },
     "gene_trustpilot_mREKA3": {
       "type": "gene-trustpilot",
       "name": "GENE — Trustpilot",
@@ -76,12 +70,32 @@
         "count": "1000+",
         "bg": "#E3E2DE"
       }
+    },
+    "recommendations": {
+      "type": "gene-recommendations",
+      "settings": {
+        "title": "You may also like"
+      }
+    },
+    "gene_email_yMJMpn": {
+      "type": "gene-email",
+      "settings": {
+        "eyebrow": "Join the fam",
+        "title": "Get 10%  off EVERYTHING",
+        "text": "Early access to restocks and new drops before they sell out. No spam — just fire fits.",
+        "placeholder": "you@email.com",
+        "btn_label": "GET 10% OFF",
+        "legal": "By signing up you agree to receive email marketing. Unsubscribe anytime.",
+        "success_title": "You're in.",
+        "success_text": "Use code WELCOME10 at checkout for 10% off."
+      }
     }
   },
   "order": [
     "main",
     "reviews",
     "gene_trustpilot_mREKA3",
-    "recommendations"
+    "recommendations",
+    "gene_email_yMJMpn"
   ]
 }
