@@ -59,8 +59,8 @@
 </div>
 
 <style>
-  #gcg-{{ section.id }} .gcg-grid { display:grid; grid-template-columns:1fr; gap:18px; max-width:560px; }
-  @media (max-width:640px){ #gcg-{{ section.id }} .gcg-grid { gap:14px; max-width:none; } }
+  #gcg-{{ section.id }} .gcg-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  @media (max-width:640px){ #gcg-{{ section.id }} .gcg-grid { gap:10px; } }
   #gcg-{{ section.id }} .gcg-card { border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--paper); display:flex; flex-direction:column; transition:border-color .2s var(--ease); }
   #gcg-{{ section.id }} .gcg-card:hover { border-color:var(--ink); }
   #gcg-{{ section.id }} .gcg-media { position:relative; display:block; aspect-ratio:1/1; background:#EFEFEF; overflow:hidden; }

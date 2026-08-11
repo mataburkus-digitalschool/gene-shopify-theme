@@ -136,10 +136,6 @@
           unless product.available
             assign sold_out = true
           endunless
-          assign discount = 0
-          if on_sale
-            assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
-          endif
           assign is_new = false
           if section.settings.show_new_badge and product.tags contains 'new'
             assign is_new = true
@@ -161,7 +157,7 @@
             {%- if sold_out and section.settings.show_soldout_badge -%}
               <span class="gg-badge gg-badge--out">{{ section.settings.soldout_label }}</span>
             {%- elsif on_sale and section.settings.show_sale_badge -%}
-              <span class="gg-badge">−{{ discount }}%</span>
+              <span class="gg-badge">Sale</span>
             {%- elsif is_new -%}
               <span class="gg-badge">NEW</span>
             {%- endif -%}

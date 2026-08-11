@@ -75,15 +75,18 @@
         {%- endunless -%}
 
         <div class="gpm-qty-label">Quantity</div>
-        <div class="gpm-qty">
-          <button type="button" data-qty="-" aria-label="Méně">−</button>
-          <input type="number" name="quantity" value="1" min="1" inputmode="numeric" data-qty-input>
-          <button type="button" data-qty="+" aria-label="Více">+</button>
-        </div>
+        {%- comment -%} množství a Add to cart drží jednu řadu, platba je pod nimi {%- endcomment -%}
+        <div class="gpm-buy">
+          <div class="gpm-qty">
+            <button type="button" data-qty="-" aria-label="Méně">−</button>
+            <input type="number" name="quantity" value="1" min="1" inputmode="numeric" data-qty-input>
+            <button type="button" data-qty="+" aria-label="Více">+</button>
+          </div>
 
-        <button type="submit" class="g-btn g-btn--outline gpm-atc" data-atc {% unless cur.available %}disabled{% endunless %}>
-          <span data-atc-label>{% if cur.available %}{{ section.settings.atc_label | default: 'Add to cart' }}{% else %}Sold out{% endif %}</span>
-        </button>
+          <button type="submit" class="g-btn g-btn--outline gpm-atc" data-atc {% unless cur.available %}disabled{% endunless %}>
+            <span data-atc-label>{% if cur.available %}{{ section.settings.atc_label | default: 'Add to cart' }}{% else %}Sold out{% endif %}</span>
+          </button>
+        </div>
 
         {{ form | payment_button }}
       {% endform %}
@@ -118,7 +121,12 @@
   </div>
 
   {%- comment -%} ── STICKY BAR ── {%- endcomment -%}
-  <div class="gpm-sticky" data-sticky hidden>
+  {%- comment -%}
+    Lišta visí u spodní hrany po celou dobu, ne až když odscrolluješ pod
+    tlačítko. Aby nikdy nepřekryla obsah, rezervuje si místo padding na body
+    níž ve stylech — ten se vypisuje jen na stránce produktu.
+  {%- endcomment -%}
+  <div class="gpm-sticky" data-sticky>
     <div class="gpm-sticky-in g-wrap">
       <div class="gpm-sticky-info">
         <strong>{{ product.title }}</strong>
@@ -166,18 +174,21 @@
 .gpm-opt{ margin-bottom:18px; }
 .gpm-opt-label{ font-size:14px; font-weight:600; margin-bottom:9px; }
 .gpm-opt-vals{ display:flex; gap:9px; flex-wrap:wrap; }
-.gpm-val{ min-width:52px; padding:11px 18px; border:1.5px solid var(--line); border-radius:999px; background:var(--paper); font:inherit; font-size:14px; cursor:pointer; transition:.15s; }
+/* Barvu textu si tlačítka a inputy musí říct samy — iOS Safari jim jinak
+   dá systémovou modrou, i když na desktopu vyjdou černě. */
+.gpm-val{ min-width:52px; padding:11px 18px; border:1.5px solid var(--line); border-radius:999px; background:var(--paper); color:var(--ink); font:inherit; font-size:14px; cursor:pointer; transition:.15s; }
 .gpm-val:hover{ border-color:var(--ink); }
 .gpm-val.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
 .gpm-qty-label{ font-size:14px; font-weight:600; margin:4px 0 9px; }
-.gpm-qty{ display:inline-flex; align-items:center; border:1.5px solid var(--ink); border-radius:999px; overflow:hidden; margin-bottom:18px; }
-.gpm-qty button{ width:42px; height:44px; border:none; background:var(--paper); font-size:19px; cursor:pointer; }
-.gpm-qty input{ width:46px; height:44px; border:none; text-align:center; font:inherit; font-size:15px; -moz-appearance:textfield; background:var(--paper); }
+.gpm-buy{ display:flex; align-items:stretch; gap:10px; margin-bottom:12px; }
+.gpm-qty{ display:inline-flex; align-items:center; flex:none; border:1.5px solid var(--ink); border-radius:999px; overflow:hidden; }
+.gpm-qty button{ width:42px; height:44px; border:none; background:var(--paper); color:var(--ink); font-size:19px; cursor:pointer; }
+.gpm-qty input{ width:46px; height:44px; border:none; text-align:center; font:inherit; font-size:15px; -moz-appearance:textfield; background:var(--paper); color:var(--ink); }
 .gpm-qty input::-webkit-outer-spin-button,.gpm-qty input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
-.gpm-atc{ width:100%; margin-bottom:12px; }
+.gpm-atc{ flex:1; min-width:0; }
 #gpm-form .shopify-payment-button{ margin-bottom:6px; }
 #gpm-form .shopify-payment-button__button{ border-radius:999px !important; }
-#gpm-form .shopify-payment-button__more-options{ border-radius:999px !important; }
+#gpm-form .shopify-payment-button__more-options{ border-radius:999px !important; color:var(--ink) !important; }
 .gpm-trust{ text-align:center; font-size:13px; color:var(--ink-soft); margin:14px 0 12px; }
 .gpm-pay{ display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin-bottom:8px; }
 .gpm-pay .gpm-pay-i{ width:38px; height:24px; }
@@ -190,7 +201,8 @@
 .gpm-det[open] .gpm-chev{ transform:rotate(180deg); }
 .gpm-det-body{ padding:0 2px 18px; font-size:14px; line-height:1.6; color:var(--ink-soft); }
 /* sticky */
-.gpm-sticky{ position:fixed; left:0; right:0; bottom:0; z-index:60; background:var(--paper); border-top:1px solid var(--line); box-shadow:0 -6px 24px rgba(0,0,0,.08); }
+body{ padding-bottom:78px; }
+.gpm-sticky{ position:fixed; left:0; right:0; bottom:0; z-index:60; background:var(--paper); border-top:1px solid var(--line); box-shadow:0 -6px 24px rgba(0,0,0,.08); padding-bottom:env(safe-area-inset-bottom); }
 .gpm-sticky-in{ display:flex; align-items:center; gap:16px; padding:12px 24px; }
 .gpm-sticky-info{ display:flex; flex-direction:column; line-height:1.2; font-size:13px; overflow:hidden; }
 .gpm-sticky-info strong{ font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -307,16 +319,8 @@
     sync();
   }
 
-  // sticky add-to-cart
-  var sticky = root.querySelector('[data-sticky]');
+  // sticky add-to-cart — lišta je vidět pořád, jen odesílá formulář
   var form = root.querySelector('#gpm-form');
-  var atcBtn = root.querySelector('[data-atc]');
-  if(sticky && 'IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){ sticky.hidden = en.isIntersecting; });
-    }, { rootMargin:'0px 0px -60px 0px' });
-    io.observe(atcBtn);
-  }
   var sBtn = root.querySelector('[data-sticky-atc]');
   if(sBtn && form){ sBtn.addEventListener('click', function(){ if(typeof form.requestSubmit==='function') form.requestSubmit(); else form.submit(); }); }
 
