@@ -11,10 +11,27 @@
   "sections": {
     "grid": {
       "type": "gene-collection-grid",
-      "settings": {}
+      "settings": {
+        "columns_desktop": 4,
+        "columns_mobile": "2"
+      }
+    },
+    "gene_email_MaeWyC": {
+      "type": "gene-email",
+      "settings": {
+        "eyebrow": "Join the fam",
+        "title": "Get 10%  off EVERYTHING",
+        "text": "Early access to restocks and new drops before they sell out. No spam — just fire fits.",
+        "placeholder": "you@email.com",
+        "btn_label": "GET 10% OFF",
+        "legal": "By signing up you agree to receive email marketing. Unsubscribe anytime.",
+        "success_title": "You're in.",
+        "success_text": "Use code WELCOME10 at checkout for 10% off."
+      }
     }
   },
   "order": [
-    "grid"
+    "grid",
+    "gene_email_MaeWyC"
   ]
 }
