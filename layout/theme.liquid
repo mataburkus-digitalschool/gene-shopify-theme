@@ -44,23 +44,6 @@
   <main>{{ content_for_layout }}</main>
 
   <footer style="background:#1A1A1A;color:#fff;margin-top:40px;padding:56px 24px 28px;">
-    {%- comment -%} newsletter — Shopify formulář zákazníka, odběratel dostane tag "newsletter" {%- endcomment -%}
-    <div class="g-wrap gfoot-news">
-      <div>
-        <h4 class="gfoot-news-h">Get 10% off your first order</h4>
-        <p class="gfoot-news-p">New drops, restocks and early access — straight to your inbox.</p>
-      </div>
-      {% form 'customer', class: 'gfoot-form' %}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <input type="email" name="contact[email]" placeholder="Enter your email" aria-label="Email" autocomplete="email" required>
-        <button type="submit">Get your discount</button>
-        {%- if form.posted_successfully? -%}
-          <p class="gfoot-note gfoot-note--ok">Thanks — check your inbox.</p>
-        {%- elsif form.errors -%}
-          <p class="gfoot-note gfoot-note--err">{{ form.errors.translated_fields.email }} {{ form.errors.messages.email }}</p>
-        {%- endif -%}
-      {% endform %}
-    </div>
 
     <div class="g-wrap gfoot-grid">
       <div>
@@ -101,23 +84,6 @@
   {% render 'gene-quick-add' %}
 
   <style>
-    .gfoot-news { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px 40px; padding-bottom:34px; margin-bottom:34px; border-bottom:1px solid rgba(255,255,255,0.15); }
-    .gfoot-news-h { font-weight:800; font-size:clamp(20px,2.2vw,26px); letter-spacing:-0.02em; text-transform:uppercase; margin:0 0 6px; }
-    .gfoot-news-p { font-size:13.5px; color:rgba(255,255,255,0.6); margin:0; max-width:44ch; }
-    .gfoot-form { display:flex; flex-wrap:wrap; gap:10px; flex:1 1 380px; max-width:520px; position:relative; }
-    .gfoot-form input[type="email"] { flex:1 1 200px; min-width:0; height:52px; padding:0 18px; border:1px solid rgba(255,255,255,0.3); border-radius:999px; background:transparent; color:#fff; font:inherit; font-size:14px; }
-    .gfoot-form input[type="email"]::placeholder { color:rgba(255,255,255,0.45); }
-    .gfoot-form input[type="email"]:focus { outline:none; border-color:#fff; }
-    .gfoot-form button { height:52px; padding:0 26px; border:none; border-radius:999px; background:#fff; color:var(--ink); font:inherit; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; transition:opacity .15s var(--ease); }
-    .gfoot-form button:hover { opacity:.88; }
-    .gfoot-note { flex-basis:100%; margin:0; font-size:13px; }
-    .gfoot-note--ok { color:#8fd6a6; }
-    .gfoot-note--err { color:#ff9b8f; }
-    @media (max-width:700px){
-      .gfoot-news { flex-direction:column; align-items:stretch; }
-      .gfoot-form { max-width:none; }
-      .gfoot-form button { width:100%; }
-    }
     .gfoot-grid { display:flex; flex-wrap:wrap; gap:36px 56px; align-items:flex-start; }
     .gfoot-grid > div:first-child { flex:1 1 240px; min-width:220px; max-width:320px; }
     .gfoot-grid > div { flex:0 0 auto; }

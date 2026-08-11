@@ -30,8 +30,8 @@
             {%- if p.compare_at_price > p.price -%}<s>{{ p.compare_at_price | money }}</s> {%- endif -%}{{ p.price | money }}
           </div>
           {%- if p.available -%}
-            <a class="grec-add" href="{{ p.url }}">Preview</a>
-            <script type="application/json" class="gg-qa">{"name":{{ p.title | json }},"price":{{ p.price | money | json }},"compare":{% if p.compare_at_price > p.price %}{{ p.compare_at_price | money | json }}{% else %}null{% endif %},"img":{{ p.featured_media | image_url: width: 320 | json }},"url":{{ p.url | json }},"variants":[{%- for v in p.variants -%}{%- if p.has_only_default_variant -%}{%- assign vt = 'One size' -%}{%- else -%}{%- assign vt = v.title -%}{%- endif -%}{"id":{{ v.id }},"title":{{ vt | json }},"available":{{ v.available }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]}</script>
+            <a class="grec-add" href="{{ p.url }}">View product</a>
+            <script type="application/json" class="gg-qa">{"name":{{ p.title | json }},"price":{{ p.price | money | json }},"compare":{% if p.compare_at_price > p.price %}{{ p.compare_at_price | money | json }}{% else %}null{% endif %},"img":{{ p.featured_media | image_url: width: 320 | json }},"url":{{ p.url | json }},"singleVariant":{{ p.has_only_default_variant }},"options":[{%- for o in p.options_with_values -%}{"name":{{ o.name | json }},"values":{{ o.values | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],"variants":[{%- for v in p.variants -%}{"id":{{ v.id }},"opts":{{ v.options | json }},"available":{{ v.available }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]}</script>
           {%- else -%}
             <button class="grec-add grec-add--out" type="button" disabled>Sold out</button>
           {%- endif -%}
@@ -45,7 +45,7 @@
 <style>
   #grec-{{ section.id }} .grec-title{ font-weight:800; font-size:clamp(22px,2.4vw,30px); letter-spacing:-0.02em; margin:0 0 22px; }
   #grec-{{ section.id }} .grec-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
-  #grec-{{ section.id }} .grec-card{ display:flex; flex-direction:column; }
+  #grec-{{ section.id }} .grec-card{ display:flex; flex-direction:column; height:100%; }
   #grec-{{ section.id }} .grec-img{ position:relative; display:block; aspect-ratio:1/1; border:1px solid var(--line); border-radius:6px; overflow:hidden; background:var(--tag); }
   #grec-{{ section.id }} .grec-img img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s var(--ease); }
   #grec-{{ section.id }} .grec-card:hover .grec-img img{ transform:scale(1.03); }
@@ -60,9 +60,9 @@
     #grec-{{ section.id }} .grec-qa svg{ width:17px; height:17px; }
   }
   #grec-{{ section.id }} .grec-name{ font-size:14px; margin:12px 0 4px; color:inherit; text-decoration:none; }
-  #grec-{{ section.id }} .grec-price{ font-size:14px; font-weight:600; }
+  #grec-{{ section.id }} .grec-price{ font-size:14px; font-weight:600; margin-bottom:auto; }
   #grec-{{ section.id }} .grec-price s{ color:var(--ink-muted); font-weight:400; }
-  #grec-{{ section.id }} .grec-add{ margin-top:12px; width:100%; box-sizing:border-box; text-align:center; text-decoration:none; background:var(--ink); color:#fff; border:none; border-radius:999px; padding:11px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; transition:opacity .15s var(--ease); }
+  #grec-{{ section.id }} .grec-add{ margin-top:12px; align-self:stretch; width:100%; box-sizing:border-box; text-align:center; text-decoration:none; background:var(--ink); color:#fff; border:none; border-radius:999px; padding:11px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; transition:opacity .15s var(--ease); }
   #grec-{{ section.id }} .grec-add:hover{ opacity:.88; }
   #grec-{{ section.id }} .grec-add--out{ background:var(--paper); color:var(--ink); border:1.5px solid var(--ink); cursor:default; }
   #grec-{{ section.id }} .grec-add--out:hover{ opacity:1; }

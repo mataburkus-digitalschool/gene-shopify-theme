@@ -19,8 +19,7 @@
       </div>
     </div>
 
-    <div class="gqa__label" data-qa-size-label>Size</div>
-    <div class="gqa__sizes" data-qa-sizes></div>
+    <div class="gqa__options" data-qa-options></div>
 
     <div class="gqa__buy">
       <div class="gqa__qty">
@@ -62,16 +61,18 @@
   .gqa__price{ font-weight:700; font-size:15px; margin-top:4px; }
   .gqa__price s{ color:var(--ink-muted); font-weight:400; margin-right:6px; }
 
-  .gqa__label{ font-size:14px; font-weight:600; margin:22px 0 10px; }
-  .gqa__sizes{ display:flex; flex-wrap:wrap; gap:9px; }
-  .gqa__size{
+  .gqa__group{ margin-top:20px; }
+  .gqa__label{ font-size:14px; font-weight:600; margin:0 0 10px; }
+  .gqa__label span{ font-weight:400; color:var(--ink-soft); }
+  .gqa__vals{ display:flex; flex-wrap:wrap; gap:9px; }
+  .gqa__val{
     min-width:56px; padding:12px 16px; border:1.5px solid var(--line); border-radius:10px;
     background:var(--paper); color:var(--ink); font:inherit; font-size:14px; font-weight:600;
     cursor:pointer; transition:border-color .15s var(--ease), background .15s var(--ease);
   }
-  .gqa__size:hover:not(:disabled){ border-color:var(--ink); }
-  .gqa__size.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
-  .gqa__size:disabled{ color:var(--ink-muted); border-style:dashed; cursor:default; text-decoration:line-through; }
+  .gqa__val:hover:not(:disabled){ border-color:var(--ink); }
+  .gqa__val.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .gqa__val:disabled{ color:var(--ink-muted); border-style:dashed; cursor:default; text-decoration:line-through; }
 
   .gqa__buy{ display:flex; align-items:stretch; gap:10px; margin-top:20px; }
   .gqa__qty{ display:inline-flex; align-items:center; flex:none; border:1.5px solid var(--line); border-radius:10px; overflow:hidden; }
@@ -92,7 +93,7 @@
   @media (max-width:600px){
     .gqa{ align-items:flex-end; }
     .gqa__panel{ width:100%; max-width:100%; border-radius:18px 18px 0 0; padding:18px 16px calc(18px + env(safe-area-inset-bottom)); }
-    .gqa__size{ min-width:50px; padding:11px 13px; }
+    .gqa__val{ min-width:50px; padding:11px 13px; }
   }
 </style>
 
@@ -102,13 +103,13 @@
   if (!modal || modal.dataset.init) return;
   modal.dataset.init = '1';
 
-  var sizesWrap = modal.querySelector('[data-qa-sizes]');
-  var sizeLabel = modal.querySelector('[data-qa-size-label]');
-  var qtyInput  = modal.querySelector('[data-qa-qty-input]');
-  var addBtn    = modal.querySelector('[data-qa-add]');
-  var addLabel  = modal.querySelector('[data-qa-add-label]');
-  var link      = modal.querySelector('[data-qa-link]');
-  var current   = null;
+  var optsWrap = modal.querySelector('[data-qa-options]');
+  var qtyInput = modal.querySelector('[data-qa-qty-input]');
+  var addBtn   = modal.querySelector('[data-qa-add]');
+  var addLabel = modal.querySelector('[data-qa-add-label]');
+  var link     = modal.querySelector('[data-qa-link]');
+  var data     = null;   // aktuální produkt
+  var picked   = [];     // vybraná hodnota pro každou volbu
 
   function refreshCart() {
     fetch('{{ routes.cart_url }}.js').then(function (r) { return r.json(); }).then(function (cart) {
@@ -119,42 +120,68 @@
     }).catch(function () {});
   }
 
-  function selected() { return sizesWrap.querySelector('.gqa__size.on'); }
+  function matchingVariant() {
+    return (data.variants || []).find(function (v) {
+      return v.opts.every(function (val, i) { return val === picked[i]; });
+    });
+  }
+
+  // Hodnota je dostupná, když k ní existuje skladová varianta při zbytku
+  // současného výběru — jinak by šlo naklikat kombinaci, která neexistuje.
+  function valueAvailable(index, value) {
+    return (data.variants || []).some(function (v) {
+      if (!v.available || v.opts[index] !== value) return false;
+      return v.opts.every(function (val, i) { return i === index || val === picked[i]; });
+    });
+  }
+
+  function renderOptions() {
+    optsWrap.innerHTML = (data.options || []).map(function (opt, i) {
+      var vals = opt.values.map(function (val) {
+        var off = valueAvailable(i, val) ? '' : ' disabled';
+        var on  = picked[i] === val ? ' on' : '';
+        return '<button type="button" class="gqa__val' + on + '" data-opt="' + i + '" data-val="' + val.replace(/"/g, '&quot;') + '"' + off + '>' + val + '</button>';
+      }).join('');
+      return '<div class="gqa__group"><div class="gqa__label">' + opt.name +
+             ' <span>' + (picked[i] || '') + '</span></div><div class="gqa__vals">' + vals + '</div></div>';
+    }).join('');
+
+    var v = matchingVariant();
+    addBtn.disabled = !v || !v.available;
+    addLabel.textContent = v && v.available ? 'Add to cart' : (v ? 'Sold out' : 'Select options');
+  }
 
   function open(card) {
     var dataEl = card && card.querySelector('script.gg-qa');
     if (!dataEl) return;
-    var d; try { d = JSON.parse(dataEl.textContent); } catch (e) { return; }
-    current = d;
+    try { data = JSON.parse(dataEl.textContent); } catch (e) { return; }
 
     var img = modal.querySelector('[data-qa-img]');
-    if (img) { if (d.img) { img.src = d.img; img.style.display = ''; } else { img.style.display = 'none'; } }
-    modal.querySelector('[data-qa-name]').textContent = d.name || '';
+    if (img) { if (data.img) { img.src = data.img; img.style.display = ''; } else { img.style.display = 'none'; } }
+    modal.querySelector('[data-qa-name]').textContent = data.name || '';
     modal.querySelector('[data-qa-price]').innerHTML =
-      (d.compare ? '<s>' + d.compare + '</s>' : '') + (d.price || '');
-    if (link) { link.href = d.url || '#'; link.hidden = !d.url; }
+      (data.compare ? '<s>' + data.compare + '</s>' : '') + (data.price || '');
+    if (link) { link.href = data.url || '#'; link.hidden = !data.url; }
 
-    // jediná varianta bez skutečných velikostí — výběr nemá co nabídnout
-    var onlyOne = (d.variants || []).length === 1 && /^(one size|default title)$/i.test(d.variants[0].title || '');
-    sizeLabel.hidden = onlyOne;
-    sizesWrap.hidden = onlyOne;
-    sizesWrap.innerHTML = onlyOne ? '' : (d.variants || []).map(function (v) {
-      return '<button type="button" class="gqa__size" data-variant-id="' + v.id + '"' +
-             (v.available ? '' : ' disabled') + '>' + v.title + '</button>';
-    }).join('');
+    // první skladová varianta jako výchozí výběr
+    var first = (data.variants || []).find(function (v) { return v.available; }) || data.variants[0];
+    picked = first ? first.opts.slice() : [];
 
-    var first = onlyOne ? null : sizesWrap.querySelector('.gqa__size:not(:disabled)');
-    if (first) first.classList.add('on');
+    optsWrap.hidden = !!data.singleVariant;
+    if (data.singleVariant) {
+      optsWrap.innerHTML = '';
+      addBtn.disabled = !(first && first.available);
+      addLabel.textContent = addBtn.disabled ? 'Sold out' : 'Add to cart';
+    } else {
+      renderOptions();
+    }
 
     qtyInput.value = 1;
-    addBtn.disabled = onlyOne ? !d.variants[0].available : !first;
-    addLabel.textContent = addBtn.disabled ? 'Sold out' : 'Add to cart';
-
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
   }
 
-  function close() { modal.hidden = true; document.body.style.overflow = ''; current = null; }
+  function close() { modal.hidden = true; document.body.style.overflow = ''; data = null; }
 
   document.addEventListener('click', function (e) {
     var openBtn = e.target.closest('[data-qa-open]');
@@ -164,12 +191,10 @@
   modal.addEventListener('click', function (e) {
     if (e.target.closest('[data-qa-close]')) { close(); return; }
 
-    var size = e.target.closest('.gqa__size');
-    if (size && !size.disabled) {
-      sizesWrap.querySelectorAll('.gqa__size').forEach(function (b) { b.classList.remove('on'); });
-      size.classList.add('on');
-      addBtn.disabled = false;
-      addLabel.textContent = 'Add to cart';
+    var val = e.target.closest('.gqa__val');
+    if (val && !val.disabled) {
+      picked[Number(val.dataset.opt)] = val.dataset.val;
+      renderOptions();
       return;
     }
 
@@ -181,19 +206,18 @@
       return;
     }
 
-    if (e.target.closest('[data-qa-add]') && !addBtn.disabled && current) {
-      var sel = selected();
-      var id = sel ? sel.dataset.variantId : (current.variants[0] && current.variants[0].id);
-      if (!id) return;
+    if (e.target.closest('[data-qa-add]') && !addBtn.disabled && data) {
+      var v = data.singleVariant ? data.variants[0] : matchingVariant();
+      if (!v) return;
       addBtn.disabled = true;
       addLabel.textContent = '…';
       fetch('{{ routes.cart_add_url }}.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ id: Number(id), quantity: parseInt(qtyInput.value, 10) || 1 })
+        body: JSON.stringify({ id: Number(v.id), quantity: parseInt(qtyInput.value, 10) || 1 })
       }).then(function (r) {
         if (!r.ok) throw new Error('add');
-        addLabel.textContent = '✓ Added';
+        addLabel.textContent = '\u2713 Added';
         refreshCart();
         setTimeout(close, 700);
       }).catch(function () {
