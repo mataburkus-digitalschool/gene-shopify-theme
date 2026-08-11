@@ -75,7 +75,7 @@
         "low_stock_label": "Only [n] left",
         "show_sizes": false,
         "show_quick_add": true,
-        "quick_add_label": "Preview",
+        "preview_label": "View product",
         "added_label": "✓ Přidáno",
         "soldout_button_label": "Vyprodáno",
         "select_size_label": "Select size",
@@ -204,7 +204,7 @@
         "low_stock_label": "Only [n] left",
         "show_sizes": false,
         "show_quick_add": true,
-        "quick_add_label": "Preview",
+        "preview_label": "View product",
         "added_label": "✓ Přidáno",
         "soldout_button_label": "Vyprodáno",
         "select_size_label": "Select size",
@@ -344,7 +344,7 @@
       "settings": {
         "title": "Loved by the fam",
         "subtitle": "4.8 average · 8,900+ verified customers",
-        "speed": 6
+        "speed": 10
       }
     },
     "banner": {
@@ -417,46 +417,6 @@
         "success_title": "You're in.",
         "success_text": "Use code FAM10 at checkout for 10% off."
       }
-    },
-    "social": {
-      "type": "gene-social",
-      "blocks": {
-        "c1": {
-          "type": "clip",
-          "settings": {
-            "handle": "@genestreetwear"
-          }
-        },
-        "c2": {
-          "type": "clip",
-          "settings": {
-            "handle": "@genestreetwear"
-          }
-        },
-        "c3": {
-          "type": "clip",
-          "settings": {
-            "handle": "@genestreetwear"
-          }
-        },
-        "c4": {
-          "type": "clip",
-          "settings": {
-            "handle": "@genestreetwear"
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4"
-      ],
-      "settings": {
-        "title": "See it styled by our community",
-        "subtitle": "Tag us on social media to be featured",
-        "bg": "#e3e2de"
-      }
     }
   },
   "order": [
@@ -471,7 +431,6 @@
     "why",
     "about",
     "reviews",
-    "social",
     "banner",
     "faq",
     "email"
