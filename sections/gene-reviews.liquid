@@ -7,7 +7,17 @@
 {%- assign per_card = section.settings.speed | default: 6 -%}
 {%- assign count = section.blocks.size -%}
 {%- if count < 1 -%}{%- assign count = 1 -%}{%- endif -%}
-{%- assign dur = count | times: per_card -%}
+{%- comment -%}
+  V jedné půlce pásu musí být tolik karet, aby byla širší než obrazovka.
+  Se třemi recenzemi měla půlka 1190 px proti 1497 px plochy, takže za
+  poslední kartou zůstávalo prázdno, než se smyčka přetočila. Sada se proto
+  opakuje, dokud v půlce není aspoň šest karet.
+{%- endcomment -%}
+{%- assign reps = 6 | divided_by: count -%}
+{%- if reps < 1 -%}{%- assign reps = 1 -%}{%- endif -%}
+{%- assign half = count | times: reps -%}
+{%- if half < 6 -%}{%- assign reps = reps | plus: 1 -%}{%- assign half = count | times: reps -%}{%- endif -%}
+{%- assign dur = half | times: per_card -%}
 
 <section class="grev" id="grev-{{ section.id }}">
   <div class="g-wrap grev-head">
@@ -21,8 +31,9 @@
   {%- if section.blocks.size > 0 -%}
   <div class="grev-marquee">
     <div class="grev-track" style="animation-duration:{{ dur }}s;">
+      {%- for i in (1..reps) -%}
       {%- for block in section.blocks -%}
-        <article class="grev-card" {{ block.shopify_attributes }}>
+        <article class="grev-card"{% if forloop.parentloop.first %} {{ block.shopify_attributes }}{% endif %}>
           <div class="grev-stars" aria-hidden="true">★★★★★</div>
           <p class="grev-quote">“{{ block.settings.quote }}”</p>
           <div class="grev-who">
@@ -38,8 +49,10 @@
           </div>
         </article>
       {%- endfor -%}
+      {%- endfor -%}
 
       {%- comment -%} kopie pro plynulé napojení smyčky {%- endcomment -%}
+      {%- for i in (1..reps) -%}
       {%- for block in section.blocks -%}
         <article class="grev-card grev-card--dup" aria-hidden="true">
           <div class="grev-stars">★★★★★</div>
@@ -56,6 +69,7 @@
             </div>
           </div>
         </article>
+      {%- endfor -%}
       {%- endfor -%}
     </div>
   </div>
