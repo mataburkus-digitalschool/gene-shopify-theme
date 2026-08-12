@@ -49,7 +49,7 @@
 
     {%- comment -%} ── INFO ── {%- endcomment -%}
     <div class="gpm-info">
-      {%- if product.vendor != blank -%}<div class="gpm-eyebrow">{{ product.vendor }}</div>{%- endif -%}
+      {%- if section.settings.show_vendor and product.vendor != blank -%}<div class="gpm-eyebrow">{{ product.vendor }}</div>{%- endif -%}
       <h1 class="gpm-title">{{ product.title }}</h1>
 
       <div class="gpm-price">
@@ -57,7 +57,9 @@
         <span class="gpm-now" data-now>{{ cur.price | money }}</span>
         <span class="gpm-sale" data-sale{% unless cur.compare_at_price > cur.price %} hidden{% endunless %}>Sale</span>
       </div>
-      <div class="gpm-tax">Taxes included. <a href="{{ pages['shipping-policy'].url | default: routes.root_url }}">Shipping</a> calculated at checkout.</div>
+      {%- if section.settings.show_tax_note -%}
+        <div class="gpm-tax">Taxes included. <a href="{{ pages['shipping-policy'].url | default: routes.root_url }}">Shipping</a> calculated at checkout.</div>
+      {%- endif -%}
 
       {%- if section.settings.show_urgency -%}
       {%- comment -%}
@@ -353,6 +355,8 @@
 {
   "name": "Produkt",
   "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "Značka nad názvem", "default": false },
+    { "type": "checkbox", "id": "show_tax_note", "label": "Poznámka o dani a dopravě", "info": "„Taxes included. Shipping calculated at checkout.“", "default": false },
     { "type": "checkbox", "id": "show_urgency", "label": "Ukázat hlášku o docházejících kusech", "info": "Zobrazí se jen u zlevněných produktů.", "default": true },
     { "type": "text", "id": "urgency_text", "label": "Text hlášky", "info": "[n] se nahradí číslem ze seznamu níž.", "default": "Less than [n] left in stock!" },
     { "type": "text", "id": "urgency_numbers", "label": "Čísla k prostřídání", "info": "Oddělené čárkou. Produkt dostane jedno podle svého id a drží si ho.", "default": "10,5" },
