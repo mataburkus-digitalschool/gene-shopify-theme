@@ -294,6 +294,7 @@
     var dots   = Array.prototype.slice.call(root.querySelectorAll('[data-dot]'));
     var prev   = root.querySelector('[data-prev]');
     var next   = root.querySelector('[data-next]');
+    var thumbs = Array.prototype.slice.call(root.querySelectorAll('[data-thumb]'));
 
     function current(){
       var pos = track.scrollLeft, best = 0, min = Infinity;
@@ -313,6 +314,7 @@
     function sync(){
       var i = current();
       dots.forEach(function(d, di){ d.classList.toggle('on', di === i); });
+      thumbs.forEach(function(t, ti){ t.classList.toggle('on', ti === i); });
       if(prev) prev.disabled = i === 0;
       if(next) next.disabled = i === slides.length - 1;
     }
@@ -321,6 +323,9 @@
     if(next) next.addEventListener('click', function(){ goTo(current() + 1); });
     dots.forEach(function(d){
       d.addEventListener('click', function(){ goTo(parseInt(d.getAttribute('data-dot'), 10)); });
+    });
+    thumbs.forEach(function(t){
+      t.addEventListener('click', function(){ goTo(parseInt(t.getAttribute('data-thumb'), 10)); });
     });
     track.addEventListener('keydown', function(e){
       if(e.key === 'ArrowRight'){ e.preventDefault(); goTo(current() + 1); }
