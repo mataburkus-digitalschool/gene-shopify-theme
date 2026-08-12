@@ -269,7 +269,7 @@
     // media — u varianty s vlastní fotkou přejedeme na její snímek
     if(v.mediaId){
       var slide = root.querySelector('[data-media-id="'+v.mediaId+'"]');
-      if(slide && track){ track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior:'smooth' }); }
+      if(slide && track){ track.scrollLeft = slide.offsetLeft - track.offsetLeft; }
     }
   }
 
@@ -305,7 +305,10 @@
     }
     function goTo(i){
       if(i < 0 || i >= slides.length) return;
-      track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft, behavior:'smooth' });
+      // Okamžitý posun. Plynulý se v kombinaci se scroll-snapem vracel zpátky
+      // na první snímek, takže šipky ani náhledy nefungovaly.
+      track.scrollLeft = slides[i].offsetLeft - track.offsetLeft;
+      sync();
     }
     function sync(){
       var i = current();
