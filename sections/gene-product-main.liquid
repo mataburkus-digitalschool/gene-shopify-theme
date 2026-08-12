@@ -171,7 +171,7 @@
 .gpm-track{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; outline:none; }
 .gpm-track::-webkit-scrollbar{ display:none; }
 .gpm-slide{ flex:0 0 100%; scroll-snap-align:start; aspect-ratio:1/1; }
-.gpm-slide img,.gpm-slide svg{ width:100%; height:100%; object-fit:{{ section.settings.image_fit | default: 'contain' }}; display:block; }
+.gpm-slide img,.gpm-slide svg{ width:100%; height:100%; object-fit:{{ section.settings.image_fit | default: 'cover' }}; display:block; }
 .gpm-nav{ position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:50%; background:rgba(255,255,255,.86); backdrop-filter:blur(6px); color:var(--ink); cursor:pointer; padding:0; transition:opacity .18s var(--ease); }
 .gpm-nav svg{ width:20px; height:20px; }
 .gpm-nav--prev{ left:10px; }
@@ -355,7 +355,7 @@
     { "type": "checkbox", "id": "show_payment_icons", "label": "Ikony platebních metod", "info": "Nech vypnuté, pokud ikony přidává aplikace — jinak budou dvakrát.", "default": false },
     { "type": "text", "id": "limited_text", "label": "Text pod cenou (urgence)", "default": "LIMITED STOCK. NEVER RESTOCKING!" },
     { "type": "text", "id": "atc_label", "label": "Text tlačítka Add to cart", "default": "Add to cart" },
-    { "type": "select", "id": "image_fit", "label": "Fotky ve čtverci", "info": "„Vejít se“ ukáže celou fotku, „Vyplnit“ ji ořízne na čtverec.", "options": [ { "value": "contain", "label": "Vejít se (bez ořezu)" }, { "value": "cover", "label": "Vyplnit (ořízne)" } ], "default": "contain" },
+    { "type": "select", "id": "image_fit", "label": "Fotky ve čtverci", "info": "„Vyplnit“ zaplní celý čtverec a ořízne přesahy. „Vejít se“ ukáže celou fotku, ale nechá kolem ní prázdné pruhy.", "options": [ { "value": "cover", "label": "Vyplnit (ořízne)" }, { "value": "contain", "label": "Vejít se (bez ořezu)" } ], "default": "cover" },
     { "type": "richtext", "id": "acc_shipping", "label": "Akordeon - Shipping information", "default": "<p>Free shipping over $75. Orders ship in 1-2 business days, delivery 5-10 days worldwide with tracking.</p>" },
     { "type": "richtext", "id": "acc_returns", "label": "Akordeon - 14 days easy returns", "default": "<p>Not feeling it? Return within 14 days for a refund or exchange. No drama.</p>" },
     { "type": "richtext", "id": "acc_size", "label": "Akordeon - Size", "default": "<p>Oversized streetwear fit. True to size - size down for a regular fit. See the size guide for measurements.</p>" }
