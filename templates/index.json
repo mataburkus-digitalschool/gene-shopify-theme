@@ -51,7 +51,7 @@
     "countdown": {
       "type": "gene-countdown",
       "settings": {
-        "heading_prefix": "SALE DIES AT MIDNIGHT!",
+        "heading_prefix": "SUMMER SALE ENDING SOON!",
         "heading_underline": ""
       }
     },
