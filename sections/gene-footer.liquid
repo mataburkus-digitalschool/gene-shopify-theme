@@ -57,6 +57,29 @@
     {%- endfor -%}
   </div>
 
+  {%- comment -%}
+    Přepínač měn jede přes lokalizační formulář Shopify — nabídka se řídí
+    trhy nastavenými v administraci, takže se ukáže jen když je zemí víc.
+  {%- endcomment -%}
+  {%- if section.settings.show_currency and localization.available_countries.size > 1 -%}
+    <div class="g-wrap gfoot-cur">
+      {%- form 'localization' -%}
+        <label class="gfoot-cur-label" for="gfoot-cur-{{ section.id }}">{{ section.settings.currency_label }}</label>
+        <div class="gfoot-cur-wrap">
+          <select id="gfoot-cur-{{ section.id }}" name="country_code" onchange="this.form.submit()">
+            {%- for c in localization.available_countries -%}
+              <option value="{{ c.iso_code }}"{% if c.iso_code == localization.country.iso_code %} selected{% endif %}>
+                {{ c.currency.iso_code }} {{ c.currency.symbol }}
+              </option>
+            {%- endfor -%}
+          </select>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <noscript><button type="submit" class="gfoot-cur-go">OK</button></noscript>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+
   <div class="g-wrap gfoot-bottom">
     {%- if section.settings.copyright != blank -%}<span>{{ section.settings.copyright }}</span>{%- endif -%}
     {%- if section.settings.payments != blank -%}<span class="gfoot-mono">{{ section.settings.payments }}</span>{%- endif -%}
@@ -78,6 +101,20 @@
   #gfoot-{{ section.id }} .gfoot-links span { opacity:.65; }
   #gfoot-{{ section.id }} .gfoot-rich p { margin:0 0 9px; }
   #gfoot-{{ section.id }} .gfoot-rich a { text-decoration:underline; }
+  #gfoot-{{ section.id }} .gfoot-cur { margin-top:32px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  #gfoot-{{ section.id }} .gfoot-cur form { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  #gfoot-{{ section.id }} .gfoot-cur-label { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; opacity:.5; }
+  #gfoot-{{ section.id }} .gfoot-cur-wrap { position:relative; display:inline-flex; align-items:center; }
+  #gfoot-{{ section.id }} .gfoot-cur-wrap select {
+    appearance:none; -webkit-appearance:none;
+    height:44px; padding:0 42px 0 20px; border-radius:999px;
+    border:1px solid rgba(255,255,255,0.35); background:transparent; color:inherit;
+    font:inherit; font-size:14px; font-weight:600; cursor:pointer;
+  }
+  #gfoot-{{ section.id }} .gfoot-cur-wrap select:hover { border-color:currentColor; }
+  #gfoot-{{ section.id }} .gfoot-cur-wrap select option { color:#1A1A1A; }
+  #gfoot-{{ section.id }} .gfoot-cur-wrap svg { position:absolute; right:16px; width:16px; height:16px; pointer-events:none; opacity:.7; }
+  #gfoot-{{ section.id }} .gfoot-cur-go { height:44px; padding:0 20px; border-radius:999px; border:none; background:#fff; color:#1A1A1A; font:inherit; font-weight:700; cursor:pointer; }
   #gfoot-{{ section.id }} .gfoot-bottom { margin-top:36px; border-top:1px solid rgba(255,255,255,0.15); padding-top:20px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12px; opacity:.5; }
   #gfoot-{{ section.id }} .gfoot-mono { font-family:var(--mono); }
   @media (max-width:900px){
@@ -92,6 +129,9 @@
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "range", "id": "logo_height", "label": "Výška loga", "min": 18, "max": 70, "step": 2, "unit": "px", "default": 34 },
     { "type": "textarea", "id": "about", "label": "Text pod logem", "default": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide." },
+    { "type": "header", "content": "Měna" },
+    { "type": "checkbox", "id": "show_currency", "label": "Přepínač měn", "info": "Nabídka se řídí trhy v Nastavení → Trhy. Ukáže se jen když je zemí víc než jedna.", "default": true },
+    { "type": "text", "id": "currency_label", "label": "Popisek u přepínače", "default": "Currency" },
     { "type": "header", "content": "Spodní řádek" },
     { "type": "text", "id": "copyright", "label": "Vlevo", "default": "© 2026 GENE STREETWEAR" },
     { "type": "text", "id": "payments", "label": "Uprostřed", "default": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna" },
