@@ -51,7 +51,7 @@
     "countdown": {
       "type": "gene-countdown",
       "settings": {
-        "heading_prefix": "SUMMER SALE ENDING SOON!",
+        "heading_prefix": "SALE DIES AT MIDNIGHT!",
         "heading_underline": ""
       }
     },
@@ -258,6 +258,22 @@
     "reviews": {
       "type": "gene-reviews",
       "blocks": {
+        "review_Md4ecR": {
+          "type": "review",
+          "settings": {
+            "quote": "Shipping was quicker than I thought and the sweater feels premium",
+            "name": "Caleb S.",
+            "meta": "Verified buyer"
+          }
+        },
+        "review_3J4pWn": {
+          "type": "review",
+          "settings": {
+            "quote": "Quality is actually insane for the price 😭🔥",
+            "name": "Mason T",
+            "meta": "Verified buyer"
+          }
+        },
         "review_zb9Ret": {
           "type": "review",
           "settings": {
@@ -308,6 +324,8 @@
         }
       },
       "block_order": [
+        "review_Md4ecR",
+        "review_3J4pWn",
         "review_zb9Ret",
         "review_RwX7NR",
         "r1",
