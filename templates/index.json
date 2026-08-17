@@ -356,7 +356,7 @@
           "type": "qa",
           "settings": {
             "q": "How long does shipping take?",
-            "a": "Shipping is 5–10 working days to almost every country we service."
+            "a": "Standard shipping: 5–10 working days, free over $85. Want it faster? Add Express Priority + Insured Shipping at checkout for $25 — priority handling, plus a guaranteed reship or refund if your order is lost or damaged."
           }
         },
         "f2": {
@@ -370,7 +370,7 @@
           "type": "qa",
           "settings": {
             "q": "Do you ship internationally?",
-            "a": "Yes — we ship to over 50 countries worldwide."
+            "a": "Yes, we ship worldwide. International shipping times vary by location."
           }
         },
         "f4": {
