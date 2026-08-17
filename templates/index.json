@@ -386,6 +386,13 @@
             "q": "How do I pick the right size?",
             "a": "Every product page has a full size guide. Fits run true to a relaxed streetwear cut."
           }
+        },
+        "qa_MTJQpj": {
+          "type": "qa",
+          "settings": {
+            "q": "How do I track my order?",
+            "a": "Once your order ships, you'll receive a tracking number via email. Use this to track your package on our website or the carrier's site."
+          }
         }
       },
       "block_order": [
@@ -393,7 +400,8 @@
         "f2",
         "f3",
         "f4",
-        "f5"
+        "f5",
+        "qa_MTJQpj"
       ],
       "settings": {
         "title": "Frequently asked"
