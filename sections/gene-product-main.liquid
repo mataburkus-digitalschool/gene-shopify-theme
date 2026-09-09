@@ -159,14 +159,33 @@
 </section>
 
 <style>
-.gpm{ padding:40px 24px 20px; }
+.gpm{ padding:40px 24px 20px;
+      /* hlavička je sticky a vysoka 76 px · pod ni jeste 24 px vzduchu */
+      --gpm-media-top:100px;
+      /* strop vysky fotky, at se cela vejde pod hlavicku do jedne obrazovky */
+      --gpm-media-max:min(calc(100vh - 160px), 720px); }
 .gpm-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:48px; align-items:start; }
+
 /* galerie — čtverec, zaoblené rohy, náhledy vlevo */
 /* Pás visí absolutně, aby kopíroval výšku fotky. Kdyby stál ve flexu vedle
    ní, roztáhl by rámeček na svoji výšku a pod fotkou by zůstalo prázdno —
    u produktu se sedmi fotkami o víc než sto pixelů. */
 .gpm-media{ position:relative; min-width:0; }
 .gpm-media--rail .gpm-slider{ margin-left:90px; }
+/* Fotka se pri scrollu zamkne vlevo a scrolluje jen pravy sloupec s
+   informacemi. Ram je ctvercovy, takze vysku urcuje sirka · strop vysky
+   se proto zadava jako strop sirky. U produktu s pasem miniatur je pas
+   90 px siroky a stoji vedle fotky, takze se k stropu pricita. */
+@media (min-width:821px){
+  .gpm-media{
+    position:sticky;
+    top:var(--gpm-media-top);
+    z-index:2;
+    align-self:start;
+    max-width:var(--gpm-media-max);
+  }
+  .gpm-media--rail{ max-width:calc(var(--gpm-media-max) + 90px); }
+}
 .gpm-thumbs{ position:absolute; left:0; top:0; bottom:0; width:78px; display:flex; flex-direction:column; gap:10px; overflow-y:auto; scrollbar-width:none; }
 .gpm-thumbs::-webkit-scrollbar{ display:none; }
 .gpm-thumb{ flex:0 0 auto; width:78px; aspect-ratio:1/1; padding:0; border:1.5px solid var(--line); border-radius:10px; overflow:hidden; background:var(--tag); cursor:pointer; transition:border-color .18s var(--ease); }
