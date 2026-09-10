@@ -13,7 +13,7 @@
       "gene-announcement": {
         "type": "gene-announcement",
         "settings": {
-          "text": "Free shipping over $85 · 14-day returns"
+          "text": "FREE WORLDWIDE SHIPPING · 14-DAY RETURNS"
         }
       },
       "gene-header": {
@@ -24,6 +24,7 @@
           "tagline": "",
           "menu": "main-menu",
           "category_menu": "",
+          "show_search": false,
           "search_label": "",
           "login_label": "Log in",
           "cart_label": "Cart",
@@ -89,6 +90,8 @@
         "settings": {
           "logo_height": 34,
           "about": "Limited streetwear drops. Built different, worn loud. Thousands of customers worldwide.",
+          "show_currency": true,
+          "currency_label": "Currency",
           "copyright": "© 2026 GENE STREETWEAR",
           "payments": "Visa · Mastercard · Amex · Apple Pay · Shop Pay · Klarna",
           "credit": "Designed by Digital School",
