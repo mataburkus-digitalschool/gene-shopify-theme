@@ -370,7 +370,7 @@
           "type": "qa",
           "settings": {
             "q": "Do you ship internationally?",
-            "a": "Yes, we ship worldwide. International shipping times vary by location."
+            "a": "Yes, we ship worldwide — and shipping is always free.\nDelivery takes 5-10 business days with tracking."
           }
         },
         "f4": {
