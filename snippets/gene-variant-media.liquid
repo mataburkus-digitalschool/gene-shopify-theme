@@ -1,0 +1,214 @@
+{%- comment -%}
+  Galerie ukazuje jen fotky zvolene barvy (stejne jako na Mind of Life).
+
+  Barvu fotky bere ze tri zdroju, v tomhle poradi:
+  1. prirazeni fotky k variante v Shopify adminu (Produkt · Varianty · obrazek),
+  2. alt text fotky, pokud obsahuje nazev barvy (napr. "Black zada"),
+  3. rucni mapa nize podle nazvu souboru fotky, pro fotky, ktere v adminu
+     prirazene nejsou.
+
+  Fotka, ke ktere se zadna barva nenajde, se bere jako spolecna a je videt vzdy.
+  Skupinove fotky obou barev jsou v mape schvalne u obou barev.
+
+  Snippet vypise dve veci:
+  · <style>, ktery schova fotky jinych barev uz pri nacteni stranky (bez blikani),
+  · <script type="application/json" data-gvm> s mapou media ID → barvy, se kterou
+    pracuje skript v sekci gene-product-main pri prepnuti barvy.
+
+  Pouziti: {% render 'gene-variant-media', product: product, section_id: section.id %}
+{%- endcomment -%}
+
+{%- liquid
+  assign gvm_color_index = -1
+  for gvm_option in product.options_with_values
+    assign gvm_option_name = gvm_option.name | downcase
+    if gvm_option_name contains 'color' or gvm_option_name contains 'colour' or gvm_option_name contains 'barva' or gvm_option_name contains 'farbe' or gvm_option_name contains 'couleur'
+      assign gvm_color_index = forloop.index0
+    endif
+  endfor
+-%}
+
+{%- if gvm_color_index >= 0 and product.media.size > 1 -%}
+  {%- liquid
+    assign gvm_manual = ''
+    case product.handle
+      when 'gene-cd-tracksuit'
+        # foto 3 = Black; foto 4 = Gray
+        assign gvm_manual = 'edit_image_2-_dress_the_man_in_the_tracksuit_from_image_1_but_in_black_colorway_use_image_3_only_as_geu1mu6ow08if4e3ihpc_1.png::Black;;edit_image_2-_dress_the_man_in_the_exact_grey_tracksuit_from_image_1_using_image_3_only_as_a_refere_kyu0fncbm1j1rhucrsmj_0.png::Gray'
+      when 'gene-nn-tee'
+        # foto 2 = White; foto 3 = Black; foto 4 = White
+        assign gvm_manual = 'use_the_provided_photo_of_the_two_models_and_replace_their_current_outfits_with_the_provided_t-shir_huogo89knh0cq72nteee_1.png::White;;use_the_provided_photo_of_the_two_models_and_replace_their_current_outfits_with_the_provided_t-shir_tbo8itp7hys7s8dilfel_0.png::Black;;create_an_ultra-realistic_luxury_macro_close-up_of_the_uploaded_garment_focus_on_the_premium_knit_f_wm3rlcs57o29lxtsndzp_0.png::White'
+      when 'gene-shorts'
+        # foto 2 = Grey; foto 3 = Black; foto 4 = Grey
+        assign gvm_manual = 'use_the_provided_photo_of_the_two_models_and_replace_their_current_outfits_with_the_provided_t-shir_lhgxdg6pq3ob6bhr2qxy_0.png::Grey;;use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_an_lveqsnrdmz63wvc5e5vt_1.png::Black;;create_an_ultra-realistic_luxury_macro_close-up_of_the_uploaded_garment_focus_on_the_premium_knit_f_qe3oxar6eq4f51o3ebb4_1.png::Grey'
+      when 'gene-rr-shorts'
+        # foto 2 = Grey; foto 3 = Grey; foto 4 = Grey; foto 5 = Grey; foto 6 = Black
+        assign gvm_manual = 'the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__2q4kkmvvqrj1fu1dstiz_0.png::Grey;;S5310f379c7234d4fa164b8ebf3320e8bA.webp::Grey;;Sc2564b56da854e0c86ab437f8f0cef4f4.webp::Grey;;Sdf9114f027d04146a9ce489d3850e908i.webp::Grey;;Sf0a20924011b4c2caac01c715150ae9dC.webp::Black'
+      when 'gene-cd-shorts'
+        # foto 1 = Gray, Black; foto 2 = Gray; foto 3 = Black
+        assign gvm_manual = 'the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__78yfyy2tpjoaqtuy2cb8_0.png::Gray||Black;;potebuju_aby_si_na_mho_modela_dosadil_kraasy_kter_ti_posilam_ale_ty_kraasy_jsou_zezadu_tak_modela_b_4h6vn6pra0gxe6r577d1_0.png::Gray;;potebuju_aby_si_na_mho_modela_dosadil_kraasy_kter_ti_posilam_ale_ty_kraasy_jsou_zezadu_tak_modela_b_zxt6qfdnvdmkrhw5jxm3_0.png::Black'
+      when 'gene-23-long-sleeve'
+        # foto 1 = White, Black; foto 4 = Black; foto 5 = White
+        assign gvm_manual = 'use_the_second_image_as_the_main_reference_for_the_entire_scene_keep_the_background_concrete_floor__nlp6jca2gutpfpczhwlu_1.png::White||Black;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_mjb35hspupvurvl1e12v_1.png::Black;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_n3yz8n3a3huoysivnqp5_0.png::White'
+      when 'gene-as-sweatpants'
+        # foto 3 = Gray; foto 4 = Black
+        assign gvm_manual = 'replace_the_models_current_shortspants_with_the_provided_sweatpants_reference_image_keep_the_exact__ese1m33hf9fgbxeaxkmg_0.png::Gray;;replace_the_models_current_shortspants_with_the_provided_sweatpants_reference_image_keep_the_exact__g8tdg2xxisayeomx9926_1.png::Black'
+      when 'gene-cd-sweatpants'
+        # foto 1 = Gray, Black; foto 3 = Gray; foto 5 = Black
+        assign gvm_manual = 'the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__7t6c3cnlyq8gbst9826x_0.jpg::Gray||Black;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_u7pvlqgmff2a3i7eaexr_0.png::Gray;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_pbnolph3o32kjfn6y535_1.png::Black'
+      when 'gene-reversible-hoodie'
+        # foto 2 = Gray; foto 3 = Gray; foto 4 = Gray; foto 5 = Gray; foto 6 = Gray
+        assign gvm_manual = 'replace_the_models_current_hoodie_with_the_hoodie_from_the_reference_image_keep_the_exact_same_mode_fb0ehbw7snprla9gl9p7_1.png::Gray;;use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_re_1iac2f4daozupgljdhiv_0.jpg::Gray;;S4bf41c555eea4442902d31a7306666e5Q.webp::Gray;;Sa9701fed487c407ea2e444722c9fa795N.webp::Gray;;S64e047a8ce5b4178ab7469f133f95b03P.webp::Gray'
+      when 'gene-tripley-tee'
+        # foto 2 = WHITE, BLACK; foto 3 = WHITE; foto 4 = BLACK
+        assign gvm_manual = 'Sb89e4443888840d78b3aa2d806a32675A.webp::WHITE||BLACK;;use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_an_9noa5amtdc4j6ba02dr7_1.png::WHITE;;use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_an_lveqsnrdmz63wvc5e5vt_1_b634baf6-33d2-42b7-adab-c0c2e8799066.png::BLACK'
+      when 'gene-mml2-tee'
+        # foto 2 = White; foto 3 = Black
+        assign gvm_manual = 'use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_a_ukscoct13texjebm89yr_0.png::White;;use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_a_niq7lnl1ofnpw5szb8hl_0.png::Black'
+      when 'gene-33-jersey'
+        # foto 1 = Brown; foto 2 = Brown; foto 3 = Brown
+        assign gvm_manual = 'the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__30hmwhirew1emaz45mxc_1.png::Brown;;use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_an_2p3o70eoxqu1yp0hbke6_0.png::Brown;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_akbti5t6jdplwsey8hz1_1.png::Brown'
+      when 'gene-streetwear-su-puffer-jacket'
+        # foto 1 = Gray, Black; foto 2 = Black; foto 3 = Gray; foto 5 = Gray
+        assign gvm_manual = 'the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__tqy8zd3hav1f344f3gpd_0.jpg::Gray||Black;;images.jpg::Black;;images-2.jpg::Gray;;1764320079f4899d311632a904029d3c80c9928a78_thumbnail_750x999_19274094-ad2c-4e21-8d97-aa2cc7b00e6e.jpg::Gray'
+      when 'gene-pattern-sweatpants'
+        # foto 1 = Gray, Blue; foto 3 = Gray; foto 5 = Blue
+        assign gvm_manual = 'use_the_second_image_as_the_main_reference_for_the_entire_scene_keep_the_background_concrete_floor__lu00mge8kikzvb0rvjgh_0.png::Gray||Blue;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_3rosjz2gwazvx4t7d2eg_1.png::Gray;;replace_the_models_current_shortspants_with_the_provided_sweatpants_reference_image_keep_the_exact__zxtuas50204r6d7j27da_0.png::Blue'
+      when 'gene-projectf-sweatpants'
+        # foto 2 = Gray; foto 3 = Gray; foto 4 = Black; foto 5 = Black
+        assign gvm_manual = 'S8d6dfafb1c694c5cb3d6791397ffb269J.webp::Gray;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_8eyve69u2uve756br8nq_1.png::Gray;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_0q5ovgsmgjtylxp44xda_0.jpg::Black;;S864fb2d5d7e04d4b9815d421cd3c6970V.webp::Black'
+      when 'gene-su-sweatpants'
+        # foto 2 = Black; foto 3 = Gray; foto 4 = Black; foto 5 = Gray
+        assign gvm_manual = 'use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_n3yz8n3a3huoysivnqp5_0.png::Black;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_rvmut46jsqiz6vg3e518_1.png::Gray;;S900269fcf307452da2dfd6e8bd9f0ddat.webp::Black;;Se9352a2c510b467286bc121529aac890Z.webp::Gray'
+      when 'gene-harakuja-hoodie'
+        # foto 2 = Blue; foto 4 = Blue; foto 5 = Blue; foto 7 = White
+        assign gvm_manual = 'Gemini_Generated_Image_xua8nmxua8nmxua8.png::Blue;;S6e9d4b8154ae4615ad4adce2d87dfd20C.webp::Blue;;Sefa8399c10524d2cbcfb7dde868e0b2by.webp::Blue;;S388989475aec4552a5e69a6bceb0243fZ.webp::White'
+      when 'gene-ww-tracksuits-set'
+        # foto 1 = Black, Gray; foto 2 = Black; foto 3 = Black, Gray; foto 6 = Black; foto 7 = Gray
+        assign gvm_manual = 'S1ee38464ede94554afeed179b000374fy.webp::Black||Gray;;use_the_reference_images_of_the_hoodie_and_sweatpants_dress_the_model_in_a_full_matching_tracksuit__oaaqxakaocufzyyvpnmf_1.png::Black;;S5565078fccf94a2fab3b54d881a8ad4e3.webp::Black||Gray;;Sda502260233c4e66b31b4728246d7628d.webp::Black;;S3c962981377c4c308a50b3304f930713B.webp::Gray'
+      when 'gene-security-hoodie'
+        # foto 2 = Grey; foto 3 = Grey; foto 4 = Grey; foto 6 = Pink
+        assign gvm_manual = 'use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_pbnolph3o32kjfn6y535_1_1645afa0-005b-485d-a1b8-ab4e9233e730.png::Grey;;use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_u7pvlqgmff2a3i7eaexr_0_6b6f7570-2fcc-487f-8b01-24b104d9dc43.png::Grey;;the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__r23lucnr86smhrjjm401_0.png::Grey;;the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__rjxl91ryz0knxemfb9wj_1.png::Pink'
+      when 'gene-ny-oversized-hoodie'
+        # foto 2 = Navy; foto 3 = Navy
+        assign gvm_manual = 'replace_the_models_current_hoodie_with_the_hoodie_from_the_reference_image_keep_the_exact_same_mode_0c5ddchiurrko6h33p3b_0.png::Navy;;create_an_ultra-realistic_luxury_macro_close-up_of_the_uploaded_garment_focus_on_the_premium_knit_f_yvrwuvpb9t9wamn2di3c_1.png::Navy'
+      when 'shadow-t-shirt'
+        # foto 2 = Beige; foto 4 = Black
+        assign gvm_manual = 'use_the_provided_photo_of_the_model_and_replace_their_current_outfits_with_the_provided_t-shirt_an_0q5ovgsmgjtylxp44xda_0.jpg::Beige;;create_an_ultra-realistic_luxury_macro_close-up_of_the_uploaded_garment_focus_on_the_premium_knit_f_ytfq0zk7ch023bmqe21t_1.jpg::Black'
+      when 'vintage-flame-hoodies'
+        # foto 2 = Black; foto 4 = White; foto 6 = Red
+        assign gvm_manual = 'the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__y97y9c3spxgx0im6k8mf_0.png::Black;;the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__9j54sck98x121a5pq2jl_0.png::White;;the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__p0wu7leqaijz0v0til9g_1.png::Red'
+      when 'gene-vintage-denim-shorts'
+        # foto 2 = White; foto 3 = Gray
+        assign gvm_manual = 'use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_an_umzkamdq0ptyhit180h9_1.png::White;;use_the_provided_photo_of_the_models_and_replace_their_current_outfits_with_the_provided_t-shirt_a_ukscoct13texjebm89yr_0.png::Gray'
+      when 'gene-flame-jeans'
+        # foto 2 = Black; foto 4 = Light blue
+        assign gvm_manual = 'the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__0070xw4e31m182b2frdc_0.png::Black;;the_first_image_is_the_only_reference_for_the_scene_background_floor_lighting_shadows_camera_angle__pk1mmjwove8jr8ym8w7f_0.png::Light blue'
+    endcase
+    assign gvm_manual_entries = gvm_manual | split: ';;'
+    assign gvm_color_values = product.options_with_values[gvm_color_index].values
+    assign gvm_cur = product.selected_or_first_available_variant
+    assign gvm_selected = gvm_cur.options[gvm_color_index] | downcase
+    assign gvm_selected_needle = '||' | append: gvm_selected | append: '||'
+    assign gvm_media_map = ''
+    assign gvm_hidden_ids = ''
+
+    for gvm_media in product.media
+      assign gvm_media_id = gvm_media.id | append: ''
+      assign gvm_colors = ''
+
+      # 1. fotka prirazena k variante v adminu
+      for gvm_variant in product.variants
+        if gvm_variant.featured_media.id == gvm_media.id
+          assign gvm_value = gvm_variant.options[gvm_color_index]
+          assign gvm_needle = '||' | append: gvm_value | append: '||'
+          assign gvm_probe = '||' | append: gvm_colors | append: '||'
+          unless gvm_probe contains gvm_needle
+            if gvm_colors == ''
+              assign gvm_colors = gvm_value
+            else
+              assign gvm_colors = gvm_colors | append: '||' | append: gvm_value
+            endif
+          endunless
+        endif
+      endfor
+
+      # 2. nazev barvy v alt textu fotky
+      if gvm_colors == ''
+        assign gvm_alt = gvm_media.alt | downcase
+        if gvm_alt != blank
+          for gvm_value in gvm_color_values
+            assign gvm_value_down = gvm_value | downcase
+            if gvm_alt contains gvm_value_down
+              if gvm_colors == ''
+                assign gvm_colors = gvm_value
+              else
+                assign gvm_colors = gvm_colors | append: '||' | append: gvm_value
+              endif
+            endif
+          endfor
+        endif
+      endif
+
+      # 3. rucni mapa podle nazvu souboru
+      if gvm_colors == '' and gvm_manual != ''
+        assign gvm_src = gvm_media.preview_image.src | split: '?' | first
+        for gvm_entry in gvm_manual_entries
+          assign gvm_parts = gvm_entry | split: '::'
+          assign gvm_file = '/' | append: gvm_parts[0]
+          if gvm_src contains gvm_file
+            assign gvm_colors = gvm_parts[1]
+            break
+          endif
+        endfor
+      endif
+
+      if gvm_colors != ''
+        assign gvm_entry = gvm_media_id | append: '::' | append: gvm_colors
+        if gvm_media_map == ''
+          assign gvm_media_map = gvm_entry
+        else
+          assign gvm_media_map = gvm_media_map | append: ';;' | append: gvm_entry
+        endif
+
+        assign gvm_colors_down = '||' | append: gvm_colors | append: '||' | downcase
+        unless gvm_colors_down contains gvm_selected_needle
+          if gvm_hidden_ids == ''
+            assign gvm_hidden_ids = gvm_media_id
+          else
+            assign gvm_hidden_ids = gvm_hidden_ids | append: ',' | append: gvm_media_id
+          endif
+        endunless
+      endif
+    endfor
+  -%}
+
+  {%- if gvm_media_map != '' -%}
+    {%- assign gvm_map_entries = gvm_media_map | split: ';;' -%}
+    <script type="application/json" data-gvm>
+      {"colorIndex":{{ gvm_color_index }},"media":{
+      {%- for gvm_entry in gvm_map_entries -%}
+        {%- assign gvm_parts = gvm_entry | split: '::' -%}
+        {%- unless forloop.first -%},{%- endunless -%}
+        "{{ gvm_parts[0] }}":[
+        {%- assign gvm_values = gvm_parts[1] | split: '||' -%}
+        {%- for gvm_value in gvm_values -%}
+          {%- unless forloop.first -%},{%- endunless -%}{{ gvm_value | json }}
+        {%- endfor -%}
+        ]
+      {%- endfor -%}
+      }}
+    </script>
+  {%- endif -%}
+
+  {%- if gvm_hidden_ids != '' -%}
+    {%- assign gvm_hidden_list = gvm_hidden_ids | split: ',' -%}
+    <style data-gvm-style>
+      {% for gvm_id in gvm_hidden_list -%}
+        #gpm-{{ section_id }} [data-media-id="{{ gvm_id }}"]{% unless forloop.last %},{% endunless %}
+      {%- endfor %} {
+        display: none !important;
+      }
+    </style>
+  {%- endif -%}
+{%- endif -%}

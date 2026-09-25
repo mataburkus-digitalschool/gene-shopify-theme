@@ -1,5 +1,6 @@
 {%- assign cur = product.selected_or_first_available_variant -%}
 <section class="gpm g-wrap" id="gpm-{{ section.id }}" data-gpm>
+  {%- render 'gene-variant-media', product: product, section_id: section.id -%}
   <div class="gpm-grid">
     {%- comment -%} ── MEDIA ── {%- endcomment -%}
     {%- comment -%}
@@ -11,7 +12,7 @@
       {%- if product.media.size > 1 -%}
         <div class="gpm-thumbs" data-thumbs>
           {%- for m in product.media -%}
-            <button type="button" class="gpm-thumb{% if forloop.first %} on{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Photo {{ forloop.index }}">
+            <button type="button" class="gpm-thumb{% if forloop.first %} on{% endif %}" data-thumb="{{ forloop.index0 }}" data-media-id="{{ m.id }}" aria-label="Photo {{ forloop.index }}">
               <img src="{{ m | image_url: width: 200 }}" alt="" loading="lazy">
             </button>
           {%- endfor -%}
@@ -40,7 +41,7 @@
           </button>
           <div class="gpm-dots" data-dots>
             {%- for m in product.media -%}
-              <button type="button" class="gpm-dot{% if forloop.first %} on{% endif %}" data-dot="{{ forloop.index0 }}" aria-label="Fotka {{ forloop.index }}"></button>
+              <button type="button" class="gpm-dot{% if forloop.first %} on{% endif %}" data-dot="{{ forloop.index0 }}" data-media-id="{{ m.id }}" aria-label="Fotka {{ forloop.index }}"></button>
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -195,6 +196,7 @@
 .gpm-slider{ position:relative; flex:1; min-width:0; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--tag); }
 .gpm-track{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; outline:none; }
 .gpm-track::-webkit-scrollbar{ display:none; }
+.gpm-off{ display:none !important; }
 .gpm-slide{ flex:0 0 100%; scroll-snap-align:start; aspect-ratio:1/1; }
 .gpm-slide img,.gpm-slide svg{ width:100%; height:100%; object-fit:{{ section.settings.image_fit | default: 'cover' }}; display:block; }
 .gpm-nav{ position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:50%; background:rgba(255,255,255,.86); backdrop-filter:blur(6px); color:var(--ink); cursor:pointer; padding:0; transition:opacity .18s var(--ease); }
@@ -292,11 +294,32 @@
     // atc
     var atc = root.querySelector('[data-atc]'); var lbl = root.querySelector('[data-atc-label]');
     atc.disabled = !v.available; if(lbl) lbl.textContent = v.available ? ({{ section.settings.atc_label | default: 'Add to cart' | json }}) : 'Sold out';
-    // media — u varianty s vlastní fotkou přejedeme na její snímek
-    if(v.mediaId){
-      var slide = root.querySelector('[data-media-id="'+v.mediaId+'"]');
-      if(slide && track){ track.scrollLeft = slide.offsetLeft - track.offsetLeft; }
+    // media — nejdřív necháme jen fotky zvolené barvy, pak přejedeme na
+    // fotku varianty (nebo na první fotku té barvy, když varianta vlastní nemá)
+    filterMedia(v);
+    if(track){
+      var slide = v.mediaId ? track.querySelector('[data-slide][data-media-id="'+v.mediaId+'"]') : null;
+      if(!slide || slide.classList.contains('gpm-off')) slide = track.querySelector('[data-slide]:not(.gpm-off)');
+      if(slide){ track.scrollLeft = slide.offsetLeft - track.offsetLeft; }
+      if(gallerySync) gallerySync();
     }
+  }
+
+  // Filtr fotek podle barvy · mapu media ID → barvy vypisuje snippet gene-variant-media.
+  // Fotka, která v mapě není, je společná a zůstává vidět vždycky.
+  var gvmEl = root.querySelector('script[data-gvm]');
+  var gvm = gvmEl ? JSON.parse(gvmEl.textContent) : null;
+  var gallerySync = null;
+  function filterMedia(v){
+    if(!gvm) return;
+    var color = String(v.opts[gvm.colorIndex] || '').toLowerCase();
+    root.querySelectorAll('[data-media-id]').forEach(function(el){
+      var cols = gvm.media[el.getAttribute('data-media-id')];
+      var off = !!cols && !cols.some(function(c){ return String(c).toLowerCase() === color; });
+      el.classList.toggle('gpm-off', off);
+    });
+    // počáteční <style> ze snippetu už nepotřebujeme, od teď schovává JS
+    var st = root.querySelector('style[data-gvm-style]'); if(st) st.remove();
   }
 
   root.querySelectorAll('.gpm-opt-vals').forEach(function(group){
@@ -322,16 +345,23 @@
     var next   = root.querySelector('[data-next]');
     var thumbs = Array.prototype.slice.call(root.querySelectorAll('[data-thumb]'));
 
+    function shown(i){ return !slides[i].classList.contains('gpm-off'); }
+    function visible(){ return slides.map(function(s, i){ return i; }).filter(shown); }
     function current(){
       var pos = track.scrollLeft, best = 0, min = Infinity;
       slides.forEach(function(s, i){
+        if(!shown(i)) return;
         var d = Math.abs(s.offsetLeft - track.offsetLeft - pos);
         if(d < min){ min = d; best = i; }
       });
       return best;
     }
+    function step(dir){
+      var vis = visible(), k = vis.indexOf(current()) + dir;
+      if(k >= 0 && k < vis.length) goTo(vis[k]);
+    }
     function goTo(i){
-      if(i < 0 || i >= slides.length) return;
+      if(i < 0 || i >= slides.length || !shown(i)) return;
       // Okamžitý posun. Plynulý se v kombinaci se scroll-snapem vracel zpátky
       // na první snímek, takže šipky ani náhledy nefungovaly.
       track.scrollLeft = slides[i].offsetLeft - track.offsetLeft;
@@ -341,12 +371,19 @@
       var i = current();
       dots.forEach(function(d, di){ d.classList.toggle('on', di === i); });
       thumbs.forEach(function(t, ti){ t.classList.toggle('on', ti === i); });
-      if(prev) prev.disabled = i === 0;
-      if(next) next.disabled = i === slides.length - 1;
+      var vis = visible();
+      if(prev) prev.disabled = i === vis[0];
+      if(next) next.disabled = i === vis[vis.length - 1];
+      // jedna fotka v barvě = šipky ani tečky nemají smysl
+      var single = vis.length < 2;
+      if(prev) prev.classList.toggle('gpm-off', single);
+      if(next) next.classList.toggle('gpm-off', single);
+      var dotsWrap = root.querySelector('[data-dots]'); if(dotsWrap) dotsWrap.classList.toggle('gpm-off', single);
     }
+    gallerySync = sync;
 
-    if(prev) prev.addEventListener('click', function(){ goTo(current() - 1); });
-    if(next) next.addEventListener('click', function(){ goTo(current() + 1); });
+    if(prev) prev.addEventListener('click', function(){ step(-1); });
+    if(next) next.addEventListener('click', function(){ step(1); });
     dots.forEach(function(d){
       d.addEventListener('click', function(){ goTo(parseInt(d.getAttribute('data-dot'), 10)); });
     });
@@ -354,8 +391,8 @@
       t.addEventListener('click', function(){ goTo(parseInt(t.getAttribute('data-thumb'), 10)); });
     });
     track.addEventListener('keydown', function(e){
-      if(e.key === 'ArrowRight'){ e.preventDefault(); goTo(current() + 1); }
-      if(e.key === 'ArrowLeft'){ e.preventDefault(); goTo(current() - 1); }
+      if(e.key === 'ArrowRight'){ e.preventDefault(); step(1); }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); step(-1); }
     });
 
     var tick;
