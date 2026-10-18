@@ -83,7 +83,7 @@
   <div class="g-wrap gfoot-bottom">
     {%- if section.settings.copyright != blank -%}<span>{{ section.settings.copyright }}</span>{%- endif -%}
     {%- if section.settings.payments != blank -%}<span class="gfoot-mono">{{ section.settings.payments }}</span>{%- endif -%}
-    {%- if section.settings.credit != blank -%}<span class="gfoot-mono">{{ section.settings.credit }}</span>{%- endif -%}
+    <span class="gfoot-mono">{%- if section.settings.credit != blank -%}{{ section.settings.credit }} · {% endif %}Website by <a href="https://webystudio.cz" style="color:inherit;text-decoration:none;">Weby Studio</a></span>
   </div>
 </footer>
 
