@@ -5,7 +5,8 @@
   1. prirazeni fotky k variante v Shopify adminu (Produkt · Varianty · obrazek),
   2. alt text fotky, pokud obsahuje nazev barvy (napr. "Black zada"),
   3. rucni mapa nize podle nazvu souboru fotky, pro fotky, ktere v adminu
-     prirazene nejsou.
+     prirazene nejsou (pripona _uuid od Shopify pri novem nahrani nevadi),
+  4. nazev souboru ve tvaru gene-cokoliv-barva.jpg, napr. gene-33-jersey-pink.jpg.
 
   Fotka, ke ktere se zadna barva nenajde, se bere jako spolecna a je videt vzdy.
   Skupinove fotky obou barev jsou v mape schvalne u obou barev.
@@ -151,16 +152,38 @@
       endif
 
       # 3. rucni mapa podle nazvu souboru
+      assign gvm_src = gvm_media.preview_image.src | split: '?' | first
       if gvm_colors == '' and gvm_manual != ''
-        assign gvm_src = gvm_media.preview_image.src | split: '?' | first
         for gvm_entry in gvm_manual_entries
           assign gvm_parts = gvm_entry | split: '::'
           assign gvm_file = '/' | append: gvm_parts[0]
-          if gvm_src contains gvm_file
+          assign gvm_stem = gvm_parts[0] | split: '.' | first
+          assign gvm_reupload = '/' | append: gvm_stem | append: '_'
+          if gvm_src contains gvm_file or gvm_src contains gvm_reupload
             assign gvm_colors = gvm_parts[1]
             break
           endif
         endfor
+      endif
+
+      # 4. barva v nazvu souboru gene-cokoliv-barva.jpg
+      if gvm_colors == ''
+        assign gvm_file_down = gvm_src | split: '/' | last | downcase
+        assign gvm_prefix = gvm_file_down | slice: 0, 5
+        if gvm_prefix == 'gene-'
+          assign gvm_stem_down = gvm_file_down | split: '.' | first | append: '-'
+          for gvm_value in gvm_color_values
+            assign gvm_token = gvm_value | downcase | replace: ' ', '-'
+            assign gvm_needle = '-' | append: gvm_token | append: '-'
+            if gvm_stem_down contains gvm_needle
+              if gvm_colors == ''
+                assign gvm_colors = gvm_value
+              else
+                assign gvm_colors = gvm_colors | append: '||' | append: gvm_value
+              endif
+            endif
+          endfor
+        endif
       endif
 
       if gvm_colors != ''
